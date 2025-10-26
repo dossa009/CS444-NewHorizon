@@ -1,0 +1,63 @@
+/* ============================================
+   EXERCISES PAGE STYLES
+   All classes prefixed with "exercises-"
+   ============================================ */
+
+/* Example structure - to be customized by the team */
+
+.exercises-body {
+  /* Add body-specific styles here */
+}
+
+.exercises-hero {
+  padding: 80px 0;
+}
+
+.exercises-hero__title {
+  font-size: 2.5rem;
+  color: var(--dark-brown);
+  margin-bottom: 24px;
+}
+
+.exercises-hero__description {
+  font-size: 1.1rem;
+  color: var(--text-light);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.exercises-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+  margin-top: 48px;
+}
+
+.exercises-card {
+  background-color: var(--white);
+  border-radius: 4px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.exercises-card__title {
+  font-size: 1.3rem;
+  color: var(--dark-brown);
+  margin-bottom: 16px;
+}
+
+.exercises-card__content {
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .exercises-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .exercises-hero {
+    padding: 48px 0;
+  }
+}
