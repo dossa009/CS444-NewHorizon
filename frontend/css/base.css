@@ -143,6 +143,7 @@ p {
   position: sticky;
   top: 0;
   z-index: 100;
+  padding: 0 var(--gap-md);
 }
 
 .nav {
@@ -150,6 +151,9 @@ p {
   align-items: center;
   justify-content: space-between;
   padding: var(--gap-sm) 0;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
 }
 
 .brand {
@@ -157,12 +161,15 @@ p {
   font-weight: 600;
   color: var(--dark-brown);
   letter-spacing: 0.05em;
+  flex-shrink: 0;
 }
 
 .nav-links {
   display: flex;
   list-style: none;
   gap: var(--gap-md);
+  margin: 0;
+  padding: 0;
 }
 
 .nav-links a {
