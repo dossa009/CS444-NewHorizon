@@ -87,3 +87,71 @@ if (document.readyState === 'loading') {
 } else {
   init();
 }
+
+// Will need to add more functions for when database is connected but for now this generates the calender for the webpage.
+const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
+
+const calendarBody = document.getElementById('calendar-body');
+const monthYearLabel = document.getElementById('month-year');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+
+let currentDate = new Date();
+
+function renderCalendar() {
+  const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+
+  monthYearLabel.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+  calendarBody.innerHTML = '';
+
+  let date = 1;
+
+  for (let i = 0; i < 6; i++) {
+    const row = document.createElement('tr');
+    for (let j = 0; j < 7; j++) {
+      if (i == 0 && j < firstDay) {
+        const cell = document.createElement('td');
+        row.appendChild(cell);
+      }
+      else if (date > daysInMonth) {
+        break;
+      } else {
+        const cell = document.createElement('td');
+        cell.textContent = date;
+        row.appendChild(cell);
+        date++;
+      }
+    }
+    calendarBody.appendChild(row);
+  }
+}
+
+prevBtn.addEventListener('click', () => {
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  renderCalendar();
+})
+
+nextBtn.addEventListener('click', () => {
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  renderCalendar();
+})
+
+renderCalendar();
