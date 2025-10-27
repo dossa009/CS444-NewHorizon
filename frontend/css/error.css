@@ -1,0 +1,147 @@
+/* ============================================
+   ERROR PAGES STYLES (404, 500)
+   All classes prefixed with "error-"
+   ============================================ */
+
+.error-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--beige) 0%, var(--cream) 100%);
+}
+
+.error-container {
+  text-align: center;
+  padding: 48px 24px;
+  max-width: 600px;
+}
+
+.error-code {
+  font-size: 8rem;
+  font-weight: 700;
+  color: var(--terracotta);
+  line-height: 1;
+  margin-bottom: 16px;
+  font-family: var(--font-heading);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-title {
+  font-size: 2rem;
+  color: var(--dark-brown);
+  margin-bottom: 24px;
+  font-family: var(--font-heading);
+  font-weight: 300;
+}
+
+.error-message {
+  font-size: 1.1rem;
+  color: var(--text-light);
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+.error-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.error-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  border: 2px solid var(--dark-brown);
+  background-color: transparent;
+  color: var(--dark-brown);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+}
+
+.error-btn:hover {
+  background-color: var(--dark-brown);
+  color: var(--white);
+}
+
+.error-btn--primary {
+  background-color: var(--terracotta);
+  border-color: var(--terracotta);
+  color: var(--white);
+}
+
+.error-btn--primary:hover {
+  background-color: var(--dark-brown);
+  border-color: var(--dark-brown);
+}
+
+.error-illustration {
+  margin-bottom: 32px;
+  font-size: 6rem;
+  opacity: 0.3;
+}
+
+.error-links {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.error-links__title {
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.error-links__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.error-links__list a {
+  color: var(--terracotta);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: opacity 0.2s ease;
+}
+
+.error-links__list a:hover {
+  opacity: 0.7;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .error-code {
+    font-size: 5rem;
+  }
+
+  .error-title {
+    font-size: 1.5rem;
+  }
+
+  .error-message {
+    font-size: 1rem;
+  }
+
+  .error-actions {
+    flex-direction: column;
+  }
+
+  .error-btn {
+    width: 100%;
+  }
+}
