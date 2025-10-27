@@ -2,42 +2,132 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mission — New Horizon</title>
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/about.css">
+  <title>About / Mission — New Horizon</title>
+
+  <!-- Font for small icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <link rel="stylesheet" href="about.css">
 </head>
-<body class="about-body">
-  <header data-partial="header"></header>
 
+<body>
+
+  <!-- TOP BAR  -->
+  <header>
+    <!-- Home button on left -->
+    <button class="top-btn home" onclick="location.href='index.html'">
+      <i class="fa-solid fa-house"></i> Home
+    </button>
+
+    <!-- Account Info button on right -->
+    <button class="top-btn profile" onclick="location.href='account.html'">
+      <i class="fa-solid fa-user"></i> Account Info
+    </button>
+  </header>
+
+  <!-- PAGE TITLE -->
+  <h1 class="page-title">About &amp; Mission</h1>
+
+  <!--  MAIN CONTENT -->
   <main>
-    <section class="section">
-      <div class="container" style="text-align: center; padding: 120px 24px;">
-        <h1 style="margin-bottom: 24px; color: var(--terracotta);">Our Mission</h1>
-        <p style="font-size: 1.2rem; color: var(--text-light);">
-          This page is coming soon. We're working hard to bring you the best mental wellness resources.
-        </p>
-        <a href="/index.html" class="btn" style="margin-top: 32px;">Back to Home</a>
-      </div>
+    <!-- Welcome -->
+    <section class="box">
+      <h2>Welcome</h2>
+      <p>
+        <strong>New Horizon</strong> is a student-built mental wellness hub focused on 
+        approachable resources and community support. Our goal is to provide a calm, 
+        judgment-free space where anyone can learn, reflect, and connect.
+      </p>
+     <ul>
+        <li>Mental wellness exercises and resources</li>
+        <li>Community forum for peer support</li>
+        <li>Event calendar for wellness activities</li>
+        <li>Educational content about mental health</li>
+        <li>Accessible tools for everyone</li> 
+      </ul>  
+    </section> 
+
+    <!-- Mission -->
+    <section class="box">
+      <h2>Our Mission</h2>
+      <p>
+        Our mission extends beyond simply providing online tools. Here at New Horizon, we aim to create a 
+        digital space that encourages openness, self-reflection, and growth. 
+        Through guided wellness exercises, discussion forums, and reliable educational 
+        resources, we invite individuals to explore their mental health at their own pace.
+      </p>
+
+      <p>
+        New Horizon also focuses on reducing the stigma surrounding mental health. 
+        We believe that understanding and compassion should be at the center of every 
+        conversation about wellness. By connecting people to supportive communities and 
+        evidence-based information, we help promote resilience, balance, and hope.
+      </p>
     </section>
 
-    <!--
-    =============================================
-    VISUAL MOCKUP (Uncomment when mockup image ready)
-    =============================================
+    <!-- Vision -->
+    <section class="box">
+      <h2>Our Vision</h2>
+      <p>
+        We envision a future where seeking help for mental well-being is seen as an act of 
+        strength and self-care, not a source of shame. 
+        New Horizon aspires to be a bridge between individuals and the resources they need 
+        to thrive, whether that’s through mindfulness, education, or community connection.
+      </p>
 
-    <section class="section">
-      <div class="container" style="text-align: center;">
-        <h2 style="margin-bottom: 24px;">Page Mockup Preview</h2>
-        <img src="/public/assets/mockups/about-mockup.png" alt="Mission page visual mockup" style="max-width: 100%; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-      </div>
+      <p>
+        By designing an inclusive and easy-to-navigate platform, we want users from all 
+        backgrounds and ages to find the tools that fit their journey. 
+        Our vision is not just to inform, but to inspire lasting positive change, 
+        one small step at a time.
+      </p>
     </section>
 
-    -->
+    <!-- Why This Matters -->
+    <section class="box">
+      <h2>Why This Matters</h2>
+      <p>
+        In today’s fast-paced world, it’s easy to overlook mental well-being. 
+        Social pressures, financial stress, and everyday responsibilities often make it 
+        difficult for people to prioritize self-care. 
+        New Horizon was developed with the understanding that mental wellness 
+        should be simple and free of judgment.
+      </p>
+
+      <p>
+        We recognize that not everyone has access to professional support, 
+        which is why our platform focuses on providing helpful tools and 
+        community-based learning. Each section of New Horizon is designed to 
+        encourage small, achievable actions that make a big difference over time.
+      </p>
+
+      <p>
+        By fostering awareness and connection, we hope to make mental wellness 
+        a shared responsibility. One that empowers individuals to look out 
+        for themselves and for each other.
+      </p>
+    </section>
+
+    <!-- Who We Are -->
+    <section class="box">
+      <h2>Who We Are</h2>
+      <p>
+        Built by students at California State University San Marcos for CIS 444.
+      </p>
+      <ul>
+        <li><strong>Xahn Millsape</strong> — Homepage & Structure</li>
+        <li><strong>Paige Kunze</strong> — Calendar</li>
+        <li><strong>William Dorry</strong> — Mission / About</li>
+        <li><strong>Luis Ibarra</strong> — Discussion Forum</li>
+        <li><strong>Arthur Dos Santos</strong> — Account / Admin</li>
+      </ul>
+    </section>
+
+    <p class="note"><em>Educational project: for learning purposes only — not medical advice.</em></p>
   </main>
 
-  <footer data-partial="footer"></footer>
-
-  <script src="/js/app.js"></script>
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 New Horizon · CSUSM</p>
+  </footer>
 </body>
 </html>
