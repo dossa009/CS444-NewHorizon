@@ -9,33 +9,28 @@
   <link rel="stylesheet" href="/css/calendar.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
     integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 
 <body class="calendar-body">
   <header>
     <div class="top-bar-buttons">
-      <a href="" target="_self"><!--Link to Home webpage here -->
-        <button id="Home">
-          <i class="fa-solid fa-house"></i>Home
-        </button>
-      </a>
-      <a href="" target="_self"> <!--Link to profile webpage here -->
-        <button id="Profile">
-          <i class="fa-solid fa-user"></i>Profile
-        </button>
-      </a>
+      <button onclick="location.href= 'about.html'" id="Home">
+        <i class="fa-solid fa-house"></i>Home
+      </button>
+      <button onclick="location.href= 'account.html'" id="Profile">
+        <i class="fa-solid fa-user"></i>Profile
+      </button>
     </div>
   </header>
-  <main>
-    <div class="calendar">
-      <div class="header">
-        <button id="prev-btn">&lt;</button>
-        <h1 id="month-year"></h1>
-        <button id="next-btn">&gt;</button>
-      </div>
-
-      <table id="calendar-table">
+  <div class="calendar">
+    <div class="header">
+      <button id="prev-btn">&lt;</button>
+      <h1 id="month-year"></h1>
+      <button id="next-btn">&gt;</button>
+    </div>
+    <table id="calendar-table">
+      <tr>
         <th>Sunday</th>
         <th>Monday</th>
         <th>Tuesday</th>
@@ -43,11 +38,12 @@
         <th>Thursday</th>
         <th>Friday</th>
         <th>Saturday</th>
-        </thead>
-        <tbody id="calendar-body"></tbody>
-    </div>
+      </tr>
+      <tbody id="calendar-body"></tbody>
+    </table>
+  </div>
 
-    <script src="/js/app.js"></script>
+  <script src="/js/app.js"></script>
 </body>
 
 </html>
