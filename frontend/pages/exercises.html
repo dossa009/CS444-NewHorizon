@@ -2,44 +2,109 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Exercises — New Horizon</title>
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/exercises.css">
+  <link rel="stylesheet" href="exercises.css">
 </head>
 <body class="exercises-body">
   <header data-partial="header"></header>
 
   <main>
-    <!-- Coming Soon Placeholder -->
-    <section class="section">
-      <div class="container" style="text-align: center; padding: 120px 24px;">
-        <h1 style="margin-bottom: 24px; color: var(--terracotta);">Wellness Exercises</h1>
-        <p style="font-size: 1.2rem; color: var(--text-light);">
-          This page is coming soon. We're working hard to bring you the best mental wellness resources.
+    <!-- Page title -->
+    <section class="section exercises-hero">
+      <div class="container">
+        <h1 class="exercises-hero__title">Wellness Exercises</h1>
+        <p class="exercises-hero__description">
+          Short, research-informed activities you can try anytime to support mental wellness.
         </p>
-        <a href="/index.html" class="btn" style="margin-top: 32px;">Back to Home</a>
       </div>
     </section>
 
-    <!--
-    =============================================
-    VISUAL MOCKUP (Uncomment when mockup image ready)
-    =============================================
+    <!-- Exercise list -->
+    <div class="section">
+      <div class="container exercises-stack">
+        <article class="exercises-card" data-type="breathing">
+          <h2 class="exercises-card__title">Box Breathing (4-4-4-4)</h2>
+          <p class="exercises-card__content">
+            A steady rhythm to calm the nervous system and reduce stress in about two minutes.
+          </p>
+          <details class="exercises-details">
+            <summary>How to do it</summary>
+            <ol class="exercises-steps">
+              <li>Inhale through your nose for 4 seconds.</li>
+              <li>Hold for 4 seconds.</li>
+              <li>Exhale through your mouth for 4 seconds.</li>
+              <li>Hold empty for 4 seconds; repeat 4–6 times.</li>
+            </ol>
+          </details>
+          <a class="exercises-card__link" href="/resources.html">Learn more in Resources →</a>
+        </article>
 
-    <section class="section">
-      <div class="container" style="text-align: center;">
-        <h2 style="margin-bottom: 24px;">Page Mockup Preview</h2>
-        <img src="/public/assets/mockups/exercises-mockup.png" alt="Exercises page visual mockup" style="max-width: 100%; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        <article class="exercises-card" data-type="grounding">
+          <h2 class="exercises-card__title">5-4-3-2-1 Grounding</h2>
+          <p class="exercises-card__content">
+            A quick sensory check-in to bring attention back to the present moment.
+          </p>
+          <details class="exercises-details">
+            <summary>How to do it</summary>
+            <ol class="exercises-steps">
+              <li>Notice <strong>5</strong> things you can see.</li>
+              <li>Notice <strong>4</strong> things you can feel.</li>
+              <li>Notice <strong>3</strong> things you can hear.</li>
+              <li>Notice <strong>2</strong> things you can smell.</li>
+              <li>Notice <strong>1</strong> thing you can taste.</li>
+            </ol>
+          </details>
+          <a class="exercises-card__link" href="/resources.html">Learn more in Resources →</a>
+        </article>
+
+        <article class="exercises-card" data-type="mindfulness">
+          <h2 class="exercises-card__title">1-Minute Breath Focus</h2>
+          <p class="exercises-card__content">
+            A very short mindfulness reset—good between tasks or before a study session.
+          </p>
+          <details class="exercises-details">
+            <summary>How to do it</summary>
+            <ol class="exercises-steps">
+              <li>Sit comfortably and soften your gaze.</li>
+              <li>Follow the sensation of one full inhale and exhale.</li>
+              <li>If your mind wanders, gently return to the breath.</li>
+              <li>Repeat for ~60–90 seconds.</li>
+            </ol>
+          </details>
+          <a class="exercises-card__link" href="/resources.html">Learn more in Resources →</a>
+        </article>
+
+        <article class="exercises-card" data-type="journaling">
+          <h2 class="exercises-card__title">2-Minute Gratitude Note</h2>
+          <p class="exercises-card__content">
+            Brief journaling to shift attention toward what went well today.
+          </p>
+          <details class="exercises-details">
+            <summary>How to do it</summary>
+            <ol class="exercises-steps">
+              <li>Write down 3 things you’re grateful for.</li>
+              <li>Add one sentence on <em>why</em> each mattered.</li>
+              <li>Optional: reread aloud once.</li>
+            </ol>
+          </details>
+          <a class="exercises-card__link" href="/resources.html">Learn more in Resources →</a>
+        </article>
       </div>
-    </section>
+    </div>
 
-    -->
-    
+    <!-- Bottom callout -->
+    <div class="section">
+      <div class="container exercises-cta">
+        <p>
+          New here? Start with <a href="#" class="exercises-link">Box Breathing</a>,
+          or explore more on the <a href="/resources.html" class="exercises-link">Resources</a> page.
+        </p>
+        <a href="/index.html" class="btn">Back to Home</a>
+      </div>
+    </div>
   </main>
 
   <footer data-partial="footer"></footer>
-
   <script src="/js/app.js"></script>
 </body>
 </html>
