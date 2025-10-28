@@ -1,27 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <base href="/CS444-NewHorizon/">
   <script>
-    // Automatic base path configuration (local vs GitHub Pages)
-    (function() {
-      const isLocal = window.location.hostname === 'localhost' ||
-                      window.location.hostname === '127.0.0.1' ||
-                      window.location.hostname === '';
-      const basePath = isLocal ? '/' : '/CS444-NewHorizon/';
-      const base = document.createElement('base');
-      base.href = basePath;
-      document.head.insertBefore(base, document.head.firstChild);
-    })();
+    // Auto-adjust base path for local development
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '') {
+      document.querySelector('base').href = '/';
+    }
   </script>
-
-
-
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Explore mental wellness opportunities and resources at New Horizon.">
   <title>Opportunities — New Horizon</title>
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/opportunities.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/opportunities.css">
 </head>
 <body class="opportunities-body">
   <header data-partial="header"></header>
@@ -56,7 +48,7 @@
           </div>
           <div class="opportunities-section__image-wrapper">
             <img
-              src="/public/assets/img/Opportunities_Inquire.png"
+              src="public/assets/img/Opportunities_Inquire.png"
               alt="Property management"
               class="opportunities-section__image"
             >
@@ -71,7 +63,7 @@
         <div class="opportunities-section__grid">
           <div class="opportunities-section__image-wrapper">
             <img
-              src="/public/assets/img/Opportunities_BookConsultation.png"
+              src="public/assets/img/Opportunities_BookConsultation.png"
               alt="New to real estate"
               class="opportunities-section__image"
             >
@@ -90,6 +82,6 @@
 
   <footer data-partial="footer"></footer>
 
-  <script src="/js/app.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

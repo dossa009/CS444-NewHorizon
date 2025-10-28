@@ -1,22 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <base href="/CS444-NewHorizon/">
   <script>
-    // Automatic base path configuration (local vs GitHub Pages)
-    (function() {
-      const isLocal = window.location.hostname === 'localhost' ||
-                      window.location.hostname === '127.0.0.1' ||
-                      window.location.hostname === '';
-      const basePath = isLocal ? '/' : '/CS444-NewHorizon/';
-      const base = document.createElement('base');
-      base.href = basePath;
-      document.head.insertBefore(base, document.head.firstChild);
-    })();
+    // Auto-adjust base path for local development
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '') {
+      document.querySelector('base').href = '/';
+    }
   </script>
-
-
-
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
   <title>About / Mission — New Horizon</title>
 
   <!-- Font for small icons -->

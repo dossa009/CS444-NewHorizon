@@ -1,27 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <base href="/CS444-NewHorizon/">
   <script>
-    // Automatic base path configuration (local vs GitHub Pages)
-    (function() {
-      const isLocal = window.location.hostname === 'localhost' ||
-                      window.location.hostname === '127.0.0.1' ||
-                      window.location.hostname === '';
-      const basePath = isLocal ? '/' : '/CS444-NewHorizon/';
-      const base = document.createElement('base');
-      base.href = basePath;
-      document.head.insertBefore(base, document.head.firstChild);
-    })();
+    // Auto-adjust base path for local development
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '') {
+      document.querySelector('base').href = '/';
+    }
   </script>
-
-
-
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Server error - New Horizon">
   <title>500 - Server Error | New Horizon</title>
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/error.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/error.css">
 </head>
 <body class="error-body">
   <div class="error-container">
@@ -34,16 +26,16 @@
     </p>
 
     <div class="error-actions">
-      <a href="/index.html" class="error-btn error-btn--primary">Go Home</a>
+      <a href="index.html" class="error-btn error-btn--primary">Go Home</a>
       <a href="javascript:location.reload()" class="error-btn">Reload Page</a>
     </div>
 
     <div class="error-links">
       <p class="error-links__title">Need Help?</p>
       <ul class="error-links__list">
-        <li><a href="/pages/contact.html">Contact Support</a></li>
-        <li><a href="/pages/about.html">About Us</a></li>
-        <li><a href="/index.html">Return Home</a></li>
+        <li><a href="pages/contact.html">Contact Support</a></li>
+        <li><a href="pages/about.html">About Us</a></li>
+        <li><a href="index.html">Return Home</a></li>
       </ul>
     </div>
   </div>

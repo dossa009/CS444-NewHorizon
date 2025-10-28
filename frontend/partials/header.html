@@ -1,30 +1,27 @@
 <header class="site-header">
   <script>
     // Automatic base path configuration (local vs GitHub Pages)
+    // This script runs immediately and writes the <base> tag before CSS loads
     (function() {
-      const isLocal = window.location.hostname === 'localhost' ||
-                      window.location.hostname === '127.0.0.1' ||
-                      window.location.hostname === '';
-      const basePath = isLocal ? '/' : '/CS444-NewHorizon/';
-      const base = document.createElement('base');
-      base.href = basePath;
-      document.head.insertBefore(base, document.head.firstChild);
+      var isLocal = window.location.hostname === 'localhost' ||
+                    window.location.hostname === '127.0.0.1' ||
+                    window.location.hostname === '';
+      var basePath = isLocal ? '/' : '/CS444-NewHorizon/';
+      document.write('<base href="' + basePath + '">');
     })();
   </script>
 
-
-
-  <nav class="nav">
-    <a class="brand" href="/index.html">New Horizon</a>
+<nav class="nav">
+    <a class="brand" href="index.html">New Horizon</a>
     <ul class="nav-links">
-      <li><a data-nav href="/index.html">Home</a></li>
-      <li><a data-nav href="/pages/exercises.html">Exercises</a></li>
-      <li><a data-nav href="/pages/calendar.html">Calendar</a></li>
-      <li><a data-nav href="/pages/forum.html">Forum</a></li>
-      <li><a data-nav href="/pages/opportunities.html">Opportunities</a></li>
-      <li><a data-nav href="/pages/about.html">Mission</a></li>
-      <li><a data-nav href="/pages/contact.html">Contact</a></li>
-      <li><a data-nav href="/pages/account.html">Account</a></li>
+      <li><a data-nav href="index.html">Home</a></li>
+      <li><a data-nav href="pages/exercises.html">Exercises</a></li>
+      <li><a data-nav href="pages/calendar.html">Calendar</a></li>
+      <li><a data-nav href="pages/forum.html">Forum</a></li>
+      <li><a data-nav href="pages/opportunities.html">Opportunities</a></li>
+      <li><a data-nav href="pages/about.html">Mission</a></li>
+      <li><a data-nav href="pages/contact.html">Contact</a></li>
+      <li><a data-nav href="pages/account.html">Account</a></li>
     </ul>
   </nav>
 </header>

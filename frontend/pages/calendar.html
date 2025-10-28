@@ -2,26 +2,18 @@
 <html lang="en">
 
 <head>
+  <base href="/CS444-NewHorizon/">
   <script>
-    // Automatic base path configuration (local vs GitHub Pages)
-    (function() {
-      const isLocal = window.location.hostname === 'localhost' ||
-                      window.location.hostname === '127.0.0.1' ||
-                      window.location.hostname === '';
-      const basePath = isLocal ? '/' : '/CS444-NewHorizon/';
-      const base = document.createElement('base');
-      base.href = basePath;
-      document.head.insertBefore(base, document.head.firstChild);
-    })();
+    // Auto-adjust base path for local development
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '') {
+      document.querySelector('base').href = '/';
+    }
   </script>
-
-
-
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calendar — New Horizon</title>
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/calendar.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/calendar.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
     integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
     crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -58,7 +50,7 @@
     </table>
   </div>
 
-  <script src="/js/app.js"></script>
+  <script src="js/app.js"></script>
 </body>
 
 </html>

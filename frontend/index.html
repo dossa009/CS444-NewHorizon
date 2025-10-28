@@ -1,25 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <base href="/CS444-NewHorizon/">
   <script>
-    // Automatic base path configuration (local vs GitHub Pages)
-    (function() {
-      const isLocal = window.location.hostname === 'localhost' ||
-                      window.location.hostname === '127.0.0.1' ||
-                      window.location.hostname === '';
-      const basePath = isLocal ? '/' : '/CS444-NewHorizon/';
-      const base = document.createElement('base');
-      base.href = basePath;
-      document.head.insertBefore(base, document.head.firstChild);
-    })();
+    // Auto-adjust base path for local development
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '') {
+      document.querySelector('base').href = '/';
+    }
   </script>
-
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="New Horizon provides accessible mental wellness resources, exercises, and community support for everyone seeking help.">
   <title>New Horizon — Mental Wellness Resources</title>
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/home.css">
 </head>
 <body class="home-body">
   <!-- Header will be injected here -->
@@ -30,7 +24,7 @@
     <section class="home-hero">
       <div class="home-hero__image-wrapper">
         <img
-          src="/public/assets/img/home_Main.png"
+          src="public/assets/img/home_Main.png"
           alt="Person meditating peacefully"
           class="home-hero__image"
         >
@@ -44,7 +38,7 @@
           WE PROVIDE RESOURCES TO ALLOW EVERYONE TO FIND THE HELP THEY NEED
         </h1>
         <div class="home-hero__btn-wrapper">
-          <a href="/pages/exercises.html" class="btn">EXERCISES</a>
+          <a href="pages/exercises.html" class="btn">EXERCISES</a>
         </div>
       </div>
     </section>
@@ -62,7 +56,7 @@
           Once you're done, seal the deal with a compelling closing line that gets them to take action.
         </p>
         <div class="home-about__btn-wrapper">
-          <a href="/pages/about.html" class="btn">LEARN MORE</a>
+          <a href="pages/about.html" class="btn">LEARN MORE</a>
         </div>
       </div>
     </section>
@@ -73,7 +67,7 @@
         <div class="home-pillars__grid">
           <div class="home-pillar">
             <img
-              src="/public/assets/img/home_PhysicalWellbeing.png"
+              src="public/assets/img/home_PhysicalWellbeing.png"
               alt="Physical Well-being"
               class="home-pillar__image"
             >
@@ -85,7 +79,7 @@
 
           <div class="home-pillar">
             <img
-              src="/public/assets/img/home_MentalSupport.png"
+              src="public/assets/img/home_MentalSupport.png"
               alt="Mental Support"
               class="home-pillar__image"
             >
@@ -97,7 +91,7 @@
 
           <div class="home-pillar">
             <img
-              src="/public/assets/img/home_EnvironmentalWellness.png"
+              src="public/assets/img/home_EnvironmentalWellness.png"
               alt="Environmental Wellness"
               class="home-pillar__image"
             >
@@ -116,7 +110,7 @@
         <div class="home-services__grid">
           <div class="home-services__image-wrapper">
             <img
-              src="/public/assets/img/home_MainServices.png"
+              src="public/assets/img/home_MainServices.png"
               alt="Wellness services"
               class="home-services__image"
             >
@@ -188,6 +182,6 @@
   <!-- Footer will be injected here -->
   <footer data-partial="footer"></footer>
 
-  <script src="/js/app.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
