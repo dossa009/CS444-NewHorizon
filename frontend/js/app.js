@@ -63,8 +63,8 @@ function setupSmoothScroll() {
 async function init() {
   // Load header and footer
   await Promise.all([
-    injectPartial('header[data-partial="header"]', '/partials/header.html'),
-    injectPartial('footer[data-partial="footer"]', '/partials/footer.html')
+    injectPartial('header[data-partial="header"]', 'partials/header.html'),
+    injectPartial('footer[data-partial="footer"]', 'partials/footer.html')
   ]);
 
   // Set active nav link after header is loaded
