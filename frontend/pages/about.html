@@ -17,20 +17,8 @@
   <link rel="stylesheet" href="css/about.css">
 </head>
 
-<body>
-
-  <!-- TOP BAR  -->
-  <header>
-    <!-- Home button on left -->
-    <button class="top-btn home" onclick="location.href='index.html'">
-      <i class="fa-solid fa-house"></i> Home
-    </button>
-
-    <!-- Account Info button on right -->
-    <button class="top-btn profile" onclick="location.href='account.html'">
-      <i class="fa-solid fa-user"></i> Account Info
-    </button>
-  </header>
+<body class="about-body">
+  <header data-partial="header"></header>
 
   <!-- PAGE TITLE -->
   <h1 class="page-title">About &amp; Mission</h1>
@@ -133,9 +121,7 @@
     <p class="note"><em>Educational project: for learning purposes only — not medical advice.</em></p>
   </main>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>&copy; 2025 New Horizon · CSUSM</p>
-  </footer>
+  <footer data-partial="footer"></footer>
+  <script src="js/app.js"></script>
 </body>
 </html>
