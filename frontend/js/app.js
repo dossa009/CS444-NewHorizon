@@ -3,14 +3,24 @@
  * Handles navigation, partial injection, and page interactions
  */
 
+// Get base path based on environment
+function getBasePath() {
+  const isLocal = window.location.hostname === 'localhost' ||
+                  window.location.hostname === '127.0.0.1' ||
+                  window.location.hostname === '';
+  return isLocal ? '/' : '/CS444-NewHorizon/';
+}
+
 // Inject HTML partials (header, footer)
 async function injectPartial(selector, url) {
   const element = document.querySelector(selector);
   if (!element) return;
 
   try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`Failed to load ${url}`);
+    const basePath = getBasePath();
+    const fullUrl = basePath + url;
+    const response = await fetch(fullUrl);
+    if (!response.ok) throw new Error(`Failed to load ${fullUrl}`);
     const html = await response.text();
     element.innerHTML = html;
   } catch (error) {
