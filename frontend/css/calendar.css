@@ -17,6 +17,7 @@
   font-size: 2.5rem;
   color: var(--dark-brown);
   margin-bottom: var(--gap-sm);
+  font-family: var(--font-heading);
 }
 
 .calendar-hero__description {
