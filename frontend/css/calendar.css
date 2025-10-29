@@ -4,6 +4,10 @@
    ============================================ */
 
 /* Example structure - to be customized by the team */
+.calendar{
+  height: 100 px;
+  width: 500 px;
+}
 .calendar-header {
   display: flex;
   align-items: center;
