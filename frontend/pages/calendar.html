@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <base href="/CS444-NewHorizon/">
   <script>
@@ -11,36 +10,62 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="View and plan mental wellness events and activities on our community calendar.">
   <title>Calendar — New Horizon</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/calendar.css">
 </head>
-
 <body class="calendar-body">
   <header data-partial="header"></header>
+
   <main>
-    <div class="calendar">
-      <div class="calendar-header">
-        <button id="prev-btn">&lt;</button>
-        <h1 id="month-year"></h1>
-        <button id="next-btn">&gt;</button>
+    <!-- Page Hero -->
+    <section class="section calendar-hero">
+      <div class="container">
+        <h1 class="calendar-hero__title">Wellness Calendar</h1>
+        <p class="calendar-hero__description">
+          Explore upcoming events, workshops, and activities to support your mental wellness journey.
+        </p>
       </div>
-      <table id="calendar-table">
-        <tr>
-          <th>Sunday</th>
-          <th>Monday</th>
-          <th>Tuesday</th>
-          <th>Wednesday</th>
-          <th>Thursday</th>
-          <th>Friday</th>
-          <th>Saturday</th>
-        </tr>
-        <tbody id="calendar-body"></tbody>
-      </table>
-    </div>
+    </section>
+
+    <!-- Calendar Widget -->
+    <section class="section section--alt">
+      <div class="container">
+        <div class="calendar">
+          <div class="calendar-header">
+            <button id="prev-btn" class="calendar-nav-btn">&lt;</button>
+            <h2 id="month-year" class="calendar-month"></h2>
+            <button id="next-btn" class="calendar-nav-btn">&gt;</button>
+          </div>
+          <table id="calendar-table" class="calendar-table">
+            <thead>
+              <tr>
+                <th>Sun</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+              </tr>
+            </thead>
+            <tbody id="calendar-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Upcoming Events -->
+    <section class="section">
+      <div class="container">
+        <h2>Upcoming Events</h2>
+        <p>Check back soon for upcoming wellness events, workshops, and community activities.</p>
+      </div>
+    </section>
   </main>
+
   <footer data-partial="footer"></footer>
   <script src="js/app.js"></script>
 </body>
-
 </html>
