@@ -11,15 +11,21 @@
 .opportunities-hero {
   position: relative;
   min-height: 600px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background-image: url('../public/assets/img/Opportunities_background.png');
+  background-image: url('public/assets/img/Opportunities_background.png');
   background-size: cover;
   background-position: center;
   background-color: rgba(0, 0, 0, 0.4);
   background-blend-mode: darken;
+  padding: 0;
+}
+
+.opportunities-hero .container {
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
 }
 
 .opportunities-hero__overlay {
@@ -37,7 +43,8 @@
   z-index: 2;
   color: var(--white);
   max-width: 900px;
-  padding: 48px 24px;
+  text-align: center;
+  padding: var(--gap-lg) var(--gap-md);
 }
 
 .opportunities-hero__title {
@@ -84,11 +91,7 @@
 }
 
 /* Section with Image + Text */
-.opportunities-section {
-  padding: 80px 0;
-}
-
-.opportunities-section--alt {
+.opportunities-body .section--alt {
   background-color: var(--terracotta);
   color: var(--white);
 }
@@ -115,23 +118,26 @@
 
 .opportunities-section__content h2 {
   font-size: 2.5rem;
-  margin-bottom: 24px;
+  margin-bottom: var(--gap-md);
   font-family: var(--font-heading);
   font-weight: 300;
   line-height: 1.2;
+  color: var(--dark-brown);
 }
 
 .opportunities-section__content p {
   font-size: 1rem;
   line-height: 1.7;
-  margin-bottom: 32px;
+  margin-bottom: var(--gap-lg);
+  color: var(--text-light);
 }
 
-.opportunities-section--alt .opportunities-section__content h2 {
+/* Styling for sections with terracotta background */
+.section--alt .opportunities-section__content h2 {
   color: var(--white);
 }
 
-.opportunities-section--alt .opportunities-section__content p {
+.section--alt .opportunities-section__content p {
   color: rgba(255, 255, 255, 0.95);
 }
 
@@ -141,19 +147,23 @@
     font-size: 2rem;
   }
 
-  .opportunities-section__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .opportunities-section {
-    padding: 48px 0;
-  }
-
   .opportunities-hero {
     min-height: 500px;
   }
 
+  .opportunities-hero .container {
+    height: 500px;
+  }
+
+  .opportunities-section__grid {
+    grid-template-columns: 1fr;
+  }
+
   .opportunities-section__content h2 {
     font-size: 1.8rem;
+  }
+
+  .opportunities-section__image {
+    min-height: 300px;
   }
 }
