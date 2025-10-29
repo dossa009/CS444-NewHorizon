@@ -1,135 +1,69 @@
 /* ============================================
-   CONTACT PAGE STYLES (from Contact.pdf)
+   CONTACT PAGE STYLES
    All classes prefixed with "contact-"
    ============================================ */
 
-/* Header Section */
-.contact-header {
-  background-color: var(--terracotta);
-  color: var(--white);
-  padding: 60px 0 40px;
+.contact-body {
+  background-color: var(--cream);
 }
 
-.contact-header__brand {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 48px;
-}
-
-.contact-header__logo {
-  width: 48px;
-  height: 48px;
+/* Hero Section */
+.contact-hero {
+  text-align: center;
   background-color: var(--white);
-  clip-path: polygon(0 0, 100% 0, 100% 50%, 50% 100%, 0 50%);
 }
 
-.contact-header__title {
-  font-size: 2rem;
-  color: var(--white);
-  font-weight: 300;
+.contact-hero__title {
+  font-size: 2.5rem;
+  color: var(--dark-brown);
+  margin-bottom: var(--gap-sm);
   font-family: var(--font-heading);
 }
 
-.contact-info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 48px;
-  margin-bottom: 48px;
-}
-
-.contact-info__section h3 {
-  font-size: 1.2rem;
-  margin-bottom: 16px;
-  color: var(--white);
-  font-weight: 400;
-}
-
-.contact-info__section p,
-.contact-info__section a {
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.95);
-  line-height: 1.6;
-}
-
-.contact-info__section a {
-  text-decoration: none;
-  transition: opacity 0.2s ease;
-}
-
-.contact-info__section a:hover {
-  opacity: 0.8;
-}
-
-/* Social Section */
-.contact-social {
-  padding-top: 32px;
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.contact-social h3 {
-  font-size: 1.2rem;
-  margin-bottom: 16px;
-  color: var(--white);
-  font-weight: 400;
-}
-
-.contact-social__links {
-  display: flex;
-  gap: 16px;
-}
-
-.contact-social__link {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--white);
-  border-radius: 50%;
-  transition: transform 0.2s ease;
-}
-
-.contact-social__link:hover {
-  transform: scale(1.1);
+.contact-hero__description {
+  font-size: 1.125rem;
+  color: var(--text-light);
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 /* Poll Section */
 .contact-poll {
-  padding: 80px 0;
-  background-color: var(--beige);
-}
-
-.contact-poll__content {
   max-width: 900px;
   margin: 0 auto;
+  background-color: var(--white);
+  padding: var(--gap-xl);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .contact-poll__title {
-  font-size: 2.5rem;
-  margin-bottom: 24px;
+  font-size: 2rem;
+  margin-bottom: var(--gap-md);
   color: var(--dark-brown);
   font-family: var(--font-heading);
-  font-weight: 300;
+  font-weight: 400;
+  text-align: center;
 }
 
 .contact-poll__subtitle {
   font-size: 1rem;
   color: var(--text-light);
-  margin-bottom: 48px;
+  margin-bottom: var(--gap-xl);
   line-height: 1.6;
+  text-align: center;
 }
 
 .contact-poll__options {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: var(--gap-md);
+  margin-bottom: var(--gap-lg);
 }
 
 .contact-poll__option {
-  padding: 20px 24px;
-  background-color: var(--white);
+  padding: var(--gap-md);
+  background-color: var(--cream);
   border-radius: 4px;
   font-size: 0.95rem;
   color: var(--text-dark);
@@ -140,32 +74,34 @@
 
 .contact-poll__option:hover {
   border-color: var(--terracotta);
-  transform: translateX(4px);
+  background-color: var(--white);
+  transform: translateX(8px);
 }
 
 .contact-poll__footer {
   font-size: 0.85rem;
   color: var(--text-light);
   text-align: center;
-  margin-top: 32px;
+  margin-top: var(--gap-lg);
+  padding-top: var(--gap-md);
+  border-top: 1px solid var(--beige);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .contact-info-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-
-  .contact-poll__title {
-    font-size: 1.8rem;
-  }
-
-  .contact-header {
-    padding: 40px 0 32px;
+  .contact-hero__title {
+    font-size: 2rem;
   }
 
   .contact-poll {
-    padding: 48px 0;
+    padding: var(--gap-lg);
+  }
+
+  .contact-poll__title {
+    font-size: 1.6rem;
+  }
+
+  .contact-poll__option:hover {
+    transform: translateX(4px);
   }
 }
