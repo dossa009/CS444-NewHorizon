@@ -11,7 +11,6 @@
 .opportunities-hero {
   position: relative;
   min-height: 400px;
-  background-image: url('public/assets/img/Opportunities_background.png');
   background-size: cover;
   background-position: center;
   background-color: rgba(0, 0, 0, 0.5);
@@ -38,8 +37,35 @@
   font-size: 1.125rem;
   color: rgba(255, 255, 255, 0.95);
   max-width: 720px;
-  margin: 0 auto;
+  margin: 0 auto var(--gap-md) auto;
   line-height: 1.7;
+}
+
+.opportunities-hero__buttons {
+  display: flex;
+  gap: var(--gap-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.opportunities-hero__btn {
+  padding: 14px 32px;
+  border: 2px solid var(--white);
+  background-color: transparent;
+  color: var(--white);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.opportunities-hero__btn:hover {
+  background-color: var(--white);
+  color: var(--dark-brown);
 }
 
 /* Section Grid Layout */
