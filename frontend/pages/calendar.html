@@ -9,29 +9,17 @@
       document.querySelector('base').href = '/';
     }
   </script>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calendar — New Horizon</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/calendar.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 
 <body class="calendar-body">
-  <header>
-    <div class="top-bar-buttons">
-      <button onclick="location.href= 'about.html'" id="Home">
-        <i class="fa-solid fa-house"></i>Home
-      </button>
-      <button onclick="location.href= 'account.html'" id="Profile">
-        <i class="fa-solid fa-user"></i>Profile
-      </button>
-    </div>
-  </header>
+  <header data-partial="header"></header>
   <div class="calendar">
-    <div class="header">
+    <div class="calendar-header">
       <button id="prev-btn">&lt;</button>
       <h1 id="month-year"></h1>
       <button id="next-btn">&gt;</button>
