@@ -31,18 +31,39 @@ async function injectPartial(selector, url) {
 
 // Set active navigation link based on current page
 function setActiveNavLink() {
-  const currentPath = window.location.pathname.replace(/\/$/, '');
+  const basePath = getBasePath();
+  let currentPath = window.location.pathname;
+
+  // Remove base path if present
+  if (basePath !== '/' && currentPath.startsWith(basePath)) {
+    currentPath = currentPath.substring(basePath.length);
+  }
+
+  // Remove leading slash
+  if (currentPath.startsWith('/')) {
+    currentPath = currentPath.substring(1);
+  }
+
+  // Remove trailing slash
+  currentPath = currentPath.replace(/\/$/, '');
+
+  // Default to index.html if empty
+  if (currentPath === '' || currentPath === '/') {
+    currentPath = 'index.html';
+  }
+
   const navLinks = document.querySelectorAll('.nav-links a[data-nav]');
 
   navLinks.forEach(link => {
-    const linkPath = link.getAttribute('href').replace(/\/$/, '');
+    let linkPath = link.getAttribute('href').replace(/\/$/, '');
+
+    // Remove leading slash from link path
+    if (linkPath.startsWith('/')) {
+      linkPath = linkPath.substring(1);
+    }
 
     // Check if current page matches link
-    if (
-      currentPath === linkPath ||
-      (currentPath === '' && linkPath === '/index.html') ||
-      (currentPath.endsWith('/index.html') && linkPath.endsWith('/index.html'))
-    ) {
+    if (currentPath === linkPath || currentPath.endsWith('/' + linkPath)) {
       link.classList.add('active');
     } else {
       link.classList.remove('active');

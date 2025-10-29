@@ -180,10 +180,23 @@ p {
   transition: all 0.2s ease;
 }
 
-.nav-links a:hover,
+/* Active page - always highlighted */
 .nav-links a.active {
+  background-color: var(--terracotta);
+  color: var(--white);
+  font-weight: 500;
+}
+
+/* Hover state for regular links */
+.nav-links a:hover:not(.active) {
   background-color: var(--cream);
   color: var(--terracotta);
+}
+
+/* Hover state for active link - slightly different to show interaction */
+.nav-links a.active:hover {
+  background-color: var(--dark-brown);
+  transform: translateY(-1px);
 }
 
 /* ============================================

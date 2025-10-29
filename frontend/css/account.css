@@ -3,10 +3,33 @@
    All classes prefixed with "account-"
    ============================================ */
 
-/* Example structure - to be customized by the team */
-
 .account-body {
-  /* Add body-specific styles here */
+  background-color: var(--cream);
+}
+
+/* Hero Section */
+.account-hero {
+  text-align: center;
+  background-color: var(--white);
+}
+
+.account-hero__title {
+  font-size: 2.5rem;
+  color: var(--dark-brown);
+  margin-bottom: var(--gap-sm);
+  font-family: var(--font-heading);
+}
+
+.account-hero__description {
+  font-size: 1.125rem;
+  color: var(--text-light);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Placeholder Section */
+.account-placeholder {
+  text-align: center;
 }
 
 .account-header {

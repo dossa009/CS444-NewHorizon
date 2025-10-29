@@ -27,6 +27,11 @@
   margin: 0 auto;
 }
 
+/* Placeholder Section */
+.resources-placeholder {
+  text-align: center;
+}
+
 /* Resource Categories */
 .resources-categories {
   display: grid;

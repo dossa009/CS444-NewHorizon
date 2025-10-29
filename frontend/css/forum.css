@@ -3,10 +3,33 @@
    All classes prefixed with "forum-"
    ============================================ */
 
-/* Example structure - to be customized by the team */
-
 .forum-body {
-  /* Add body-specific styles here */
+  background-color: var(--cream);
+}
+
+/* Hero Section */
+.forum-hero {
+  text-align: center;
+  background-color: var(--white);
+}
+
+.forum-hero__title {
+  font-size: 2.5rem;
+  color: var(--dark-brown);
+  margin-bottom: var(--gap-sm);
+  font-family: var(--font-heading);
+}
+
+.forum-hero__description {
+  font-size: 1.125rem;
+  color: var(--text-light);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Placeholder Section */
+.forum-placeholder {
+  text-align: center;
 }
 
 .forum-header {
