@@ -1,87 +1,65 @@
-/* GENERAL PAGE STYLES */
-body {
-  background-color: #f5ede3; 
-  color: #2b2119; 
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+/* ============================================
+   ABOUT PAGE STYLES
+   All classes prefixed with "about-"
+   ============================================ */
+
+.about-body {
+  background-color: var(--cream);
 }
 
-/* TOP BAR */
-header {
-  background-color: #d8b5a1; 
-  height: 50px;
-  position: relative;
-}
-
-/* Buttons (Home and Account Info) */
-.top-btn {
-  background-color: transparent;
-  border: none;
-  color: #000;
-  font-weight: bold;
-  padding: 10px;
-  cursor: pointer;
-}
-
-/* Home button on left */
-.home {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-}
-
-/* Profile button on right */
-.profile {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-}
-
-/* PAGE TITLE */
-.page-title {
+/* Hero Section */
+.about-hero {
   text-align: center;
-  font-size: 24px;
-  margin: 20px 0 10px;
+  background-color: var(--white);
 }
 
-/* MAIN CONTENT */
-main {
-  width: 90%;
-  max-width: 900px;
-  margin: 0 auto;
+.about-hero__title {
+  font-size: 2.5rem;
+  color: var(--dark-brown);
+  margin-bottom: var(--gap-sm);
 }
 
-/* Box style for each section */
-.box {
-  border: 2px solid #2b2119;
-  background-color: #fbf7f2;
-  padding: 10px 15px;
-  margin-bottom: 15px;
+/* Box style for legacy sections */
+.about-box {
+  border: 2px solid var(--dark-brown);
+  background-color: var(--white);
+  padding: var(--gap-md);
+  margin-bottom: var(--gap-md);
+  border-radius: 4px;
 }
 
-/* Headings inside boxes */
-.box h2 {
-  border-bottom: 1px solid #2b2119;
-  padding-bottom: 5px;
+.about-box h2 {
+  border-bottom: 2px solid var(--dark-brown);
+  padding-bottom: var(--gap-xs);
+  margin-bottom: var(--gap-md);
+  color: var(--dark-brown);
+  font-family: var(--font-heading);
 }
 
-/* List style */
-ul {
-  margin-left: 20px;
+.about-box ul {
+  margin-left: var(--gap-md);
+  color: var(--text-dark);
 }
 
-/* Small note at bottom */
-.note {
+.about-box li {
+  margin-bottom: var(--gap-xs);
+}
+
+/* Note at bottom */
+.about-note {
   text-align: center;
-  color: #5b4c40;
-  margin-top: 10px;
+  color: var(--text-light);
+  margin-top: var(--gap-lg);
+  font-style: italic;
 }
 
-/* FOOTER */
-footer {
-  text-align: center;
-  padding: 10px;
-  background-color: #d8b5a1;
-  margin-top: 30px;
+/* Responsive */
+@media (max-width: 768px) {
+  .about-hero__title {
+    font-size: 2rem;
+  }
+
+  .about-box {
+    padding: var(--gap-sm);
+  }
 }
