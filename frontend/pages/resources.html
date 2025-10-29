@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/CS444-NewHorizon/">
+  <script>
+    // Auto-adjust base path for local development
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '') {
+      document.querySelector('base').href = '/';
+    }
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Access mental wellness resources, articles, and educational content about mental health.">
+  <title>Resources — New Horizon</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/resources.css">
+</head>
+<body class="resources-body">
+  <header data-partial="header"></header>
+
+  <main>
+    <section class="section">
+      <div class="container" style="text-align: center; padding: 120px 24px;">
+        <h1 style="margin-bottom: 24px; color: var(--terracotta);">Resources</h1>
+        <p style="font-size: 1.2rem; color: var(--text-light);">
+          This page will come in the next project part with the backend and database.
+        </p>
+        <a href="index.html" class="btn" style="margin-top: 32px;">Back to Home</a>
+      </div>
+    </section>
+
+    <!--
+    =============================================
+    VISUAL MOCKUP (Uncomment when mockup image ready)
+    =============================================
+
+    <section class="section">
+      <div class="container" style="text-align: center;">
+        <h2 style="margin-bottom: 24px;">Page Mockup Preview</h2>
+        <img src="public/assets/mockups/resources-mockup.png" alt="Resources page visual mockup" style="max-width: 100%; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+      </div>
+    </section>
+
+    -->
+  </main>
+
+  <footer data-partial="footer"></footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

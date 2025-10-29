@@ -1,91 +1,161 @@
-:root {
-  --page-bg: #F1EAE1;      
-  --banner:  #D1B2A2;      
-  --text:    #2F241D;      
-  --muted:   #6B5C52;      
-  --border:  #3A2D24;      
-  --accent:  #2F241D;      
-  --card-bg: #F7F2EC;      
-}
+/* ============================================
+   EXERCISES PAGE STYLES
+   All classes prefixed with "exercises-"
+   ============================================ */
 
 .exercises-body {
-  background: var(--page-bg);
-  color: var(--text);
+  background-color: var(--cream);
 }
 
-/* container and section spacing */
-.section { padding: 24px 0; }
-.container {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 0 16px;
+/* Hero Section */
+.exercises-hero {
+  text-align: center;
+  background-color: var(--white);
 }
 
-/* hero/title */
-.exercises-hero { text-align: center; }
 .exercises-hero__title {
-  font-size: 2rem;
-  font-weight: 800;
-  margin-bottom: 12px;
+  font-size: 2.5rem;
+  color: var(--dark-brown);
+  margin-bottom: var(--gap-sm);
+  font-family: var(--font-heading);
 }
+
 .exercises-hero__description {
   max-width: 720px;
   margin: 0 auto;
-  color: var(--muted);
+  color: var(--text-light);
+  font-size: 1.125rem;
 }
 
+/* Exercise Cards Stack */
+.exercises-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+}
 
-.exercises-label { display: block; margin-top: 8px; font-weight: 600; }
+.exercises-card {
+  background-color: var(--white);
+  border: 2px solid var(--dark-brown);
+  border-radius: 4px;
+  padding: var(--gap-md);
+  transition: box-shadow 0.2s ease;
+}
+
+.exercises-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.exercises-card__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark-brown);
+  margin: 0 0 var(--gap-sm) 0;
+  padding-bottom: var(--gap-sm);
+  border-bottom: 2px solid var(--dark-brown);
+  font-family: var(--font-heading);
+}
+
+.exercises-card__content {
+  color: var(--text-light);
+  margin: var(--gap-sm) 0;
+  line-height: 1.6;
+}
+
+/* Details/Accordion */
+.exercises-details {
+  margin-top: var(--gap-sm);
+}
+
+.exercises-details > summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--terracotta);
+  padding: var(--gap-xs) 0;
+  list-style-position: inside;
+}
+
+.exercises-details > summary:hover {
+  color: var(--dark-brown);
+}
+
+.exercises-steps {
+  margin: var(--gap-sm) 0 0 var(--gap-md);
+  color: var(--text-dark);
+  line-height: 1.7;
+}
+
+.exercises-steps li {
+  margin-bottom: var(--gap-xs);
+}
+
+/* Links */
+.exercises-card__link,
+.exercises-link {
+  color: var(--terracotta);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.exercises-card__link:hover,
+.exercises-link:hover {
+  color: var(--dark-brown);
+}
+
+/* Call-to-Action Section */
+.exercises-cta {
+  text-align: center;
+  border: 2px solid var(--dark-brown);
+  background-color: var(--white);
+  padding: var(--gap-lg);
+  border-radius: 4px;
+  margin-top: var(--gap-lg);
+}
+
+.exercises-cta p {
+  color: var(--text-dark);
+  margin-bottom: var(--gap-md);
+  line-height: 1.6;
+}
+
+/* Form Elements (if needed) */
+.exercises-label {
+  display: block;
+  margin-top: var(--gap-sm);
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
 .exercises-input,
 .exercises-select {
   width: 100%;
   box-sizing: border-box;
-  margin-top: 4px;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  background: #fff;
-  color: var(--text);
-}
-.exercises-button { margin-top: 10px; }
-
-/* one-column stack of bordered boxes */
-.exercises-stack { display: block; }
-.exercises-card {
-  background: var(--card-bg);
-  border: 2px solid var(--border);
-  padding: 16px;
-  margin-top: 18px;
-}
-.exercises-card__title {
-  font-size: 1.4rem;
-  font-weight: 800;
-  margin: 0 0 8px 0;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--border);
-}
-.exercises-card__content {
-  color: var(--muted);
-  margin: 8px 0 10px 0;
+  margin-top: var(--gap-xs);
+  padding: 12px 16px;
+  border: 1px solid var(--dark-brown);
+  background-color: var(--white);
+  color: var(--text-dark);
+  border-radius: 4px;
+  font-family: inherit;
 }
 
-/* details block */
-.exercises-details { margin-top: 6px; }
-.exercises-details > summary {
-  cursor: pointer;
-  font-weight: 700;
-  color: var(--text);
+.exercises-input:focus,
+.exercises-select:focus {
+  outline: none;
+  border-color: var(--terracotta);
 }
-.exercises-steps { margin: 8px 0 0 18px; }
 
-/* links */
-.exercises-card__link,
-.exercises-link {
-  color: var(--accent);
-  text-decoration: underline;
-}
-.exercises-cta {
-  text-align: center;
-  border: 2px solid var(--border);
-  background: var(--card-bg);
-  padding: 16px;
+/* Responsive */
+@media (max-width: 768px) {
+  .exercises-hero__title {
+    font-size: 2rem;
+  }
+
+  .exercises-card {
+    padding: var(--gap-sm);
+  }
+
+  .exercises-cta {
+    padding: var(--gap-md);
+  }
 }
