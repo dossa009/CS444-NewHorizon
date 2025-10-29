@@ -3,6 +3,10 @@
    All classes prefixed with "opportunities-"
    ============================================ */
 
+.opportunities-body {
+  background-color: var(--cream);
+}
+
 /* Hero Section - Full screen with overlay */
 .opportunities-hero {
   position: relative;
@@ -11,6 +15,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  background-image: url('../public/assets/img/Opportunities_background.png');
   background-size: cover;
   background-position: center;
   background-color: rgba(0, 0, 0, 0.4);
