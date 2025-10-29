@@ -32,6 +32,24 @@
   text-align: center;
 }
 
+/* Mockup Section */
+.forum-mockup {
+  text-align: center;
+}
+
+.forum-mockup__title {
+  margin-bottom: var(--gap-md);
+  color: var(--dark-brown);
+  font-family: var(--font-heading);
+}
+
+.forum-mockup__image {
+  max-width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 .forum-header {
   padding: 60px 0 40px;
   background-color: var(--terracotta);
