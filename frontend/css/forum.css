@@ -141,3 +141,46 @@
     padding: 40px 0 32px;
   }
 }
+
+/* The where the style changes happend. For no confusion  */
+.forum-headingbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px; 
+  width: 90%;
+  max-width: 1000px;
+  margin: 0 auto 20px;
+}
+
+.forum-section-title {
+  color: var(--dark-brown);
+  font-family: var(--font-heading);
+  margin: 0;
+}
+
+.forum-sort {
+  padding: 6px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  background: var(--white);
+  color: var(--text-dark);
+}
+
+.forum-threads {
+  align-items: center;
+}
+
+.forum-thread {
+  width: 90%;
+  max-width: 1000px;
+  position: relative;
+}
+
+
+.forum-thread__manage {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+}
+/*  */
