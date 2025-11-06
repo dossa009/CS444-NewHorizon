@@ -3,7 +3,6 @@
 <head>
   <base href="/CS444-NewHorizon/">
   <script>
-    // Auto-adjust base path for local development
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '') {
       document.querySelector('base').href = '/';
     }
@@ -14,39 +13,404 @@
   <title>Account — New Horizon</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/account.css">
+  <style>
+    .account-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: 80vh;
+    }
+    .account-header {
+      margin-bottom: 2rem;
+    }
+    .account-header h1 {
+      color: var(--dark-brown);
+      margin-bottom: 0.5rem;
+    }
+    .account-header p {
+      color: var(--text-light);
+    }
+    .account-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 2rem;
+    }
+    @media (max-width: 768px) {
+      .account-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .account-sidebar {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      height: fit-content;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .account-sidebar h3 {
+      margin-bottom: 1rem;
+      color: var(--dark-brown);
+    }
+    .sidebar-nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar-nav li {
+      margin-bottom: 0.5rem;
+    }
+    .sidebar-nav button {
+      width: 100%;
+      text-align: left;
+      padding: 0.75rem 1rem;
+      background: none;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      color: var(--text-dark);
+    }
+    .sidebar-nav button:hover {
+      background: var(--cream);
+    }
+    .sidebar-nav button.active {
+      background: var(--terracotta);
+      color: white;
+      font-weight: 600;
+    }
+    .account-content {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .tab-panel {
+      display: none;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+    .tab-panel h2 {
+      color: var(--dark-brown);
+      margin-bottom: 1.5rem;
+    }
+    .info-card {
+      background: var(--cream);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--beige);
+    }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    .info-label {
+      font-weight: 600;
+      color: var(--dark-brown);
+    }
+    .info-value {
+      color: var(--text-dark);
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark-brown);
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--beige);
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--terracotta);
+    }
+    .btn-primary {
+      background: var(--terracotta);
+      color: white;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    .btn-primary:hover {
+      background: #a04d2f;
+    }
+    .btn-primary:disabled {
+      background: var(--beige);
+      cursor: not-allowed;
+    }
+    .alert {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .alert.show {
+      display: block;
+    }
+    .alert-success {
+      background: #d4edda;
+      color: #155724;
+    }
+    .alert-error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-light);
+    }
+  </style>
 </head>
 <body class="account-body">
   <header data-partial="header"></header>
 
-  <main>
-    <!-- Page Hero -->
-    <section class="section account-hero">
-      <div class="container">
-        <h1 class="account-hero__title">Your Account</h1>
-        <p class="account-hero__description">
-          This page will come in the next project part with the backend and database.
-        </p>
-      </div>
-    </section>
+  <main class="account-container">
+    <div class="account-header">
+      <h1>My Account</h1>
+      <p>Manage your profile and preferences</p>
+    </div>
 
-    <!-- Coming Soon Content -->
-    <section class="section">
-      <div class="container account-placeholder">
-        <a href="index.html" class="btn">Back to Home</a>
-      </div>
-    </section>
+    <div id="login-required" style="display: none; text-align: center; padding: 3rem;">
+      <h2>Please Log In</h2>
+      <p style="margin: 1rem 0;">You need to be logged in to view your account.</p>
+      <a href="login.html" class="btn-primary" style="display: inline-block; text-decoration: none;">Go to Login</a>
+    </div>
 
-    <!-- Visual Mockup -->
-    <section class="section section--alt">
-      <div class="container account-mockup">
-        <h2 class="account-mockup__title">Page Mockup Preview</h2>
-        <img src="public/assets/mockups/account-mockup.png" alt="Account page visual mockup" class="account-mockup__image">
+    <div id="account-content" class="account-grid" style="display: none;">
+      <!-- Sidebar -->
+      <aside class="account-sidebar">
+        <h3>Navigation</h3>
+        <ul class="sidebar-nav">
+          <li><button class="active" data-tab="profile">Profile Information</button></li>
+          <li><button data-tab="edit">Edit Profile</button></li>
+          <li><button data-tab="password">Change Password</button></li>
+        </ul>
+      </aside>
+
+      <!-- Content -->
+      <div class="account-content">
+        <div class="alert alert-success" id="success-alert"></div>
+        <div class="alert alert-error" id="error-alert"></div>
+
+        <!-- Profile Tab -->
+        <div class="tab-panel active" id="tab-profile">
+          <h2>Profile Information</h2>
+          <div class="info-card">
+            <div class="info-row">
+              <span class="info-label">Email:</span>
+              <span class="info-value" id="profile-email">-</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">First Name:</span>
+              <span class="info-value" id="profile-firstname">-</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Last Name:</span>
+              <span class="info-value" id="profile-lastname">-</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Role:</span>
+              <span class="info-value" id="profile-role">-</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Account Created:</span>
+              <span class="info-value" id="profile-created">-</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Last Login:</span>
+              <span class="info-value" id="profile-lastlogin">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Profile Tab -->
+        <div class="tab-panel" id="tab-edit">
+          <h2>Edit Profile</h2>
+          <form id="form-edit-profile">
+            <div class="form-group">
+              <label for="edit-firstname">First Name</label>
+              <input type="text" id="edit-firstname" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-lastname">Last Name</label>
+              <input type="text" id="edit-lastname" required>
+            </div>
+            <button type="submit" class="btn-primary">Save Changes</button>
+          </form>
+        </div>
+
+        <!-- Change Password Tab -->
+        <div class="tab-panel" id="tab-password">
+          <h2>Change Password</h2>
+          <form id="form-change-password">
+            <div class="form-group">
+              <label for="current-password">Current Password</label>
+              <input type="password" id="current-password" required>
+            </div>
+            <div class="form-group">
+              <label for="new-password">New Password</label>
+              <input type="password" id="new-password" required>
+              <small style="color: var(--text-light); font-size: 0.85rem;">
+                Must contain uppercase, lowercase, number and special character (min 8 chars)
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="confirm-password">Confirm New Password</label>
+              <input type="password" id="confirm-password" required>
+            </div>
+            <button type="submit" class="btn-primary">Update Password</button>
+          </form>
+        </div>
       </div>
-    </section>
+    </div>
   </main>
 
   <footer data-partial="footer"></footer>
 
   <script src="js/app.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    // Check authentication
+    if (!API.auth.isLoggedIn()) {
+      document.getElementById('login-required').style.display = 'block';
+    } else {
+      document.getElementById('account-content').style.display = 'grid';
+      loadProfile();
+    }
+
+    // Load profile data
+    async function loadProfile() {
+      try {
+        const { user } = await API.auth.getProfile();
+
+        // Update profile display
+        document.getElementById('profile-email').textContent = user.email;
+        document.getElementById('profile-firstname').textContent = user.first_name;
+        document.getElementById('profile-lastname').textContent = user.last_name;
+        document.getElementById('profile-role').textContent = user.role;
+        document.getElementById('profile-created').textContent = new Date(user.created_at).toLocaleDateString();
+        document.getElementById('profile-lastlogin').textContent = user.last_login
+          ? new Date(user.last_login).toLocaleString()
+          : 'Never';
+
+        // Pre-fill edit form
+        document.getElementById('edit-firstname').value = user.first_name;
+        document.getElementById('edit-lastname').value = user.last_name;
+      } catch (error) {
+        showError('Failed to load profile data');
+        console.error(error);
+      }
+    }
+
+    // Tab switching
+    document.querySelectorAll('[data-tab]').forEach(button => {
+      button.addEventListener('click', () => {
+        const tabName = button.dataset.tab;
+
+        // Update buttons
+        document.querySelectorAll('[data-tab]').forEach(b => b.classList.remove('active'));
+        button.classList.add('active');
+
+        // Update panels
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById(`tab-${tabName}`).classList.add('active');
+
+        // Clear alerts
+        clearAlerts();
+      });
+    });
+
+    // Edit profile form
+    document.getElementById('form-edit-profile').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAlerts();
+
+      const updates = {
+        first_name: document.getElementById('edit-firstname').value,
+        last_name: document.getElementById('edit-lastname').value
+      };
+
+      try {
+        await API.auth.updateProfile(updates);
+        showSuccess('Profile updated successfully!');
+        loadProfile();
+
+        // Update current user in localStorage
+        const currentUser = API.auth.getCurrentUser();
+        currentUser.first_name = updates.first_name;
+        currentUser.last_name = updates.last_name;
+        localStorage.setItem('current_user', JSON.stringify(currentUser));
+
+        // Update header
+        if (window.updateUserMenu) {
+          window.updateUserMenu();
+        }
+      } catch (error) {
+        showError(error.message || 'Failed to update profile');
+      }
+    });
+
+    // Change password form
+    document.getElementById('form-change-password').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAlerts();
+
+      const currentPassword = document.getElementById('current-password').value;
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      if (newPassword !== confirmPassword) {
+        showError('New passwords do not match');
+        return;
+      }
+
+      try {
+        await API.auth.changePassword(currentPassword, newPassword);
+        showSuccess('Password changed successfully!');
+
+        // Clear form
+        document.getElementById('form-change-password').reset();
+      } catch (error) {
+        showError(error.message || 'Failed to change password');
+      }
+    });
+
+    // Helper functions
+    function showSuccess(message) {
+      const el = document.getElementById('success-alert');
+      el.textContent = message;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 5000);
+    }
+
+    function showError(message) {
+      const el = document.getElementById('error-alert');
+      el.textContent = message;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 5000);
+    }
+
+    function clearAlerts() {
+      document.querySelectorAll('.alert').forEach(el => el.classList.remove('show'));
+    }
+  </script>
 </body>
 </html>

@@ -101,6 +101,9 @@ async function init() {
   // Set active nav link after header is loaded
   setActiveNavLink();
 
+  // Update header menu based on auth state
+  updateHeaderAuthState();
+
   // Setup smooth scrolling
   setupSmoothScroll();
 
@@ -111,6 +114,64 @@ async function init() {
     document.body.style.opacity = '1';
   }, 50);
 }
+
+// Update header authentication state from localStorage
+function updateHeaderAuthState() {
+  const loginButtonContainer = document.getElementById('login-button-container');
+  const accountButtonContainer = document.getElementById('account-button-container');
+  const adminButtonContainer = document.getElementById('admin-button-container');
+  const logoutButtonContainer = document.getElementById('logout-button-container');
+
+  // Check localStorage directly
+  const token = localStorage.getItem('auth_token');
+  const userStr = localStorage.getItem('current_user');
+
+  console.log('[App.js] Updating header auth state');
+  console.log('[App.js] Token exists:', !!token);
+  console.log('[App.js] User data exists:', !!userStr);
+
+  if (!loginButtonContainer || !accountButtonContainer || !adminButtonContainer || !logoutButtonContainer) {
+    console.warn('[App.js] Header elements not found');
+    return;
+  }
+
+  if (token && userStr) {
+    try {
+      const user = JSON.parse(userStr);
+      console.log('[App.js] User is logged in:', user.email, 'Role:', user.role);
+
+      // Hide login button, show account and logout buttons
+      loginButtonContainer.style.display = 'none';
+      accountButtonContainer.style.display = 'block';
+      logoutButtonContainer.style.display = 'block';
+
+      // Show admin panel button for admins/moderators
+      if (user.role === 'admin' || user.role === 'moderator') {
+        console.log('[App.js] Showing admin panel button');
+        adminButtonContainer.style.display = 'block';
+      } else {
+        adminButtonContainer.style.display = 'none';
+      }
+    } catch (error) {
+      console.error('[App.js] Error parsing user data:', error);
+      // If data is corrupted, show login
+      loginButtonContainer.style.display = 'block';
+      accountButtonContainer.style.display = 'none';
+      adminButtonContainer.style.display = 'none';
+      logoutButtonContainer.style.display = 'none';
+    }
+  } else {
+    console.log('[App.js] User not logged in');
+    // Show login button, hide account, admin and logout buttons
+    loginButtonContainer.style.display = 'block';
+    accountButtonContainer.style.display = 'none';
+    adminButtonContainer.style.display = 'none';
+    logoutButtonContainer.style.display = 'none';
+  }
+}
+
+// Make function globally available for other scripts to call
+window.updateHeaderAuthState = updateHeaderAuthState;
 
 // Run initialization when DOM is fully loaded
 if (document.readyState === 'loading') {

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/CS444-NewHorizon/">
+  <script>
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '') {
+      document.querySelector('base').href = '/';
+    }
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="New Horizon Admin Dashboard - Manage content, users, and site resources.">
+  <title>Admin Dashboard — New Horizon</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/admin/dashboard.css">
+</head>
+<body>
+  <header data-partial="header"></header>
+
+  <!-- Access Denied Message -->
+  <div id="access-denied" style="display: none; text-align: center; padding: 4rem 2rem; min-height: 80vh;">
+    <h1 style="color: var(--dark-brown); margin-bottom: 1rem;">Access Denied</h1>
+    <p style="color: var(--text-light); margin-bottom: 2rem;">You need administrator or moderator privileges to access this page.</p>
+    <a href="index.html" class="btn btn-primary" style="display: inline-block; text-decoration: none;">Return to Home</a>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div id="admin-dashboard" class="admin-container" style="display: none;">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <h2>Admin Panel</h2>
+      <ul class="admin-nav">
+        <li><button class="active" data-section="dashboard">Dashboard</button></li>
+        <li><button data-section="users">User Management</button></li>
+        <li><button data-section="resources">Resources</button></li>
+        <li><button data-section="forum">Forum Posts</button></li>
+        <li><button data-section="events">Calendar Events</button></li>
+        <li><button data-section="exercises">Exercises</button></li>
+        <li><button data-section="opportunities">Opportunities</button></li>
+        <li><button data-section="contact">Contact Messages</button></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <!-- Alerts -->
+      <div id="success-alert" class="alert alert-success" style="display: none;"></div>
+      <div id="error-alert" class="alert alert-error" style="display: none;"></div>
+
+      <!-- Header -->
+      <div class="admin-header">
+        <h1 id="section-title">Dashboard</h1>
+      </div>
+
+      <!-- Dashboard Section -->
+      <section id="section-dashboard" class="admin-section active">
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card">
+            <h3>Total Users</h3>
+            <p class="stat-value">-</p>
+          </div>
+          <div class="stat-card">
+            <h3>Resources</h3>
+            <p class="stat-value">-</p>
+          </div>
+          <div class="stat-card">
+            <h3>Forum Posts</h3>
+            <p class="stat-value">-</p>
+          </div>
+          <div class="stat-card">
+            <h3>Events</h3>
+            <p class="stat-value">-</p>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h2>Welcome to the Admin Dashboard</h2>
+          <p>Use the sidebar to navigate between different management sections. Here you can:</p>
+          <ul style="margin-top: 1rem; line-height: 1.8;">
+            <li><strong>User Management:</strong> View and manage user accounts, change roles, and monitor user activity</li>
+            <li><strong>Resources:</strong> Add, edit, and publish mental health resources</li>
+            <li><strong>Forum Posts:</strong> Moderate forum discussions and manage comments</li>
+            <li><strong>Calendar Events:</strong> Create and manage wellness events</li>
+            <li><strong>Exercises:</strong> Add and update mental wellness exercises</li>
+            <li><strong>Opportunities:</strong> Post job opportunities and volunteering positions</li>
+            <li><strong>Contact Messages:</strong> Review and respond to user inquiries</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Users Section -->
+      <section id="section-users" class="admin-section">
+        <div class="content-card">
+          <h2>User Management</h2>
+          <div id="users-list"></div>
+        </div>
+      </section>
+
+      <!-- Resources Section -->
+      <section id="section-resources" class="admin-section">
+        <div class="content-card">
+          <h2>Resource Management</h2>
+          <button class="btn btn-primary" style="margin-bottom: 1.5rem;" onclick="openResourceModal()">
+            + Add New Resource
+          </button>
+          <div id="resources-list"></div>
+        </div>
+      </section>
+
+      <!-- Forum Section -->
+      <section id="section-forum" class="admin-section">
+        <div class="content-card">
+          <h2>Forum Post Moderation</h2>
+          <div id="forum-list"></div>
+        </div>
+      </section>
+
+      <!-- Events Section -->
+      <section id="section-events" class="admin-section">
+        <div class="content-card">
+          <h2>Calendar Events Management</h2>
+          <button class="btn btn-primary" style="margin-bottom: 1.5rem;" onclick="openEventModal()">
+            + Add New Event
+          </button>
+          <div id="events-list"></div>
+        </div>
+      </section>
+
+      <!-- Exercises Section -->
+      <section id="section-exercises" class="admin-section">
+        <div class="content-card">
+          <h2>Exercise Management</h2>
+          <button class="btn btn-primary" style="margin-bottom: 1.5rem;" onclick="openExerciseModal()">
+            + Add New Exercise
+          </button>
+          <div id="exercises-list"></div>
+        </div>
+      </section>
+
+      <!-- Opportunities Section -->
+      <section id="section-opportunities" class="admin-section">
+        <div class="content-card">
+          <h2>Opportunities Management</h2>
+          <button class="btn btn-primary" style="margin-bottom: 1.5rem;" onclick="openOpportunityModal()">
+            + Add New Opportunity
+          </button>
+          <div id="opportunities-list"></div>
+        </div>
+      </section>
+
+      <!-- Contact Messages Section -->
+      <section id="section-contact" class="admin-section">
+        <div class="content-card">
+          <h2>Contact Messages</h2>
+          <div id="contacts-list"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modals -->
+  <!-- Resource Modal -->
+  <div id="modal-resource" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="resource-modal-title">Add New Resource</h2>
+        <button class="modal-close" onclick="closeModal('modal-resource')">&times;</button>
+      </div>
+      <form id="form-resource">
+        <input type="hidden" id="resource-id">
+        <div class="form-group">
+          <label for="resource-title">Title *</label>
+          <input type="text" id="resource-title" required>
+        </div>
+        <div class="form-group">
+          <label for="resource-description">Description *</label>
+          <textarea id="resource-description" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="resource-content">Content *</label>
+          <textarea id="resource-content" required style="min-height: 200px;"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="resource-category">Resource Type *</label>
+            <select id="resource-category" required>
+              <option value="">Select type</option>
+              <option value="article">Article</option>
+              <option value="video">Video</option>
+              <option value="audio">Audio/Podcast</option>
+              <option value="exercise">Exercise</option>
+              <option value="tool">Tool</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="resource-tags">Topics (optional)</label>
+            <input type="text" id="resource-tags" placeholder="anxiety, depression, stress">
+            <small style="color: var(--text-light); font-size: 0.8rem;">
+              Separate topics with commas
+            </small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="resource-url">External URL (optional)</label>
+          <input type="url" id="resource-url" placeholder="https://example.com">
+        </div>
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="resource-published">
+          <label for="resource-published">Publish immediately</label>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-resource')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Resource</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Event Modal -->
+  <div id="modal-event" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="event-modal-title">Add New Event</h2>
+        <button class="modal-close" onclick="closeModal('modal-event')">&times;</button>
+      </div>
+      <form id="form-event">
+        <input type="hidden" id="event-id">
+        <div class="form-group">
+          <label for="event-title">Title *</label>
+          <input type="text" id="event-title" required>
+        </div>
+        <div class="form-group">
+          <label for="event-description">Description *</label>
+          <textarea id="event-description" required></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="event-date">Date *</label>
+            <input type="date" id="event-date" required>
+          </div>
+          <div class="form-group">
+            <label for="event-type">Type *</label>
+            <select id="event-type" required>
+              <option value="">Select type</option>
+              <option value="workshop">Workshop</option>
+              <option value="webinar">Webinar</option>
+              <option value="support_group">Support Group</option>
+              <option value="social">Social Event</option>
+              <option value="training">Training</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="event-start-time">Start Time *</label>
+            <input type="time" id="event-start-time" required>
+          </div>
+          <div class="form-group">
+            <label for="event-end-time">End Time *</label>
+            <input type="time" id="event-end-time" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="event-location">Location</label>
+          <input type="text" id="event-location" placeholder="Address or venue name">
+        </div>
+        <div class="form-group">
+          <label for="event-max-participants">Max Participants</label>
+          <input type="number" id="event-max-participants" min="1" placeholder="Leave blank for unlimited">
+        </div>
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="event-online">
+          <label for="event-online">This is an online event</label>
+        </div>
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="event-published">
+          <label for="event-published">Publish immediately</label>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-event')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Event</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Exercise Modal -->
+  <div id="modal-exercise" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="exercise-modal-title">Add New Exercise</h2>
+        <button class="modal-close" onclick="closeModal('modal-exercise')">&times;</button>
+      </div>
+      <form id="form-exercise">
+        <input type="hidden" id="exercise-id">
+        <div class="form-group">
+          <label for="exercise-title">Title *</label>
+          <input type="text" id="exercise-title" required>
+        </div>
+        <div class="form-group">
+          <label for="exercise-description">Description *</label>
+          <textarea id="exercise-description" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="exercise-instructions">Instructions *</label>
+          <textarea id="exercise-instructions" required style="min-height: 150px;"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="exercise-type">Type *</label>
+            <select id="exercise-type" required>
+              <option value="">Select type</option>
+              <option value="breathing">Breathing</option>
+              <option value="meditation">Meditation</option>
+              <option value="journaling">Journaling</option>
+              <option value="physical">Physical Activity</option>
+              <option value="mindfulness">Mindfulness</option>
+              <option value="grounding">Grounding</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exercise-difficulty">Difficulty *</label>
+            <select id="exercise-difficulty" required>
+              <option value="">Select difficulty</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="exercise-duration">Duration (minutes) *</label>
+          <input type="number" id="exercise-duration" required min="1" max="120">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-exercise')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Exercise</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Opportunity Modal -->
+  <div id="modal-opportunity" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="opportunity-modal-title">Add New Opportunity</h2>
+        <button class="modal-close" onclick="closeModal('modal-opportunity')">&times;</button>
+      </div>
+      <form id="form-opportunity">
+        <input type="hidden" id="opportunity-id">
+        <div class="form-group">
+          <label for="opportunity-title">Title *</label>
+          <input type="text" id="opportunity-title" required>
+        </div>
+        <div class="form-group">
+          <label for="opportunity-description">Description *</label>
+          <textarea id="opportunity-description" required style="min-height: 150px;"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="opportunity-type">Type *</label>
+            <select id="opportunity-type" required>
+              <option value="">Select type</option>
+              <option value="job">Job</option>
+              <option value="volunteer">Volunteer</option>
+              <option value="internship">Internship</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="opportunity-organization">Organization *</label>
+            <input type="text" id="opportunity-organization" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="opportunity-location">Location</label>
+          <input type="text" id="opportunity-location" placeholder="City, State">
+        </div>
+        <div class="form-group">
+          <label for="opportunity-contact-email">Contact Email *</label>
+          <input type="email" id="opportunity-contact-email" required>
+        </div>
+        <div class="form-group">
+          <label for="opportunity-apply-url">Application URL</label>
+          <input type="url" id="opportunity-apply-url" placeholder="https://example.com/apply">
+        </div>
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="opportunity-remote">
+          <label for="opportunity-remote">Remote position</label>
+        </div>
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="opportunity-published">
+          <label for="opportunity-published">Publish immediately</label>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-opportunity')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Opportunity</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer data-partial="footer"></footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/admin.js"></script>
+  <script>
+    // Check authentication and authorization
+    (function() {
+      if (!API.auth.isLoggedIn()) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const user = API.auth.getCurrentUser();
+      if (!user || (user.role !== 'admin' && user.role !== 'moderator')) {
+        document.getElementById('access-denied').style.display = 'block';
+        return;
+      }
+
+      // Show dashboard
+      document.getElementById('admin-dashboard').style.display = 'flex';
+
+      // Initialize admin dashboard
+      if (typeof initAdminDashboard === 'function') {
+        initAdminDashboard();
+      }
+    })();
+  </script>
+</body>
+</html>

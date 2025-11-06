@@ -1,16 +1,239 @@
 <header class="site-header">
   <nav class="nav">
     <a class="brand" href="index.html">New Horizon</a>
-    <ul class="nav-links">
-      <li><a data-nav href="index.html">Home</a></li>
-      <li><a data-nav href="pages/exercises.html">Exercises</a></li>
-      <li><a data-nav href="pages/resources.html">Resources</a></li>
-      <li><a data-nav href="pages/calendar.html">Calendar</a></li>
-      <li><a data-nav href="pages/forum.html">Forum</a></li>
-      <!-- <li><a data-nav href="pages/opportunities.html">Opportunities</a></li>  Not included in this version the website-->
-      <li><a data-nav href="pages/about.html">About &amp; Mission</a></li>
-      <!-- <li><a data-nav href="pages/contact.html">Contact</a></li>  Not included in this version the website -->
-      <li><a data-nav href="pages/account.html">Account</a></li>
-    </ul>
+
+    <div class="nav-container">
+      <ul class="nav-links">
+        <li><a data-nav href="index.html">Home</a></li>
+        <li><a data-nav href="pages/exercises.html">Exercises</a></li>
+        <li><a data-nav href="pages/resources.html">Resources</a></li>
+        <li><a data-nav href="pages/calendar.html">Calendar</a></li>
+        <li><a data-nav href="pages/forum.html">Forum</a></li>
+        <li><a data-nav href="pages/opportunities.html">Opportunities</a></li>
+        <li><a data-nav href="pages/about.html">About</a></li>
+        <li><a data-nav href="pages/contact.html">Contact</a></li>
+      </ul>
+
+      <div class="auth-buttons">
+        <!-- Login button (shown when not logged in) -->
+        <a href="pages/login.html" class="btn-header btn-login" id="login-button-container">Login</a>
+
+        <!-- Account button (shown when logged in) -->
+        <a href="pages/account.html" class="btn-header btn-account" id="account-button-container" style="display: none;">My Account</a>
+
+        <!-- Admin Panel button (shown only for admin/moderator) -->
+        <a href="pages/admin.html" class="btn-header btn-admin" id="admin-button-container" style="display: none;">Admin Panel</a>
+
+        <!-- Logout button (shown when logged in) -->
+        <button onclick="handleLogout()" class="btn-header btn-logout" id="logout-button-container" style="display: none;">Logout</button>
+      </div>
+    </div>
   </nav>
 </header>
+
+<style>
+  .site-header {
+    background-color: var(--white);
+    border-bottom: 2px solid var(--dark-brown);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark-brown);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .brand:hover {
+    color: var(--terracotta);
+  }
+
+  .nav-container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: var(--text-dark);
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .nav-links a:hover {
+    background-color: var(--cream);
+    color: var(--terracotta);
+  }
+
+  .nav-links a.active {
+    background-color: var(--terracotta);
+    color: white;
+    font-weight: 600;
+  }
+
+  .auth-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .btn-header {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+
+  .btn-login {
+    background: var(--terracotta);
+    color: white;
+  }
+
+  .btn-login:hover {
+    background: #a04d2f;
+    transform: translateY(-1px);
+  }
+
+  .btn-account {
+    background: var(--beige);
+    color: var(--dark-brown);
+  }
+
+  .btn-account:hover {
+    background: #d4c5b0;
+  }
+
+  .btn-admin {
+    background: var(--dark-brown);
+    color: white;
+  }
+
+  .btn-admin:hover {
+    background: #3a2d1f;
+  }
+
+  .btn-logout {
+    background: white;
+    color: var(--text-dark);
+    border: 2px solid var(--beige);
+  }
+
+  .btn-logout:hover {
+    background: #e74c3c;
+    color: white;
+    border-color: #e74c3c;
+  }
+
+  /* Responsive */
+  @media (max-width: 1200px) {
+    .nav-links {
+      gap: 0.1rem;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+      padding: 0.4rem 0.6rem;
+    }
+
+    .btn-header {
+      font-size: 0.85rem;
+      padding: 0.4rem 0.8rem;
+    }
+  }
+
+  @media (max-width: 968px) {
+    .nav {
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .nav-container {
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .nav-links {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .auth-buttons {
+      justify-content: center;
+    }
+  }
+</style>
+
+<script>
+  // Global logout function
+  async function handleLogout() {
+    console.log('[Header] Logout initiated');
+
+    try {
+      // Try to call API logout if available
+      if (typeof API !== 'undefined' && API.auth && API.auth.logout) {
+        await API.auth.logout();
+        console.log('[Header] API logout successful');
+      }
+    } catch (error) {
+      console.error('[Header] API logout error:', error);
+    }
+
+    // Always clear localStorage
+    localStorage.removeItem('auth_token');
+    localStorage.removeItem('current_user');
+    console.log('[Header] Local storage cleared');
+
+    // Determine correct redirect path
+    const currentPath = window.location.pathname;
+    let redirectPath = '/index.html';
+
+    // If we're in a subdirectory (pages/), go up one level
+    if (currentPath.includes('/pages/')) {
+      redirectPath = '../index.html';
+    }
+
+    console.log('[Header] Redirecting to:', redirectPath);
+
+    // Redirect and force reload
+    window.location.href = redirectPath;
+  }
+
+  // Make handleLogout globally available
+  window.handleLogout = handleLogout;
+</script>
