@@ -3,51 +3,82 @@
 <head>
   <base href="/CS444-NewHorizon/">
   <script>
-    // Auto-adjust base path for local development
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '') {
+    if (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname === ''
+    ) {
       document.querySelector('base').href = '/';
     }
   </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Access mental wellness resources, articles, and educational content about mental health.">
+
   <title>Resources — New Horizon</title>
+
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/resources.css">
 </head>
+
 <body class="resources-body">
+
   <header data-partial="header"></header>
 
   <main>
-    <!-- Page Hero -->
-    <section class="section resources-hero">
-      <div class="container">
-        <h1 class="resources-hero__title">Resources</h1>
-        <p class="resources-hero__description">
-          This page will come in the next project part with the backend and database.
-        </p>
-      </div>
+    <!-- Hero -->
+    <section class="resources-hero">
+      <h1>Resources</h1>
+      <p>Explore helpful mental wellness links. </p>
     </section>
 
-    <!-- Coming Soon Content -->
-    <section class="section">
-      <div class="container resources-placeholder">
-        <a href="index.html" class="btn">Back to Home</a>
-      </div>
+    <!-- Categories -->
+    <section class="resources-section">
+
+      <h2>General Mental Health Information</h2>
+      <ul>
+        <li><a href="https://www.nimh.nih.gov" target="_blank">NIMH – Articles on Anxiety, Depression, Bipolar</a></li>
+        <li><a href="https://mhanational.org" target="_blank">Mental Health America – Screenings and Recovery Tools</a></li>
+      </ul>
+
+      <h2>Mindfulness & Wellness Exercises</h2>
+      <ul>
+        <li><a href="https://www.mindful.org/how-to-meditate/" target="_blank">How to Meditate – Mindful.org</a></li>
+        <li><a href="https://www.nimh.nih.gov/health/publications/so-stressed-out-fact-sheet" target="_blank">
+          Coping With Stress — NIMH
+        </a></li>
+      </ul>
+
+      <h2>Support for Caregivers & Loved Ones</h2>
+      <ul>
+        <li><a href="https://www.nami.org/Your-Journey/Family-Members-and-Caregivers/" target="_blank">
+          How to Support a Loved One – NAMI
+        </a></li>
+        <li><a href="https://www.nami.org/your-journey/family-members-and-caregivers/taking-care-of-yourself/"
+               target="_blank">Self-Care for Caregivers – NAMI</a></li>
+      </ul>
+
+      <h2>Learning & Advocacy Resources</h2>
+      <ul>
+        <li><a href="https://www.who.int/health-topics/mental-health#tab=tab_1" target="_blank">
+          WHO – Global Mental Health Overview
+        </a></li>
+        <li><a href="https://www.thinkglobalhealth.org/article/global-progress-mental-health" target="_blank">
+          Global Progress on Mental Health – ThinkGlobalHealth
+        </a></li>
+      </ul>
+
     </section>
 
-    <section class="section section--alt">
-      <div class="container resources-mockup">
-        <h2 class="resources-mockup__title">Page Mockup Preview</h2>
-        <img src="public/assets/mockups/ressources-mockup.png" alt="Resources page visual mockup" class="resources-mockup__image">
-      </div>
-    </section>
+    <!-- Back Button -->
+    <div class="resources-back">
+      <a class="btn" href="index.html">Back to Home</a>
+    </div>
 
-   
   </main>
 
   <footer data-partial="footer"></footer>
-
   <script src="js/app.js"></script>
+
 </body>
 </html>
