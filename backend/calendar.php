@@ -1,7 +1,8 @@
 <?php
 include("DataBase.php");
 include("DB.php");
-$result = $mysqli->query("SELECT * FROM appointments");
+$month; //where the month on the calendar will go
+$result = $mysqli->query("SELECT * FROM calendar WHERE month == $month");
 
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
