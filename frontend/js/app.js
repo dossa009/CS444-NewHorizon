@@ -3,8 +3,14 @@
  * Handles navigation, partial injection, and page interactions
  */
 
-// Get base path based on environment
+// Get base path based on environment (using config.js if available)
 function getBasePath() {
+  // Use config.js if loaded
+  if (window.APP_CONFIG && window.APP_CONFIG.BASE_PATH) {
+    return window.APP_CONFIG.BASE_PATH;
+  }
+
+  // Fallback
   const isLocal = window.location.hostname === 'localhost' ||
                   window.location.hostname === '127.0.0.1' ||
                   window.location.hostname === '';
@@ -94,8 +100,8 @@ function setupSmoothScroll() {
 async function init() {
   // Load header and footer
   await Promise.all([
-    injectPartial('header[data-partial="header"]', 'partials/header.html'),
-    injectPartial('footer[data-partial="footer"]', 'partials/footer.html')
+    injectPartial('header[data-partial="header"]', 'frontend/partials/header.html'),
+    injectPartial('footer[data-partial="footer"]', 'frontend/partials/footer.html')
   ]);
 
   // Set active nav link after header is loaded

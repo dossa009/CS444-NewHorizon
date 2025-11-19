@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <base href="/CS444-NewHorizon/">
   <script>
     // Auto-adjust base path for local development
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '') {
-      document.querySelector('base').href = '/';
-    }
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Guided mental wellness exercises including breathing techniques, mindfulness, and stress reduction activities.">
   <title>Exercises — New Horizon</title>
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/exercises.css">
+  <link rel="stylesheet" href="/frontend/css/base.css">
+  <link rel="stylesheet" href="/frontend/css/exercises.css">
+  <script src="/frontend/js/config.js"></script>
 </head>
 <body class="exercises-body">
   <header data-partial="header"></header>
@@ -49,8 +46,8 @@
   </main>
 
   <footer data-partial="footer"></footer>
-  <script src="js/app.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/exercises.js"></script>
+  <script src="/frontend/js/app.js"></script>
+  <script src="/frontend/js/api.js"></script>
+  <script src="/frontend/js/exercises.js"></script>
 </body>
 </html>

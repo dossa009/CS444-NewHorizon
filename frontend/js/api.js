@@ -3,7 +3,13 @@
  * Handles all communication with the backend API
  */
 
-const API_BASE_URL = 'http://localhost:3000/api';
+// L'URL de l'API est définie dans config.js
+// Utiliser APP_CONFIG.API_URL ou attendre que config.js soit chargé
+const getAPIBaseURL = () => {
+  return window.APP_CONFIG ? window.APP_CONFIG.API_URL : 'http://localhost:8000/api';
+};
+
+const API_BASE_URL = getAPIBaseURL();
 
 // Get auth token from localStorage
 function getAuthToken() {
@@ -36,7 +42,8 @@ function setCurrentUser(user) {
 
 // Generic API request function
 async function apiRequest(endpoint, options = {}) {
-  const url = `${API_BASE_URL}${endpoint}`;
+  const baseURL = getAPIBaseURL();
+  const url = `${baseURL}${endpoint}`;
   const token = getAuthToken();
 
   const config = {

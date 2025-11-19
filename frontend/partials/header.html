@@ -1,28 +1,28 @@
 <header class="site-header">
   <nav class="nav">
-    <a class="brand" href="index.html">New Horizon</a>
+    <a class="brand" href="/frontend/index.html">New Horizon</a>
 
     <div class="nav-container">
       <ul class="nav-links">
-        <li><a data-nav href="index.html">Home</a></li>
-        <li><a data-nav href="pages/exercises.html">Exercises</a></li>
-        <li><a data-nav href="pages/resources.html">Resources</a></li>
-        <li><a data-nav href="pages/calendar.html">Calendar</a></li>
-        <li><a data-nav href="pages/forum.html">Forum</a></li>
-        <li><a data-nav href="pages/opportunities.html">Opportunities</a></li>
-        <li><a data-nav href="pages/about.html">About</a></li>
-        <li><a data-nav href="pages/contact.html">Contact</a></li>
+        <li><a data-nav href="/frontend/index.html">Home</a></li>
+        <li><a data-nav href="/frontend/pages/exercises.html">Exercises</a></li>
+        <li><a data-nav href="/frontend/pages/resources.html">Resources</a></li>
+        <li><a data-nav href="/frontend/pages/calendar.html">Calendar</a></li>
+        <li><a data-nav href="/frontend/pages/forum.html">Forum</a></li>
+        <li><a data-nav href="/frontend/pages/opportunities.html">Opportunities</a></li>
+        <li><a data-nav href="/frontend/pages/about.html">About</a></li>
+        <li><a data-nav href="/frontend/pages/contact.html">Contact</a></li>
       </ul>
 
       <div class="auth-buttons">
         <!-- Login button (shown when not logged in) -->
-        <a href="pages/login.html" class="btn-header btn-login" id="login-button-container">Login</a>
+        <a href="/frontend/pages/login.html" class="btn-header btn-login" id="login-button-container">Login</a>
 
         <!-- Account button (shown when logged in) -->
-        <a href="pages/account.html" class="btn-header btn-account" id="account-button-container" style="display: none;">My Account</a>
+        <a href="/frontend/pages/account.html" class="btn-header btn-account" id="account-button-container" style="display: none;">My Account</a>
 
         <!-- Admin Panel button (shown only for admin/moderator) -->
-        <a href="pages/admin.html" class="btn-header btn-admin" id="admin-button-container" style="display: none;">Admin Panel</a>
+        <a href="/frontend/pages/admin.html" class="btn-header btn-admin" id="admin-button-container" style="display: none;">Admin Panel</a>
 
         <!-- Logout button (shown when logged in) -->
         <button onclick="handleLogout()" class="btn-header btn-logout" id="logout-button-container" style="display: none;">Logout</button>
@@ -219,14 +219,8 @@
     localStorage.removeItem('current_user');
     console.log('[Header] Local storage cleared');
 
-    // Determine correct redirect path
-    const currentPath = window.location.pathname;
-    let redirectPath = '/index.html';
-
-    // If we're in a subdirectory (pages/), go up one level
-    if (currentPath.includes('/pages/')) {
-      redirectPath = '../index.html';
-    }
+    // Always redirect to homepage with absolute path
+    const redirectPath = '/frontend/index.html';
 
     console.log('[Header] Redirecting to:', redirectPath);
 

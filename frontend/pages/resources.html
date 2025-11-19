@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <base href="/CS444-NewHorizon/">
   <script>
     if (
       window.location.hostname === 'localhost' ||
       window.location.hostname === '127.0.0.1' ||
       window.location.hostname === ''
     ) {
-      document.querySelector('base').href = '/';
     }
   </script>
 
@@ -17,8 +15,9 @@
 
   <title>Resources — New Horizon</title>
 
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/resources.css">
+  <link rel="stylesheet" href="/frontend/css/base.css">
+  <link rel="stylesheet" href="/frontend/css/resources.css">
+  <script src="/frontend/js/config.js"></script>
 </head>
 
 <body class="resources-body">
@@ -78,7 +77,8 @@
   </main>
 
   <footer data-partial="footer"></footer>
-  <script src="js/app.js"></script>
+  <script src="/frontend/js/app.js"></script>
+  <script src="/frontend/js/api.js"></script>
 
 </body>
 </html>

@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <base href="/CS444-NewHorizon/">
-  <script>
-    // Auto-adjust base path for local development
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '') {
-      document.querySelector('base').href = '/';
-    }
-  </script>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="New Horizon provides accessible mental wellness resources, exercises, and community support for everyone seeking help.">
   <title>Home — New Horizon</title>
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/home.css">
+
+  <!-- Configuration centralisée -->
+  <script src="/frontend/js/config.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/frontend/css/base.css">
+  <link rel="stylesheet" href="/frontend/css/home.css">
 </head>
 <body class="home-body">
   <!-- Header will be injected here -->
@@ -38,7 +36,7 @@
           WE PROVIDE RESOURCES TO ALLOW EVERYONE TO FIND THE HELP THEY NEED
         </h1>
         <div class="home-hero__btn-wrapper">
-          <a href="pages/exercises.html" class="btn">EXERCISES</a>
+          <a href="/frontend/pages/exercises.html" class="btn">EXERCISES</a>
         </div>
       </div>
     </section>
@@ -56,7 +54,7 @@
           Once you're done, seal the deal with a compelling closing line that gets them to take action.
         </p>
         <div class="home-about__btn-wrapper">
-          <a href="pages/about.html" class="btn">LEARN MORE</a>
+          <a href="/frontend/pages/about.html" class="btn">LEARN MORE</a>
         </div>
       </div>
     </section>
@@ -182,6 +180,9 @@
   <!-- Footer will be injected here -->
   <footer data-partial="footer"></footer>
 
-  <script src="js/app.js"></script>
+  <!-- Scripts dans le bon ordre -->
+  <script src="/frontend/js/config.js"></script>
+  <script src="/frontend/js/app.js"></script>
+  <script src="/frontend/js/api.js"></script>
 </body>
 </html>

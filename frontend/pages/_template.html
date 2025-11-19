@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Title — New Horizon</title>
+
+  <!-- Configuration centralisée (DOIT être chargé en premier) -->
+  <script src="/frontend/js/config.js"></script>
+
+  <!-- CSS de base -->
+  <link rel="stylesheet" href="/frontend/css/base.css">
+  <!-- CSS spécifique à la page (si nécessaire) -->
+  <!-- <link rel="stylesheet" href="/frontend/css/page-specific.css"> -->
+
+  <script>
+    // Mettre à jour dynamiquement le base href si nécessaire
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.APP_CONFIG) {
+        // Le base path est géré par config.js
+        console.log('Using base path:', APP_CONFIG.BASE_PATH);
+      }
+    });
+  </script>
+</head>
+<body>
+  <!-- Header (injecté dynamiquement) -->
+  <header data-partial="header"></header>
+
+  <!-- Contenu principal de la page -->
+  <main>
+    <h1>Page Content</h1>
+    <p>Your content here...</p>
+  </main>
+
+  <!-- Footer (injecté dynamiquement) -->
+  <footer data-partial="footer"></footer>
+
+  <!-- Scripts JavaScript (dans le bon ordre) -->
+  <script src="/frontend/js/config.js"></script>  <!-- Configuration d'abord -->
+  <script src="/frontend/js/app.js"></script>      <!-- Ensuite app.js -->
+  <script src="/frontend/js/api.js"></script>      <!-- Puis api.js -->
+
+  <!-- Script spécifique à la page -->
+  <script>
+    // Code JavaScript spécifique à cette page
+  </script>
+</body>
+</html>
