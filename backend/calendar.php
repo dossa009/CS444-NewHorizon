@@ -1,7 +1,9 @@
 <?php
 include("DataBase.php");
 include("DB.php");
-$month; //where the month on the calendar will go
+$dom = new DOMDocument();
+$dom->loadHTMLFile("calendar.html");
+$month = $dom->getElementById('month-year');
 $result = $mysqli->query("SELECT * FROM calendar WHERE month == $month");
 
 if ($result && $result->num_rows > 0) {
