@@ -2,9 +2,9 @@
 include("DataBase.php");
 include("DB.php");
 $dom = new DOMDocument();
-$dom->loadHTMLFile("calendar.html");
+$dom->load("app.js");
 $month = $dom->getElementById('month-year');
-$result = $mysqli->query("SELECT * FROM calendar WHERE month == $month");
+$result = $mysqli->query("SELECT * FROM Calendar_Events WHERE MONTH(Calendar_Events.Event_Date) == $month");
 
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
