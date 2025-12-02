@@ -1,173 +1,113 @@
 /**
- * Exercises Page JavaScript
- * Loads and displays exercises from the database
+ * NEW HORIZON - Exercises Page
+ * Loads and displays wellness exercises
  */
 
-// Load all published exercises
+document.addEventListener('DOMContentLoaded', loadExercises);
+
 async function loadExercises() {
   const container = document.querySelector('.exercises-stack');
+  if (!container) return;
 
-  // Show loading state
-  container.innerHTML = '<div class="loading-state">Loading exercises...</div>';
+  container.innerHTML = '<p style="text-align: center; padding: 2rem;">Loading exercises...</p>';
 
   try {
-    const { exercises } = await API.exercises.getAll();
+    const data = await API.exercises.getAll();
+    const exercises = data.exercises || data || [];
 
-    if (!exercises || exercises.length === 0) {
-      container.innerHTML = `
-        <div class="empty-state">
-          <h3>No exercises available yet</h3>
-          <p>Check back soon for wellness exercises!</p>
-        </div>
-      `;
+    if (exercises.length === 0) {
+      container.innerHTML = '<p style="text-align: center; padding: 2rem;">No exercises available yet.</p>';
       return;
     }
 
-    // Render exercises
     container.innerHTML = exercises.map(exercise => createExerciseCard(exercise)).join('');
-
   } catch (error) {
     console.error('Error loading exercises:', error);
-    container.innerHTML = `
-      <div class="error-state">
-        <h3>Failed to load exercises</h3>
-        <p>Please try again later.</p>
-      </div>
-    `;
+    container.innerHTML = '<p style="text-align: center; padding: 2rem; color: #c0392b;">Failed to load exercises. Please try again later.</p>';
   }
 }
 
-// Create HTML for a single exercise card
 function createExerciseCard(exercise) {
-  // Parse instructions (can be JSON array or plain text)
-  let instructionsList = '';
-  try {
-    const instructions = typeof exercise.instructions === 'string'
-      ? JSON.parse(exercise.instructions)
-      : exercise.instructions;
+  const typeIcons = {
+    breathing: '🌬️',
+    meditation: '🧘',
+    journaling: '📝',
+    physical: '🏃',
+    mindfulness: '🎯',
+    grounding: '🌿'
+  };
 
-    if (Array.isArray(instructions)) {
-      instructionsList = instructions.map(step => `<li>${step}</li>`).join('');
-    } else {
-      instructionsList = `<li>${exercise.instructions}</li>`;
-    }
-  } catch (e) {
-    // If parsing fails, treat as plain text
-    instructionsList = `<li>${exercise.instructions}</li>`;
-  }
-
-  // Determine exercise type/category for styling
-  const exerciseType = exercise.category || 'general';
-
-  // Format difficulty badge
-  const difficultyBadge = exercise.difficulty
-    ? `<span class="difficulty-badge difficulty-${exercise.difficulty}">${exercise.difficulty}</span>`
-    : '';
-
-  // Format duration
-  const durationText = exercise.duration_minutes
-    ? `<span class="duration-badge">${exercise.duration_minutes} min</span>`
-    : '';
+  const icon = typeIcons[exercise.type] || '✨';
+  const difficulty = exercise.difficulty || 'beginner';
+  const duration = exercise.duration || 5;
 
   return `
-    <article class="exercises-card" data-type="${exerciseType}" data-id="${exercise.id}">
-      <div class="exercises-card__header">
-        <h2 class="exercises-card__title">${exercise.title}</h2>
-        <div class="exercises-card__meta">
-          ${difficultyBadge}
-          ${durationText}
+    <article class="exercise-card" data-id="${exercise.id}">
+      <div class="exercise-card__icon">${icon}</div>
+      <div class="exercise-card__content">
+        <h2 class="exercise-card__title">${escapeHtml(exercise.title)}</h2>
+        <p class="exercise-card__description">${escapeHtml(exercise.description || '')}</p>
+        <div class="exercise-card__meta">
+          <span class="exercise-card__type">${capitalizeFirst(exercise.type)}</span>
+          <span class="exercise-card__difficulty">${capitalizeFirst(difficulty)}</span>
+          <span class="exercise-card__duration">${duration} min</span>
         </div>
+        <button class="btn exercise-card__btn" onclick="showExercise(${exercise.id})">Start Exercise</button>
       </div>
-      <p class="exercises-card__content">
-        ${exercise.description}
-      </p>
-      <details class="exercises-details">
-        <summary>How to do it</summary>
-        <ol class="exercises-steps">
-          ${instructionsList}
-        </ol>
-      </details>
-      ${createCompleteButton(exercise.id)}
     </article>
   `;
 }
 
-// Create complete button (only for logged-in users)
-function createCompleteButton(exerciseId) {
-  if (!API.auth.isLoggedIn()) {
-    return '';
-  }
-
-  return `
-    <button class="btn-complete" onclick="completeExercise(${exerciseId})">
-      Mark as Completed
-    </button>
-  `;
-}
-
-// Handle exercise completion
-async function completeExercise(exerciseId) {
-  if (!API.auth.isLoggedIn()) {
-    alert('Please log in to track your progress');
-    window.location.href = 'pages/login.html';
-    return;
-  }
-
+async function showExercise(id) {
   try {
-    await API.exercises.completeExercise(exerciseId, {
-      notes: '',
-      rating: null
-    });
+    const data = await API.exercises.getById(id);
+    const exercise = data.exercise || data;
 
-    // Show success feedback
-    const card = document.querySelector(`[data-id="${exerciseId}"]`);
-    const button = card.querySelector('.btn-complete');
+    // Create modal
+    const modal = document.createElement('div');
+    modal.className = 'exercise-modal';
+    modal.innerHTML = `
+      <div class="exercise-modal__overlay" onclick="closeExerciseModal()"></div>
+      <div class="exercise-modal__content">
+        <button class="exercise-modal__close" onclick="closeExerciseModal()">&times;</button>
+        <h2>${escapeHtml(exercise.title)}</h2>
+        <p>${escapeHtml(exercise.description || '')}</p>
+        <div class="exercise-modal__instructions">
+          <h3>Instructions</h3>
+          <div>${formatInstructions(exercise.instructions || 'Follow along with this exercise.')}</div>
+        </div>
+        <p class="exercise-modal__duration">Duration: ${exercise.duration || 5} minutes</p>
+      </div>
+    `;
 
-    if (button) {
-      button.textContent = '✓ Completed!';
-      button.disabled = true;
-      button.classList.add('completed');
-    }
-
-    // Optional: Show a toast/notification
-    showNotification('Exercise completed! Great job!', 'success');
-
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
   } catch (error) {
-    console.error('Error completing exercise:', error);
-    showNotification('Failed to track completion. Please try again.', 'error');
+    console.error('Error loading exercise:', error);
+    alert('Failed to load exercise details.');
   }
 }
 
-// Simple notification function
-function showNotification(message, type = 'info') {
-  // Create notification element
-  const notification = document.createElement('div');
-  notification.className = `notification notification-${type}`;
-  notification.textContent = message;
-
-  // Add to body
-  document.body.appendChild(notification);
-
-  // Show notification
-  setTimeout(() => {
-    notification.classList.add('show');
-  }, 10);
-
-  // Remove after 3 seconds
-  setTimeout(() => {
-    notification.classList.remove('show');
-    setTimeout(() => {
-      notification.remove();
-    }, 300);
-  }, 3000);
+function closeExerciseModal() {
+  const modal = document.querySelector('.exercise-modal');
+  if (modal) {
+    modal.remove();
+    document.body.style.overflow = '';
+  }
 }
 
-// Initialize on page load
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', loadExercises);
-} else {
-  loadExercises();
+function formatInstructions(text) {
+  return escapeHtml(text).replace(/\n/g, '<br>');
 }
 
-// Make completeExercise globally available
-window.completeExercise = completeExercise;
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function capitalizeFirst(str) {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

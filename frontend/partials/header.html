@@ -1,30 +1,23 @@
 <header class="site-header">
   <nav class="nav">
-    <a class="brand" href="/frontend/index.html">New Horizon</a>
+    <a class="brand" href="{{BASE_PATH}}/index.html">New Horizon</a>
 
     <div class="nav-container">
       <ul class="nav-links">
-        <li><a data-nav href="/frontend/index.html">Home</a></li>
-        <li><a data-nav href="/frontend/pages/exercises.html">Exercises</a></li>
-        <li><a data-nav href="/frontend/pages/resources.html">Resources</a></li>
-        <li><a data-nav href="/frontend/pages/calendar.html">Calendar</a></li>
-        <li><a data-nav href="/frontend/pages/forum.html">Forum</a></li>
-        <li><a data-nav href="/frontend/pages/opportunities.html">Opportunities</a></li>
-        <li><a data-nav href="/frontend/pages/about.html">About</a></li>
-        <li><a data-nav href="/frontend/pages/contact.html">Contact</a></li>
+        <li><a data-nav href="{{BASE_PATH}}/index.html">Home</a></li>
+        <li><a data-nav href="{{BASE_PATH}}/pages/exercises.html">Exercises</a></li>
+        <li><a data-nav href="{{BASE_PATH}}/pages/resources.html">Resources</a></li>
+        <li><a data-nav href="{{BASE_PATH}}/pages/calendar.html">Calendar</a></li>
+        <li><a data-nav href="{{BASE_PATH}}/pages/forum.html">Forum</a></li>
+        <li><a data-nav href="{{BASE_PATH}}/pages/opportunities.html">Opportunities</a></li>
+        <li><a data-nav href="{{BASE_PATH}}/pages/about.html">About</a></li>
+        <li><a data-nav href="{{BASE_PATH}}/pages/contact.html">Contact</a></li>
       </ul>
 
       <div class="auth-buttons">
-        <!-- Login button (shown when not logged in) -->
-        <a href="/frontend/pages/login.html" class="btn-header btn-login" id="login-button-container">Login</a>
-
-        <!-- Account button (shown when logged in) -->
-        <a href="/frontend/pages/account.html" class="btn-header btn-account" id="account-button-container" style="display: none;">My Account</a>
-
-        <!-- Admin Panel button (shown only for admin/moderator) -->
-        <a href="/frontend/pages/admin.html" class="btn-header btn-admin" id="admin-button-container" style="display: none;">Admin Panel</a>
-
-        <!-- Logout button (shown when logged in) -->
+        <a href="{{BASE_PATH}}/pages/login.html" class="btn-header btn-login" id="login-button-container">Login</a>
+        <a href="{{BASE_PATH}}/pages/account.html" class="btn-header btn-account" id="account-button-container" style="display: none;">My Account</a>
+        <a href="{{BASE_PATH}}/pages/admin.html" class="btn-header btn-admin" id="admin-button-container" style="display: none;">Admin Panel</a>
         <button onclick="handleLogout()" class="btn-header btn-logout" id="logout-button-container" style="display: none;">Logout</button>
       </div>
     </div>
@@ -158,76 +151,16 @@
     border-color: #e74c3c;
   }
 
-  /* Responsive */
   @media (max-width: 1200px) {
-    .nav-links {
-      gap: 0.1rem;
-    }
-
-    .nav-links a {
-      font-size: 0.85rem;
-      padding: 0.4rem 0.6rem;
-    }
-
-    .btn-header {
-      font-size: 0.85rem;
-      padding: 0.4rem 0.8rem;
-    }
+    .nav-links { gap: 0.1rem; }
+    .nav-links a { font-size: 0.85rem; padding: 0.4rem 0.6rem; }
+    .btn-header { font-size: 0.85rem; padding: 0.4rem 0.8rem; }
   }
 
   @media (max-width: 968px) {
-    .nav {
-      flex-direction: column;
-      gap: 1rem;
-      padding: 1rem;
-    }
-
-    .nav-container {
-      flex-direction: column;
-      gap: 1rem;
-      width: 100%;
-    }
-
-    .nav-links {
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .auth-buttons {
-      justify-content: center;
-    }
+    .nav { flex-direction: column; gap: 1rem; padding: 1rem; }
+    .nav-container { flex-direction: column; gap: 1rem; width: 100%; }
+    .nav-links { flex-wrap: wrap; justify-content: center; }
+    .auth-buttons { justify-content: center; }
   }
 </style>
-
-<script>
-  // Global logout function
-  async function handleLogout() {
-    console.log('[Header] Logout initiated');
-
-    try {
-      // Try to call API logout if available
-      if (typeof API !== 'undefined' && API.auth && API.auth.logout) {
-        await API.auth.logout();
-        console.log('[Header] API logout successful');
-      }
-    } catch (error) {
-      console.error('[Header] API logout error:', error);
-    }
-
-    // Always clear localStorage
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('current_user');
-    console.log('[Header] Local storage cleared');
-
-    // Always redirect to homepage with absolute path
-    const redirectPath = '/frontend/index.html';
-
-    console.log('[Header] Redirecting to:', redirectPath);
-
-    // Redirect and force reload
-    window.location.href = redirectPath;
-  }
-
-  // Make handleLogout globally available
-  window.handleLogout = handleLogout;
-</script>

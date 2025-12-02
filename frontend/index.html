@@ -1,143 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="/frontend/js/base-path.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="New Horizon provides accessible mental wellness resources, exercises, and community support for everyone seeking help.">
   <title>Home — New Horizon</title>
-
-  <!-- Configuration centralisée -->
-  <script src="/frontend/js/config.js"></script>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="/frontend/css/base.css">
-  <link rel="stylesheet" href="/frontend/css/home.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/home.css">
 </head>
 <body class="home-body">
-  <!-- Header will be injected here -->
   <header data-partial="header"></header>
 
   <main>
-    <!-- Hero Section -->
     <section class="home-hero">
       <div class="home-hero__image-wrapper">
-        <img
-          src="public/assets/img/home_Main.png"
-          alt="Person meditating peacefully"
-          class="home-hero__image"
-        >
+        <img src="./public/assets/img/home_Main.png" alt="Person meditating peacefully" class="home-hero__image">
       </div>
       <div class="home-hero__content">
         <p class="home-hero__subtitle">MENTAL WELLNESS</p>
-        <p class="home-hero__tagline">
-          A different approach to health and wellness
-        </p>
-        <h1 class="home-hero__title">
-          WE PROVIDE RESOURCES TO ALLOW EVERYONE TO FIND THE HELP THEY NEED
-        </h1>
+        <p class="home-hero__tagline">A different approach to health and wellness</p>
+        <h1 class="home-hero__title">WE PROVIDE RESOURCES TO ALLOW EVERYONE TO FIND THE HELP THEY NEED</h1>
         <div class="home-hero__btn-wrapper">
-          <a href="/frontend/pages/exercises.html" class="btn">EXERCISES</a>
+          <a href="./pages/exercises.html" class="btn">EXERCISES</a>
         </div>
       </div>
     </section>
 
-    <!-- About Section -->
     <section class="home-about">
       <div class="container">
-        <h2 class="home-about__title">
-          HELPING YOU MAKE BETTER HEALTH CHOICES
-        </h2>
-        <p class="home-about__text">
-          This page should focus on your brand's background. What's your unique story? Why should prospective clients choose to sign up with you? This is your chance to build a relationship with them, starting with your backstory, vision, or philosophy. You can even share your brand's beginnings if you feel that it's relatable to your clients. Just remember to be friendly, and welcoming.
-        </p>
-        <p class="home-about__cta">
-          Once you're done, seal the deal with a compelling closing line that gets them to take action.
-        </p>
+        <h2 class="home-about__title">HELPING YOU MAKE BETTER HEALTH CHOICES</h2>
+        <p class="home-about__text">This page should focus on your brand's background. What's your unique story? Why should prospective clients choose to sign up with you? This is your chance to build a relationship with them, starting with your backstory, vision, or philosophy.</p>
+        <p class="home-about__cta">Once you're done, seal the deal with a compelling closing line that gets them to take action.</p>
         <div class="home-about__btn-wrapper">
-          <a href="/frontend/pages/about.html" class="btn">LEARN MORE</a>
+          <a href="./pages/about.html" class="btn">LEARN MORE</a>
         </div>
       </div>
     </section>
 
-    <!-- Pillars Section -->
     <section class="home-pillars">
       <div class="container">
         <div class="home-pillars__grid">
           <div class="home-pillar">
-            <img
-              src="public/assets/img/home_PhysicalWellbeing.png"
-              alt="Physical Well-being"
-              class="home-pillar__image"
-            >
+            <img src="./public/assets/img/home_PhysicalWellbeing.png" alt="Physical Well-being" class="home-pillar__image">
             <h3 class="home-pillar__title">Physical Well-being</h3>
-            <p class="home-pillar__description">
-              What sets you apart from your competition? Is it your offerings? Your philosophies? Or your values? Whichever it is, highlight them on this page as separate pillars that build hold your brand aloft.
-            </p>
+            <p class="home-pillar__description">What sets you apart from your competition? Is it your offerings? Your philosophies? Or your values?</p>
           </div>
-
           <div class="home-pillar">
-            <img
-              src="public/assets/img/home_MentalSupport.png"
-              alt="Mental Support"
-              class="home-pillar__image"
-            >
+            <img src="./public/assets/img/home_MentalSupport.png" alt="Mental Support" class="home-pillar__image">
             <h3 class="home-pillar__title">Mental Support</h3>
-            <p class="home-pillar__description">
-              What sets you apart from your competition? Is it your offerings? Your philosophies? Or your values? Whichever it is, highlight them on this page as separate pillars that build hold your brand aloft.
-            </p>
+            <p class="home-pillar__description">What sets you apart from your competition? Is it your offerings? Your philosophies? Or your values?</p>
           </div>
-
           <div class="home-pillar">
-            <img
-              src="public/assets/img/home_EnvironmentalWellness.png"
-              alt="Environmental Wellness"
-              class="home-pillar__image"
-            >
+            <img src="./public/assets/img/home_EnvironmentalWellness.png" alt="Environmental Wellness" class="home-pillar__image">
             <h3 class="home-pillar__title">Environmental Wellness</h3>
-            <p class="home-pillar__description">
-              What sets you apart from your competition? Is it your offerings? Your philosophies? Or your values? Whichever it is, highlight them on this page as separate pillars that build hold your brand aloft.
-            </p>
+            <p class="home-pillar__description">What sets you apart from your competition? Is it your offerings? Your philosophies? Or your values?</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Services Section -->
     <section class="home-services" id="services">
       <div class="container">
         <div class="home-services__grid">
           <div class="home-services__image-wrapper">
-            <img
-              src="public/assets/img/home_MainServices.png"
-              alt="Wellness services"
-              class="home-services__image"
-            >
+            <img src="./public/assets/img/home_MainServices.png" alt="Wellness services" class="home-services__image">
           </div>
-
           <div class="home-services__content">
             <h2>MAIN SERVICES</h2>
-            <p class="home-services__subtitle">
-              Priority service for persons with disabilities
-            </p>
-
+            <p class="home-services__subtitle">Priority service for persons with disabilities</p>
             <div class="home-service-list">
               <div class="home-service-item">
                 <h3>Conventional Physical Care</h3>
                 <ul>
                   <li>Add as many bullets as needed</li>
                   <li>add as many bullets as needed</li>
-                  <li>add as many bullets as needed</li>
-                  <li>add as many bullets as needed</li>
                 </ul>
               </div>
-
               <div class="home-service-item">
                 <h3>Habit Formation and Health Management</h3>
                 <ul>
                   <li>Add as many bullets as needed</li>
-                  <li>add as many bullets as needed</li>
-                  <li>add as many bullets as needed</li>
                   <li>add as many bullets as needed</li>
                 </ul>
               </div>
@@ -147,30 +89,20 @@
       </div>
     </section>
 
-    <!-- Testimonials Section -->
     <section class="home-testimonials">
       <div class="container">
         <h2 class="home-testimonials__title">PATIENTS' FEEDBACK</h2>
-
         <div class="home-testimonials__grid">
           <div class="home-testimonial">
-            <p class="home-testimonial__text">
-              "Boost your product and service's credibility by adding testimonials from your clients."
-            </p>
+            <p class="home-testimonial__text">"Boost your product and service's credibility by adding testimonials from your clients."</p>
             <p class="home-testimonial__author">— Natalia Lowe</p>
           </div>
-
           <div class="home-testimonial">
-            <p class="home-testimonial__text">
-              "Boost your product and service's credibility by adding testimonials from your clients. People love recommendations so feedback from others who've tried it is invaluable."
-            </p>
+            <p class="home-testimonial__text">"Boost your product and service's credibility by adding testimonials from your clients."</p>
             <p class="home-testimonial__author">— Herman Adelphi</p>
           </div>
-
           <div class="home-testimonial">
-            <p class="home-testimonial__text">
-              "People love recommendations so feedback from others who've tried it is invaluable."
-            </p>
+            <p class="home-testimonial__text">"People love recommendations so feedback from others who've tried it is invaluable."</p>
             <p class="home-testimonial__author">— Sharlene Rose</p>
           </div>
         </div>
@@ -178,12 +110,10 @@
     </section>
   </main>
 
-  <!-- Footer will be injected here -->
   <footer data-partial="footer"></footer>
 
-  <!-- Scripts dans le bon ordre -->
-  <script src="/frontend/js/config.js"></script>
-  <script src="/frontend/js/app.js"></script>
-  <script src="/frontend/js/api.js"></script>
+  <script src="./js/config.js"></script>
+  <script src="./js/app.js"></script>
+  <script src="./js/api.js"></script>
 </body>
 </html>

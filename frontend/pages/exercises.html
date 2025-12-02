@@ -1,54 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="/frontend/js/base-path.js"></script>
-  <script>
-    // Auto-adjust base path for local development
-  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Guided mental wellness exercises including breathing techniques, mindfulness, and stress reduction activities.">
   <title>Exercises — New Horizon</title>
-  <link rel="stylesheet" href="/frontend/css/base.css">
-  <link rel="stylesheet" href="/frontend/css/exercises.css">
-  <script src="/frontend/js/config.js"></script>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/exercises.css">
 </head>
 <body class="exercises-body">
   <header data-partial="header"></header>
 
   <main>
-    <!-- Page title -->
     <section class="section exercises-hero">
       <div class="container">
         <h1 class="exercises-hero__title">Wellness Exercises</h1>
-        <p class="exercises-hero__description">
-          Short, research-informed activities you can try anytime to support mental wellness.
-        </p>
+        <p class="exercises-hero__description">Short, research-informed activities you can try anytime to support mental wellness.</p>
       </div>
     </section>
 
-    <!-- Exercise list -->
     <section class="section">
       <div class="container exercises-stack">
         <!-- Exercises will be loaded dynamically from the database -->
       </div>
     </section>
 
-    <!-- Bottom callout -->
     <section class="section">
       <div class="container exercises-cta">
-        <p>
-          New here? Start with <a href="#" class="exercises-link">Box Breathing</a>,
-          or explore more on the <a href="resources.html" class="exercises-link">Resources</a> page.
-        </p>
-        <a href="index.html" class="btn">Back to Home</a>
+        <p>New here? Start with <a href="#" class="exercises-link">Box Breathing</a>, or explore more on the <a href="./resources.html" class="exercises-link">Resources</a> page.</p>
+        <a href="../index.html" class="btn">Back to Home</a>
       </div>
     </section>
   </main>
 
   <footer data-partial="footer"></footer>
-  <script src="/frontend/js/app.js"></script>
-  <script src="/frontend/js/api.js"></script>
-  <script src="/frontend/js/exercises.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/exercises.js"></script>
 </body>
 </html>

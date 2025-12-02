@@ -1,43 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <base href="/CS444-NewHorizon/">
-  <script>
-    // Auto-adjust base path for local development
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '') {
-      document.querySelector('base').href = '/';
-    }
-  </script>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Page not found - New Horizon">
   <title>404 - Page Not Found | New Horizon</title>
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/error.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/error.css">
 </head>
 <body class="error-body">
   <div class="error-container">
     <div class="error-illustration">🧭</div>
     <h1 class="error-code">404</h1>
     <h2 class="error-title">Page Not Found</h2>
-    <p class="error-message">
-      Oops! The page you're looking for seems to have wandered off.
-      Don't worry, we'll help you find your way back to wellness.
-    </p>
+    <p class="error-message">Oops! The page you're looking for seems to have wandered off.</p>
 
     <div class="error-actions">
-      <a href="index.html" class="error-btn error-btn--primary">Go Home</a>
+      <a href="./index.html" class="error-btn error-btn--primary">Go Home</a>
       <a href="javascript:history.back()" class="error-btn">Go Back</a>
     </div>
 
     <div class="error-links">
       <p class="error-links__title">Popular Pages</p>
       <ul class="error-links__list">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="pages/exercises.html">Exercises</a></li>
-        <li><a href="pages/forum.html">Forum</a></li>
-        <li><a href="pages/opportunities.html">Opportunities</a></li>
-        <li><a href="pages/contact.html">Contact</a></li>
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./pages/exercises.html">Exercises</a></li>
+        <li><a href="./pages/contact.html">Contact</a></li>
       </ul>
     </div>
   </div>
