@@ -15,7 +15,7 @@ async function loadPartials() {
       const res = await fetch(basePath + '/partials/header.html');
       if (res.ok) {
         const html = await res.text();
-        header.innerHTML = html;
+        header.outerHTML = html;
       }
     } catch (e) { console.error('Header load error:', e); }
   }
@@ -25,7 +25,7 @@ async function loadPartials() {
       const res = await fetch(basePath + '/partials/footer.html');
       if (res.ok) {
         const html = await res.text();
-        footer.innerHTML = html;
+        footer.outerHTML = html;
       }
     } catch (e) { console.error('Footer load error:', e); }
   }
@@ -50,17 +50,17 @@ function updateAuthButtons() {
     try {
       const user = JSON.parse(userStr);
       loginBtn.style.display = 'none';
-      accountBtn.style.display = 'block';
-      logoutBtn.style.display = 'block';
-      adminBtn.style.display = user.role === 'admin' ? 'block' : 'none';
+      accountBtn.style.display = 'inline-block';
+      logoutBtn.style.display = 'inline-block';
+      adminBtn.style.display = user.role === 'admin' ? 'inline-block' : 'none';
     } catch (e) {
-      loginBtn.style.display = 'block';
+      loginBtn.style.display = 'inline-block';
       accountBtn.style.display = 'none';
       adminBtn.style.display = 'none';
       logoutBtn.style.display = 'none';
     }
   } else {
-    loginBtn.style.display = 'block';
+    loginBtn.style.display = 'inline-block';
     accountBtn.style.display = 'none';
     adminBtn.style.display = 'none';
     logoutBtn.style.display = 'none';
@@ -76,46 +76,3 @@ function handleLogout() {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', loadPartials);
-
-// Calendar (if on calendar page)
-const calendarBody = document.getElementById('calendar-body');
-const monthYearLabel = document.getElementById('month-year');
-const prevBtn = document.getElementById('prev-btn');
-const nextBtn = document.getElementById('next-btn');
-
-if (calendarBody && monthYearLabel) {
-  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  let currentDate = new Date();
-
-  function renderCalendar() {
-    const month = currentDate.getMonth();
-    const year = currentDate.getFullYear();
-    monthYearLabel.textContent = `${months[month]} ${year}`;
-
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    calendarBody.innerHTML = '';
-    let date = 1;
-
-    for (let i = 0; i < 6; i++) {
-      const row = document.createElement('tr');
-      for (let j = 0; j < 7; j++) {
-        const cell = document.createElement('td');
-        if (i === 0 && j < firstDay) {
-          // empty
-        } else if (date > daysInMonth) {
-          break;
-        } else {
-          cell.textContent = date++;
-        }
-        row.appendChild(cell);
-      }
-      calendarBody.appendChild(row);
-    }
-  }
-
-  if (prevBtn) prevBtn.onclick = () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); };
-  if (nextBtn) nextBtn.onclick = () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); };
-  renderCalendar();
-}
