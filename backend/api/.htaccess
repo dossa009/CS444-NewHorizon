@@ -1,0 +1,22 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
+
+RewriteRule ^auth/(.*)$ auth.php/$1 [L,QSA]
+RewriteRule ^auth$ auth.php [L,QSA]
+
+RewriteRule ^admin/(.*)$ admin.php/$1 [L,QSA]
+RewriteRule ^admin$ admin.php [L,QSA]
+
+RewriteRule ^resources/(.*)$ resources.php/$1 [L,QSA]
+RewriteRule ^resources$ resources.php [L,QSA]
+
+RewriteRule ^exercises/(.*)$ exercises.php/$1 [L,QSA]
+RewriteRule ^exercises$ exercises.php [L,QSA]
+
+RewriteRule ^calendar/(.*)$ calendar.php/$1 [L,QSA]
+RewriteRule ^calendar$ calendar.php [L,QSA]
+
+RewriteRule ^forum/(.*)$ forum.php/$1 [L,QSA]
+RewriteRule ^forum$ forum.php [L,QSA]

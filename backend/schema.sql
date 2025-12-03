@@ -119,13 +119,13 @@ INSERT INTO Webpages (Handle, Title, Webpage_URL) VALUES
 
 -- Insert default admin user (password: Admin123!)
 INSERT INTO Users (First_Name, Last_Name, Email, Password_Hash, Account_Type) VALUES
-('Admin', 'User', 'admin@newhorizon.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
+('Admin', 'User', 'admin@newhorizon.com', '$2y$10$GS5fID4n90Z.MFSK7t2WYOLYRaHhtesnPVLtZDARYBWFwxjInNJ4S', 'admin');
 
--- Insert sample users (password: password for all)
+-- Insert sample users (password: Test123!)
 INSERT INTO Users (First_Name, Last_Name, Email, Password_Hash, Account_Type, Country, State) VALUES
-('John', 'Doe', 'john@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user', 'USA', 'California'),
-('Jane', 'Smith', 'jane@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user', 'USA', 'Texas'),
-('Mike', 'Johnson', 'mike@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user', 'USA', 'New York');
+('John', 'Doe', 'john@example.com', '$2y$10$GS5fID4n90Z.MFSK7t2WYOLYRaHhtesnPVLtZDARYBWFwxjInNJ4S', 'user', 'USA', 'California'),
+('Jane', 'Smith', 'jane@example.com', '$2y$10$GS5fID4n90Z.MFSK7t2WYOLYRaHhtesnPVLtZDARYBWFwxjInNJ4S', 'user', 'USA', 'Texas'),
+('Mike', 'Johnson', 'mike@example.com', '$2y$10$GS5fID4n90Z.MFSK7t2WYOLYRaHhtesnPVLtZDARYBWFwxjInNJ4S', 'user', 'USA', 'New York');
 
 -- Insert sample resources
 INSERT INTO Resources (Webpage_ID, Title, Description, Resource_URL) VALUES

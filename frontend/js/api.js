@@ -1,14 +1,7 @@
-/**
- * NEW HORIZON - API Client
- * Handles all API calls to the backend
- */
-
-// Get API base from config
 function getApiBase() {
   return window.CONFIG ? CONFIG.API_BASE : '/backend/api';
 }
 
-// Helper function for API calls
 async function apiCall(endpoint, options = {}) {
   const url = getApiBase() + endpoint;
   const token = localStorage.getItem('auth_token');
@@ -123,19 +116,6 @@ const API = {
     createPost: (data) => apiCall('/forum', { method: 'POST', body: JSON.stringify(data) }),
     updatePost: (id, data) => apiCall(`/forum/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
     deletePost: (id) => apiCall(`/forum/${id}`, { method: 'DELETE' })
-  },
-
-  opportunities: {
-    getAll: () => apiCall('/opportunities'),
-    getById: (id) => apiCall(`/opportunities/${id}`),
-    create: (data) => apiCall('/opportunities', { method: 'POST', body: JSON.stringify(data) }),
-    update: (id, data) => apiCall(`/opportunities/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
-    delete: (id) => apiCall(`/opportunities/${id}`, { method: 'DELETE' })
-  },
-
-  contact: {
-    sendMessage: (data) => apiCall('/contact', { method: 'POST', body: JSON.stringify(data) }),
-    getMessages: () => apiCall('/contact')
   },
 
   admin: {

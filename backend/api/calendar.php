@@ -1,13 +1,18 @@
 <?php
-/**
- * Calendar Events API endpoints
- */
-
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../jwt.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
-$path = $_SERVER['PATH_INFO'] ?? '';
+
+$path = '';
+if (!empty($_SERVER['PATH_INFO'])) {
+    $path = $_SERVER['PATH_INFO'];
+} else {
+    $uri = $_SERVER['REQUEST_URI'];
+    if (preg_match('/\/calendar(\/.*)/', $uri, $matches)) {
+        $path = $matches[1];
+    }
+}
 
 if ($method === 'GET' && preg_match('/^\/(\d+)$/', $path, $matches)) {
     handleGetEvent($mysqli, (int)$matches[1]);
@@ -28,38 +33,35 @@ if ($method === 'GET' && preg_match('/^\/(\d+)$/', $path, $matches)) {
 
 function handleGetAllEvents($mysqli) {
     $result = $mysqli->query(
-        "SELECT e.*, u.First_Name, u.Last_Name,
-         (SELECT COUNT(*) FROM Event_Registrations WHERE Event_ID = e.Event_ID) as registered_count
-         FROM Calendar_Events e
-         LEFT JOIN Users u ON e.Created_By = u.User_ID
-         ORDER BY e.Event_Date DESC"
+        "SELECT c.Event_ID, c.User_ID, c.URL, c.Date, u.First_Name, u.Last_Name
+         FROM Calendar c
+         LEFT JOIN Users u ON c.User_ID = u.User_ID
+         ORDER BY c.Date DESC"
     );
 
     $events = [];
-    while ($row = $result->fetch_assoc()) {
-        $events[] = [
-            'id' => (int)$row['Event_ID'],
-            'title' => $row['Title'],
-            'description' => $row['Description'],
-            'event_date' => $row['Event_Date'],
-            'start_time' => $row['Start_Time'],
-            'end_time' => $row['End_Time'],
-            'event_type' => $row['Event_Type'],
-            'location' => $row['Location'],
-            'is_online' => (bool)$row['Is_Online'],
-            'max_participants' => $row['Max_Participants'] ? (int)$row['Max_Participants'] : null,
-            'registered_count' => (int)$row['registered_count'],
-            'is_published' => (bool)$row['Is_Published'],
-            'author' => $row['First_Name'] ? $row['First_Name'] . ' ' . $row['Last_Name'] : null,
-            'created_at' => $row['Created_At']
-        ];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $events[] = [
+                'id' => (int)$row['Event_ID'],
+                'user_id' => $row['User_ID'] ? (int)$row['User_ID'] : null,
+                'user_name' => $row['First_Name'] ? $row['First_Name'] . ' ' . $row['Last_Name'] : null,
+                'url' => $row['URL'],
+                'date' => $row['Date']
+            ];
+        }
     }
 
     sendResponse(['success' => true, 'events' => $events]);
 }
 
 function handleGetEvent($mysqli, $id) {
-    $stmt = $mysqli->prepare("SELECT * FROM Calendar_Events WHERE Event_ID = ?");
+    $stmt = $mysqli->prepare(
+        "SELECT c.Event_ID, c.User_ID, c.URL, c.Date, u.First_Name, u.Last_Name
+         FROM Calendar c
+         LEFT JOIN Users u ON c.User_ID = u.User_ID
+         WHERE c.Event_ID = ?"
+    );
     $stmt->bind_param('i', $id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -74,79 +76,67 @@ function handleGetEvent($mysqli, $id) {
         'success' => true,
         'event' => [
             'id' => (int)$row['Event_ID'],
-            'title' => $row['Title'],
-            'description' => $row['Description'],
-            'event_date' => $row['Event_Date'],
-            'start_time' => $row['Start_Time'],
-            'end_time' => $row['End_Time'],
-            'event_type' => $row['Event_Type'],
-            'location' => $row['Location'],
-            'is_online' => (bool)$row['Is_Online'],
-            'max_participants' => $row['Max_Participants'] ? (int)$row['Max_Participants'] : null,
-            'is_published' => (bool)$row['Is_Published'],
-            'created_at' => $row['Created_At']
+            'user_id' => $row['User_ID'] ? (int)$row['User_ID'] : null,
+            'user_name' => $row['First_Name'] ? $row['First_Name'] . ' ' . $row['Last_Name'] : null,
+            'url' => $row['URL'],
+            'date' => $row['Date']
         ]
     ]);
 }
 
 function handleCreateEvent($mysqli, $user) {
     $input = getJsonInput();
-    validateRequired($input, ['title', 'event_date']);
+    validateRequired($input, ['date']);
 
-    $stmt = $mysqli->prepare(
-        "INSERT INTO Calendar_Events (Title, Description, Event_Date, Start_Time, End_Time, Event_Type, Location, Is_Online, Max_Participants, Is_Published, Created_By)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-    );
-    $stmt->bind_param(
-        'sssssssiiii',
-        $input['title'],
-        $input['description'] ?? null,
-        $input['event_date'],
-        $input['start_time'] ?? null,
-        $input['end_time'] ?? null,
-        $input['event_type'] ?? null,
-        $input['location'] ?? null,
-        $input['is_online'] ?? false,
-        $input['max_participants'] ?? null,
-        $input['is_published'] ?? false,
-        $user['User_ID']
-    );
+    $url = isset($input['url']) ? sanitizeString($input['url']) : null;
+    $date = sanitizeString($input['date']);
+    $userId = $user['User_ID'];
+
+    $stmt = $mysqli->prepare("INSERT INTO Calendar (User_ID, URL, Date) VALUES (?, ?, ?)");
+    $stmt->bind_param('iss', $userId, $url, $date);
 
     if (!$stmt->execute()) {
         $stmt->close();
         sendError('Failed to create event', 500);
     }
 
-    $id = $stmt->insert_id;
+    $eventId = $stmt->insert_id;
     $stmt->close();
 
-    sendResponse(['success' => true, 'message' => 'Event created', 'event_id' => $id], 201);
+    sendResponse(['success' => true, 'message' => 'Event created', 'event_id' => $eventId], 201);
 }
 
 function handleUpdateEvent($mysqli, $user, $id) {
     $input = getJsonInput();
 
-    if ($user['Account_Type'] !== 'admin') {
-        sendError('Admin access required', 403);
+    $stmt = $mysqli->prepare("SELECT Event_ID, User_ID FROM Calendar WHERE Event_ID = ?");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $event = $result->fetch_assoc();
+    $stmt->close();
+
+    if (!$event) {
+        sendError('Event not found', 404);
+    }
+
+    if ($event['User_ID'] != $user['User_ID'] && $user['Account_Type'] !== 'admin') {
+        sendError('Permission denied', 403);
     }
 
     $updates = [];
     $params = [];
     $types = '';
 
-    $fields = [
-        'title' => 's', 'description' => 's', 'event_date' => 's', 'start_time' => 's',
-        'end_time' => 's', 'event_type' => 's', 'location' => 's', 'is_online' => 'i',
-        'max_participants' => 'i', 'is_published' => 'i'
-    ];
-
-    foreach ($fields as $field => $type) {
-        if (isset($input[$field])) {
-            $dbField = implode('_', array_map('ucfirst', explode('_', $field)));
-            $updates[] = "$dbField = ?";
-            $params[] = $type === 'i' ? (int)$input[$field] : $input[$field];
-            $types .= $type;
-        }
+    if (isset($input['url'])) {
+        $updates[] = "URL = ?";
+        $params[] = sanitizeString($input['url']);
+        $types .= 's';
+    }
+    if (isset($input['date'])) {
+        $updates[] = "Date = ?";
+        $params[] = sanitizeString($input['date']);
+        $types .= 's';
     }
 
     if (empty($updates)) {
@@ -156,7 +146,7 @@ function handleUpdateEvent($mysqli, $user, $id) {
     $params[] = $id;
     $types .= 'i';
 
-    $sql = "UPDATE Calendar_Events SET " . implode(', ', $updates) . " WHERE Event_ID = ?";
+    $sql = "UPDATE Calendar SET " . implode(', ', $updates) . " WHERE Event_ID = ?";
     $stmt = $mysqli->prepare($sql);
     $stmt->bind_param($types, ...$params);
     $stmt->execute();
@@ -166,11 +156,22 @@ function handleUpdateEvent($mysqli, $user, $id) {
 }
 
 function handleDeleteEvent($mysqli, $user, $id) {
-    if ($user['Account_Type'] !== 'admin') {
-        sendError('Admin access required', 403);
+    $stmt = $mysqli->prepare("SELECT User_ID FROM Calendar WHERE Event_ID = ?");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $event = $result->fetch_assoc();
+    $stmt->close();
+
+    if (!$event) {
+        sendError('Event not found', 404);
     }
 
-    $stmt = $mysqli->prepare("DELETE FROM Calendar_Events WHERE Event_ID = ?");
+    if ($event['User_ID'] != $user['User_ID'] && $user['Account_Type'] !== 'admin') {
+        sendError('Permission denied', 403);
+    }
+
+    $stmt = $mysqli->prepare("DELETE FROM Calendar WHERE Event_ID = ?");
     $stmt->bind_param('i', $id);
     $stmt->execute();
     $stmt->close();

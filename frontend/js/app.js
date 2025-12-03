@@ -55,7 +55,7 @@ function updateAuthButtons() {
       loginBtn.style.display = 'none';
       accountBtn.style.display = 'block';
       logoutBtn.style.display = 'block';
-      adminBtn.style.display = (user.role === 'admin' || user.role === 'moderator') ? 'block' : 'none';
+      adminBtn.style.display = user.role === 'admin' ? 'block' : 'none';
     } catch (e) {
       loginBtn.style.display = 'block';
       accountBtn.style.display = 'none';

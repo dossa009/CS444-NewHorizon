@@ -1,10 +1,35 @@
 <?php
 // Configuration file for New Horizon backend
-// Security and general settings
 
-// Error reporting (set to 0 in production)
+// Disable HTML error output - return JSON instead
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+
+// Custom error handler to return JSON
+set_error_handler(function($errno, $errstr, $errfile, $errline) {
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'error' => 'Server error',
+        'debug' => "$errstr in $errfile:$errline"
+    ]);
+    exit;
+});
+
+// Custom exception handler
+set_exception_handler(function($e) {
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'error' => 'Server error',
+        'debug' => $e->getMessage()
+    ]);
+    exit;
+});
+
+// JSON response header FIRST
+header('Content-Type: application/json; charset=utf-8');
 
 // CORS Configuration
 header('Access-Control-Allow-Origin: *');
@@ -18,16 +43,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-// JSON response
-header('Content-Type: application/json; charset=utf-8');
-
 // Security headers
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
 header('X-XSS-Protection: 1; mode=block');
 
-// JWT Secret Key (CHANGE THIS IN PRODUCTION!)
-define('JWT_SECRET_KEY', 'your-secret-key-change-this-in-production-2024');
+// Load database config (loads .env file)
+require_once __DIR__ . '/DataBase.php';
+
+// JWT Secret Key (loaded from .env)
+define('JWT_SECRET_KEY', getenv('JWT_SECRET') ?: 'newhorizon_secret');
 define('JWT_ALGORITHM', 'HS256');
 define('JWT_EXPIRATION', 604800); // 7 days in seconds
 
@@ -37,9 +62,6 @@ define('PASSWORD_MIN_LENGTH', 8);
 // Pagination defaults
 define('DEFAULT_PAGE_SIZE', 20);
 define('MAX_PAGE_SIZE', 100);
-
-// Database configuration (imported from DataBase.php)
-require_once __DIR__ . '/DataBase.php';
 
 // Helper function to send JSON response
 function sendResponse($data, $statusCode = 200) {
@@ -145,15 +167,8 @@ function getUserIP() {
     }
 }
 
-// Log admin action
+// Log admin action (disabled - table doesn't exist)
 function logAdminAction($mysqli, $adminId, $action, $targetType = null, $targetId = null, $details = null) {
-    $stmt = $mysqli->prepare(
-        "INSERT INTO Admin_Audit_Log (Admin_ID, Action, Target_Type, Target_ID, Details, IP_Address)
-         VALUES (?, ?, ?, ?, ?, ?)"
-    );
-
-    $ip = getUserIP();
-    $stmt->bind_param('ississ', $adminId, $action, $targetType, $targetId, $details, $ip);
-    $stmt->execute();
-    $stmt->close();
+    // Table Admin_Audit_Log not in schema - logging disabled
+    return;
 }

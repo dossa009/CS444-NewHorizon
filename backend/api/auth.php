@@ -1,60 +1,55 @@
 <?php
-/**
- * Authentication API endpoints
- * Handles login, register, logout, and profile management
- */
-
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../jwt.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Route based on request method and path
+$path = '';
+if (!empty($_SERVER['PATH_INFO'])) {
+    $path = $_SERVER['PATH_INFO'];
+} else {
+    $uri = $_SERVER['REQUEST_URI'];
+    if (preg_match('/\/auth\.php(.*)/', $uri, $matches)) {
+        $path = $matches[1];
+    } elseif (preg_match('/\/auth(\/.*)/', $uri, $matches)) {
+        $path = $matches[1];
+    }
+}
+
 switch ($method) {
     case 'POST':
-        $path = $_SERVER['PATH_INFO'] ?? '';
-        if (strpos($path, '/login') !== false) {
+        if (strpos($path, '/login') !== false || $path === '' || $path === '/') {
             handleLogin($mysqli);
         } elseif (strpos($path, '/register') !== false) {
             handleRegister($mysqli);
         } elseif (strpos($path, '/logout') !== false) {
             handleLogout($mysqli);
-        } else {
-            sendError('Invalid endpoint', 404);
-        }
-        break;
-
-    case 'GET':
-        $path = $_SERVER['PATH_INFO'] ?? '';
-        if (strpos($path, '/me') !== false) {
-            handleGetProfile($mysqli);
-        } else {
-            sendError('Invalid endpoint', 404);
-        }
-        break;
-
-    case 'PUT':
-        $path = $_SERVER['PATH_INFO'] ?? '';
-        if (strpos($path, '/me') !== false) {
-            handleUpdateProfile($mysqli);
         } elseif (strpos($path, '/change-password') !== false) {
             handleChangePassword($mysqli);
         } else {
             sendError('Invalid endpoint', 404);
         }
         break;
-
+    case 'GET':
+        if (strpos($path, '/me') !== false) {
+            handleGetProfile($mysqli);
+        } else {
+            sendError('Invalid endpoint', 404);
+        }
+        break;
+    case 'PUT':
+        if (strpos($path, '/me') !== false) {
+            handleUpdateProfile($mysqli);
+        } else {
+            sendError('Invalid endpoint', 404);
+        }
+        break;
     default:
         sendError('Method not allowed', 405);
 }
 
-/**
- * Handle user login
- */
 function handleLogin($mysqli) {
     $input = getJsonInput();
-
-    // Validate input
     validateRequired($input, ['email', 'password']);
 
     $email = sanitizeString($input['email']);
@@ -64,11 +59,8 @@ function handleLogin($mysqli) {
         sendError('Invalid email format', 400);
     }
 
-    // Find user by email
     $stmt = $mysqli->prepare(
-        "SELECT User_ID, Email, Password_Hash, First_Name, Last_Name, Account_Type, Is_Active
-         FROM Users
-         WHERE Email = ?"
+        "SELECT User_ID, Email, Password_Hash, First_Name, Last_Name, Account_Type, Is_Active FROM Users WHERE Email = ?"
     );
     $stmt->bind_param('s', $email);
     $stmt->execute();
@@ -84,18 +76,15 @@ function handleLogin($mysqli) {
         sendError('Account is inactive', 403);
     }
 
-    // Verify password
     if (!password_verify($password, $user['Password_Hash'])) {
         sendError('Invalid email or password', 401);
     }
 
-    // Update last login
     $stmt = $mysqli->prepare("UPDATE Users SET Last_Login = NOW() WHERE User_ID = ?");
     $stmt->bind_param('i', $user['User_ID']);
     $stmt->execute();
     $stmt->close();
 
-    // Generate JWT token
     $payload = [
         'user_id' => $user['User_ID'],
         'email' => $user['Email'],
@@ -104,7 +93,6 @@ function handleLogin($mysqli) {
 
     $token = JWT::encode($payload, JWT_SECRET_KEY, JWT_EXPIRATION);
 
-    // Return user data and token
     sendResponse([
         'success' => true,
         'token' => $token,
@@ -118,13 +106,8 @@ function handleLogin($mysqli) {
     ]);
 }
 
-/**
- * Handle user registration
- */
 function handleRegister($mysqli) {
     $input = getJsonInput();
-
-    // Validate input
     validateRequired($input, ['first_name', 'last_name', 'email', 'password']);
 
     $firstName = sanitizeString($input['first_name']);
@@ -132,18 +115,15 @@ function handleRegister($mysqli) {
     $email = sanitizeString($input['email']);
     $password = $input['password'];
 
-    // Validate email
     if (!validateEmail($email)) {
         sendError('Invalid email format', 400);
     }
 
-    // Validate password
     $passwordValidation = validatePassword($password);
     if ($passwordValidation !== true) {
         sendError($passwordValidation, 400);
     }
 
-    // Check if email already exists
     $stmt = $mysqli->prepare("SELECT User_ID FROM Users WHERE Email = ?");
     $stmt->bind_param('s', $email);
     $stmt->execute();
@@ -154,14 +134,9 @@ function handleRegister($mysqli) {
         sendError('Email already registered', 409);
     }
 
-    // Hash password
     $passwordHash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 10]);
 
-    // Insert new user
-    $stmt = $mysqli->prepare(
-        "INSERT INTO Users (First_Name, Last_Name, Email, Password_Hash, Account_Type)
-         VALUES (?, ?, ?, ?, 'user')"
-    );
+    $stmt = $mysqli->prepare("INSERT INTO Users (First_Name, Last_Name, Email, Password_Hash, Account_Type) VALUES (?, ?, ?, ?, 'user')");
     $stmt->bind_param('ssss', $firstName, $lastName, $email, $passwordHash);
 
     if (!$stmt->execute()) {
@@ -172,45 +147,18 @@ function handleRegister($mysqli) {
     $userId = $stmt->insert_id;
     $stmt->close();
 
-    sendResponse([
-        'success' => true,
-        'message' => 'Account created successfully',
-        'user_id' => $userId
-    ], 201);
+    sendResponse(['success' => true, 'message' => 'Account created successfully', 'user_id' => $userId], 201);
 }
 
-/**
- * Handle logout (client-side token removal, server-side logging)
- */
 function handleLogout($mysqli) {
-    // This is mainly for logging purposes
-    // Actual logout happens client-side by removing the token
-
-    try {
-        $user = requireAuth($mysqli);
-        sendResponse([
-            'success' => true,
-            'message' => 'Logged out successfully'
-        ]);
-    } catch (Exception $e) {
-        sendResponse([
-            'success' => true,
-            'message' => 'Logged out'
-        ]);
-    }
+    sendResponse(['success' => true, 'message' => 'Logged out successfully']);
 }
 
-/**
- * Get current user profile
- */
 function handleGetProfile($mysqli) {
     $user = requireAuth($mysqli);
 
-    // Get full user details
     $stmt = $mysqli->prepare(
-        "SELECT User_ID, First_Name, Last_Name, Email, Account_Type, Country, State, Address, Date_Created, Last_Login
-         FROM Users
-         WHERE User_ID = ?"
+        "SELECT User_ID, First_Name, Last_Name, Email, Account_Type, Country, State, Address, Date_Created, Last_Login FROM Users WHERE User_ID = ?"
     );
     $stmt->bind_param('i', $user['User_ID']);
     $stmt->execute();
@@ -239,14 +187,10 @@ function handleGetProfile($mysqli) {
     ]);
 }
 
-/**
- * Update user profile
- */
 function handleUpdateProfile($mysqli) {
     $user = requireAuth($mysqli);
     $input = getJsonInput();
 
-    // Fields allowed for update
     $fieldMapping = [
         'first_name' => 'First_Name',
         'last_name' => 'Last_Name',
@@ -282,28 +226,17 @@ function handleUpdateProfile($mysqli) {
         $stmt->close();
         sendError('Failed to update profile', 500);
     }
-
     $stmt->close();
 
-    sendResponse([
-        'success' => true,
-        'message' => 'Profile updated successfully'
-    ]);
+    sendResponse(['success' => true, 'message' => 'Profile updated successfully']);
 }
 
-/**
- * Change password
- */
 function handleChangePassword($mysqli) {
     $user = requireAuth($mysqli);
     $input = getJsonInput();
 
     validateRequired($input, ['current_password', 'new_password']);
 
-    $currentPassword = $input['current_password'];
-    $newPassword = $input['new_password'];
-
-    // Get current password hash
     $stmt = $mysqli->prepare("SELECT Password_Hash FROM Users WHERE User_ID = ?");
     $stmt->bind_param('i', $user['User_ID']);
     $stmt->execute();
@@ -311,21 +244,17 @@ function handleChangePassword($mysqli) {
     $userData = $result->fetch_assoc();
     $stmt->close();
 
-    // Verify current password
-    if (!password_verify($currentPassword, $userData['Password_Hash'])) {
+    if (!password_verify($input['current_password'], $userData['Password_Hash'])) {
         sendError('Current password is incorrect', 401);
     }
 
-    // Validate new password
-    $passwordValidation = validatePassword($newPassword);
+    $passwordValidation = validatePassword($input['new_password']);
     if ($passwordValidation !== true) {
         sendError($passwordValidation, 400);
     }
 
-    // Hash new password
-    $newPasswordHash = password_hash($newPassword, PASSWORD_BCRYPT, ['cost' => 10]);
+    $newPasswordHash = password_hash($input['new_password'], PASSWORD_BCRYPT, ['cost' => 10]);
 
-    // Update password
     $stmt = $mysqli->prepare("UPDATE Users SET Password_Hash = ? WHERE User_ID = ?");
     $stmt->bind_param('si', $newPasswordHash, $user['User_ID']);
 
@@ -333,11 +262,7 @@ function handleChangePassword($mysqli) {
         $stmt->close();
         sendError('Failed to update password', 500);
     }
-
     $stmt->close();
 
-    sendResponse([
-        'success' => true,
-        'message' => 'Password changed successfully'
-    ]);
+    sendResponse(['success' => true, 'message' => 'Password changed successfully']);
 }
