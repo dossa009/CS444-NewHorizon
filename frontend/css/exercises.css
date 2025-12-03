@@ -1,317 +1,83 @@
 /* ============================================
    EXERCISES PAGE STYLES
-   All classes prefixed with "exercises-"
+   Matching resources page UI
    ============================================ */
 
 .exercises-body {
   background-color: var(--cream);
+  padding-bottom: 40px;
 }
 
 /* Hero Section */
 .exercises-hero {
   text-align: center;
+  padding: 40px 20px;
   background-color: var(--white);
+  border-bottom: 1px solid var(--beige);
 }
 
-.exercises-hero__title {
-  font-size: 2.5rem;
+.exercises-hero h1 {
   color: var(--dark-brown);
-  margin-bottom: var(--gap-sm);
   font-family: var(--font-heading);
+  margin-bottom: 10px;
 }
 
-.exercises-hero__description {
-  max-width: 720px;
+.exercises-hero p {
+  color: var(--text-light);
+  max-width: 600px;
   margin: 0 auto;
-  color: var(--text-light);
-  font-size: 1.125rem;
 }
 
-/* Exercise Cards Stack */
-.exercises-stack {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-md);
+/* Section */
+.exercises-section {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.exercises-card {
-  background-color: var(--white);
-  border: 2px solid var(--dark-brown);
-  border-radius: 4px;
-  padding: var(--gap-md);
-  transition: box-shadow 0.2s ease;
+/* Exercises List */
+.exercises-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.exercises-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.exercises-card__title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--dark-brown);
-  margin: 0 0 var(--gap-sm) 0;
-  padding-bottom: var(--gap-sm);
-  border-bottom: 2px solid var(--dark-brown);
-  font-family: var(--font-heading);
-}
-
-.exercises-card__content {
-  color: var(--text-light);
-  margin: var(--gap-sm) 0;
-  line-height: 1.6;
-}
-
-/* Details/Accordion */
-.exercises-details {
-  margin-top: var(--gap-sm);
-}
-
-.exercises-details > summary {
-  cursor: pointer;
-  font-weight: 700;
-  color: var(--terracotta);
-  padding: var(--gap-xs) 0;
-  list-style-position: inside;
-}
-
-.exercises-details > summary:hover {
-  color: var(--dark-brown);
-}
-
-.exercises-steps {
-  margin: var(--gap-sm) 0 0 var(--gap-md);
-  color: var(--text-dark);
-  line-height: 1.7;
-}
-
-.exercises-steps li {
-  margin-bottom: var(--gap-xs);
-}
-
-/* Links */
-.exercises-card__link,
-.exercises-link {
-  color: var(--terracotta);
-  text-decoration: underline;
-  font-weight: 500;
-}
-
-.exercises-card__link:hover,
-.exercises-link:hover {
-  color: var(--dark-brown);
-}
-
-/* Call-to-Action Section */
-.exercises-cta {
-  text-align: center;
-  border: 2px solid var(--dark-brown);
-  background-color: var(--white);
-  padding: var(--gap-lg);
-  border-radius: 4px;
-  margin-top: var(--gap-lg);
-}
-
-.exercises-cta p {
-  color: var(--text-dark);
-  margin-bottom: var(--gap-md);
-  line-height: 1.6;
-}
-
-/* Form Elements (if needed) */
-.exercises-label {
-  display: block;
-  margin-top: var(--gap-sm);
-  font-weight: 600;
-  color: var(--text-dark);
-}
-
-.exercises-input,
-.exercises-select {
-  width: 100%;
-  box-sizing: border-box;
-  margin-top: var(--gap-xs);
-  padding: 12px 16px;
-  border: 1px solid var(--dark-brown);
-  background-color: var(--white);
-  color: var(--text-dark);
-  border-radius: 4px;
-  font-family: inherit;
-}
-
-.exercises-input:focus,
-.exercises-select:focus {
-  outline: none;
-  border-color: var(--terracotta);
-}
-
-/* Card Header (for badges and meta info) */
-.exercises-card__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: var(--gap-sm);
-}
-
-.exercises-card__meta {
-  display: flex;
-  gap: 0.5rem;
-  flex-shrink: 0;
-  margin-left: 1rem;
-}
-
-/* Difficulty Badges */
-.difficulty-badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.difficulty-beginner {
-  background: #d4edda;
-  color: #155724;
-}
-
-.difficulty-intermediate {
-  background: #fff3cd;
-  color: #856404;
-}
-
-.difficulty-advanced {
-  background: #f8d7da;
-  color: #721c24;
-}
-
-/* Duration Badge */
-.duration-badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  background: var(--beige);
-  color: var(--dark-brown);
-}
-
-/* Complete Button */
-.btn-complete {
-  margin-top: 1rem;
-  padding: 0.75rem 1.5rem;
-  background: var(--terracotta);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  font-size: 0.9rem;
-}
-
-.btn-complete:hover {
-  background: #a04d2f;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.btn-complete:disabled,
-.btn-complete.completed {
-  background: #28a745;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Loading and Empty States */
-.loading-state,
-.empty-state,
-.error-state {
-  text-align: center;
-  padding: 3rem 2rem;
+.exercise-item {
   background: var(--white);
-  border: 2px solid var(--dark-brown);
-  border-radius: 4px;
-}
-
-.loading-state {
-  color: var(--text-light);
-  font-size: 1.1rem;
-}
-
-.empty-state h3,
-.error-state h3 {
-  color: var(--dark-brown);
-  margin-bottom: 0.5rem;
-}
-
-.empty-state p,
-.error-state p {
-  color: var(--text-light);
-}
-
-/* Notifications */
-.notification {
-  position: fixed;
-  top: 2rem;
-  right: 2rem;
-  padding: 1rem 1.5rem;
+  padding: 1.5rem;
   border-radius: 8px;
-  font-weight: 500;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 9999;
-  transform: translateX(400px);
-  transition: transform 0.3s ease;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.notification.show {
-  transform: translateX(0);
+.exercise-item h3 {
+  color: var(--dark-brown);
+  margin: 0 0 0.5rem 0;
 }
 
-.notification-success {
-  background: #d4edda;
-  color: #155724;
-  border-left: 4px solid #28a745;
+.exercise-item p {
+  color: var(--text-light);
+  margin: 0 0 1rem 0;
+  line-height: 1.6;
 }
 
-.notification-error {
-  background: #f8d7da;
-  color: #721c24;
-  border-left: 4px solid #dc3545;
+.exercise-link {
+  display: inline-block;
+  background: var(--terracotta);
+  color: white !important;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none !important;
+  font-weight: 600;
+  transition: background 0.2s;
 }
 
-.notification-info {
-  background: #d1ecf1;
-  color: #0c5460;
-  border-left: 4px solid #17a2b8;
+.exercise-link:hover {
+  background: #a04d2f;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .exercises-hero__title {
-    font-size: 2rem;
-  }
-
-  .exercises-card {
-    padding: var(--gap-sm);
-  }
-
-  .exercises-card__header {
-    flex-direction: column;
-  }
-
-  .exercises-card__meta {
-    margin-left: 0;
-    margin-top: 0.5rem;
-  }
-
-  .exercises-cta {
-    padding: var(--gap-md);
-  }
-
-  .notification {
-    left: 1rem;
-    right: 1rem;
-    top: 1rem;
-  }
+/* Back Button */
+.exercises-back {
+  text-align: center;
+  margin-top: 20px;
 }

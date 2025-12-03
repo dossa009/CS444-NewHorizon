@@ -12,31 +12,64 @@
   <header data-partial="header"></header>
 
   <main>
-    <section class="section exercises-hero">
-      <div class="container">
-        <h1 class="exercises-hero__title">Wellness Exercises</h1>
-        <p class="exercises-hero__description">Short, research-informed activities you can try anytime to support mental wellness.</p>
+    <section class="exercises-hero">
+      <h1>Wellness Exercises</h1>
+      <p>Short, research-informed activities you can try anytime to support mental wellness.</p>
+    </section>
+
+    <section class="exercises-section">
+      <div id="exercises-container">
+        <p style="text-align: center; padding: 2rem;">Loading exercises...</p>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container exercises-stack">
-        <!-- Exercises loaded from database -->
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container exercises-cta">
-        <p>New here? Start with <a href="#" class="exercises-link">Box Breathing</a>, or explore more on the <a href="./resources.html" class="exercises-link">Resources</a> page.</p>
-        <a href="/group8/frontend/index.html" class="btn">Back to Home</a>
-      </div>
-    </section>
+    <div class="exercises-back">
+      <a class="btn" href="/group8/frontend/index.html">Back to Home</a>
+    </div>
   </main>
 
   <footer data-partial="footer"></footer>
   <script src="../js/config.js"></script>
   <script src="../js/app.js"></script>
   <script src="../js/api.js"></script>
-  <script src="../js/exercises.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', loadExercises);
+
+    async function loadExercises() {
+      const container = document.getElementById('exercises-container');
+
+      try {
+        const data = await API.exercises.getAll();
+        const exercises = data.exercises || [];
+
+        if (exercises.length === 0) {
+          container.innerHTML = '<p style="text-align: center; padding: 2rem;">No exercises available yet.</p>';
+          return;
+        }
+
+        container.innerHTML = `
+          <ul class="exercises-list">
+            ${exercises.map(e => `
+              <li class="exercise-item">
+                <h3>${escapeHtml(e.name)}</h3>
+                ${e.description ? `<p>${escapeHtml(e.description)}</p>` : ''}
+                ${e.exercise_url ? `<a href="${e.exercise_url}" target="_blank" class="exercise-link">View Exercise</a>` : ''}
+              </li>
+            `).join('')}
+          </ul>
+        `;
+      } catch (error) {
+        console.error('Error loading exercises:', error);
+        container.innerHTML = '<p style="text-align: center; padding: 2rem; color: #c0392b;">Failed to load exercises.</p>';
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
 </body>
 </html>
