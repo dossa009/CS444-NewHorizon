@@ -8,15 +8,13 @@ async function loadPartials() {
   const header = document.querySelector('header[data-partial="header"]');
   const footer = document.querySelector('footer[data-partial="footer"]');
 
-  const basePath = window.CONFIG ? CONFIG.BASE_PATH : '';
+  const basePath = window.CONFIG ? CONFIG.BASE_PATH : '/group8/frontend';
 
   if (header) {
     try {
       const res = await fetch(basePath + '/partials/header.html');
       if (res.ok) {
-        let html = await res.text();
-        // Replace {{BASE_PATH}} placeholders with actual path
-        html = html.replace(/\{\{BASE_PATH\}\}/g, basePath);
+        const html = await res.text();
         header.innerHTML = html;
       }
     } catch (e) { console.error('Header load error:', e); }
@@ -26,8 +24,7 @@ async function loadPartials() {
     try {
       const res = await fetch(basePath + '/partials/footer.html');
       if (res.ok) {
-        let html = await res.text();
-        html = html.replace(/\{\{BASE_PATH\}\}/g, basePath);
+        const html = await res.text();
         footer.innerHTML = html;
       }
     } catch (e) { console.error('Footer load error:', e); }
@@ -74,8 +71,7 @@ function updateAuthButtons() {
 function handleLogout() {
   localStorage.removeItem('auth_token');
   localStorage.removeItem('current_user');
-  const basePath = window.CONFIG ? CONFIG.BASE_PATH : '';
-  window.location.href = basePath + '/index.html';
+  window.location.href = '/group8/frontend/index.html';
 }
 
 // Initialize on page load

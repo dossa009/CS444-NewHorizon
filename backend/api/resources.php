@@ -1,163 +1,140 @@
 <?php
+/**
+ * Resources API Endpoint
+ * GET /resources.php - Get all resources
+ * GET /resources.php/{id} - Get single resource
+ * POST /resources.php - Create resource (admin)
+ * PUT /resources.php/{id} - Update resource (admin)
+ * DELETE /resources.php/{id} - Delete resource (admin)
+ */
+
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../jwt.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-$path = '';
-if (!empty($_SERVER['PATH_INFO'])) {
-    $path = $_SERVER['PATH_INFO'];
-} else {
-    $uri = $_SERVER['REQUEST_URI'];
-    if (preg_match('/\/resources(\/.*)/', $uri, $matches)) {
-        $path = $matches[1];
-    }
+// Parse path info for ID
+$pathInfo = $_SERVER['PATH_INFO'] ?? '';
+$resourceId = null;
+if (preg_match('/^\/(\d+)$/', $pathInfo, $matches)) {
+    $resourceId = (int)$matches[1];
 }
 
-if ($method === 'GET' && preg_match('/^\/(\d+)$/', $path, $matches)) {
-    handleGetResource($mysqli, (int)$matches[1]);
-} elseif ($method === 'GET') {
-    handleGetAllResources($mysqli);
-} elseif ($method === 'POST') {
-    $user = requireAuth($mysqli);
-    handleCreateResource($mysqli, $user);
-} elseif ($method === 'PUT' && preg_match('/^\/(\d+)$/', $path, $matches)) {
-    $user = requireAuth($mysqli);
-    handleUpdateResource($mysqli, $user, (int)$matches[1]);
-} elseif ($method === 'DELETE' && preg_match('/^\/(\d+)$/', $path, $matches)) {
-    $user = requireAuth($mysqli);
-    handleDeleteResource($mysqli, $user, (int)$matches[1]);
-} else {
-    sendError('Invalid endpoint', 404);
-}
+switch ($method) {
+    case 'GET':
+        if ($resourceId) {
+            // Get single resource
+            $stmt = $mysqli->prepare("SELECT Resource_ID as id, Title as title, Description as description, Resource_URL as resource_url FROM Resources WHERE Resource_ID = ?");
+            $stmt->bind_param('i', $resourceId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $resource = $result->fetch_assoc();
+            $stmt->close();
 
-function handleGetAllResources($mysqli) {
-    $result = $mysqli->query(
-        "SELECT Resource_ID, Webpage_ID, Title, Description, Resource_URL FROM Resources ORDER BY Resource_ID DESC"
-    );
-
-    $resources = [];
-    if ($result) {
-        while ($row = $result->fetch_assoc()) {
-            $resources[] = [
-                'id' => (int)$row['Resource_ID'],
-                'webpage_id' => $row['Webpage_ID'] ? (int)$row['Webpage_ID'] : null,
-                'title' => $row['Title'],
-                'description' => $row['Description'],
-                'resource_url' => $row['Resource_URL']
-            ];
+            if (!$resource) {
+                sendError('Resource not found', 404);
+            }
+            sendResponse(['resource' => $resource]);
+        } else {
+            // Get all resources
+            $result = $mysqli->query("SELECT Resource_ID as id, Title as title, Description as description, Resource_URL as resource_url FROM Resources ORDER BY Title");
+            $resources = [];
+            while ($row = $result->fetch_assoc()) {
+                $resources[] = $row;
+            }
+            sendResponse(['resources' => $resources]);
         }
-    }
+        break;
 
-    sendResponse(['success' => true, 'resources' => $resources]);
-}
+    case 'POST':
+        // Create resource - requires admin
+        $user = requireAuth($mysqli);
+        requireAdmin($mysqli);
 
-function handleGetResource($mysqli, $id) {
-    $stmt = $mysqli->prepare("SELECT Resource_ID, Webpage_ID, Title, Description, Resource_URL FROM Resources WHERE Resource_ID = ?");
-    $stmt->bind_param('i', $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    $stmt->close();
+        $data = getJsonInput();
 
-    if (!$row) {
-        sendError('Resource not found', 404);
-    }
+        if (empty($data['title'])) {
+            sendError('Title is required', 400);
+        }
 
-    sendResponse([
-        'success' => true,
-        'resource' => [
-            'id' => (int)$row['Resource_ID'],
-            'webpage_id' => $row['Webpage_ID'] ? (int)$row['Webpage_ID'] : null,
-            'title' => $row['Title'],
-            'description' => $row['Description'],
-            'resource_url' => $row['Resource_URL']
-        ]
-    ]);
-}
+        $stmt = $mysqli->prepare("INSERT INTO Resources (Title, Description, Resource_URL) VALUES (?, ?, ?)");
+        $title = $data['title'];
+        $description = $data['description'] ?? null;
+        $url = $data['resource_url'] ?? null;
+        $stmt->bind_param('sss', $title, $description, $url);
+        $stmt->execute();
 
-function handleCreateResource($mysqli, $user) {
-    $input = getJsonInput();
-    validateRequired($input, ['title']);
-
-    $title = sanitizeString($input['title']);
-    $description = isset($input['description']) ? sanitizeString($input['description']) : null;
-    $resourceUrl = isset($input['resource_url']) ? sanitizeString($input['resource_url']) : null;
-    $webpageId = isset($input['webpage_id']) ? (int)$input['webpage_id'] : null;
-
-    $stmt = $mysqli->prepare("INSERT INTO Resources (Webpage_ID, Title, Description, Resource_URL) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param('isss', $webpageId, $title, $description, $resourceUrl);
-
-    if (!$stmt->execute()) {
+        $newId = $mysqli->insert_id;
         $stmt->close();
-        sendError('Failed to create resource', 500);
-    }
 
-    $resourceId = $stmt->insert_id;
-    $stmt->close();
+        sendResponse(['success' => true, 'id' => $newId, 'message' => 'Resource created']);
+        break;
 
-    sendResponse(['success' => true, 'message' => 'Resource created', 'resource_id' => $resourceId], 201);
-}
+    case 'PUT':
+        // Update resource - requires admin
+        $user = requireAuth($mysqli);
+        requireAdmin($mysqli);
 
-function handleUpdateResource($mysqli, $user, $id) {
-    $input = getJsonInput();
+        if (!$resourceId) {
+            sendError('Resource ID required', 400);
+        }
 
-    $stmt = $mysqli->prepare("SELECT Resource_ID FROM Resources WHERE Resource_ID = ?");
-    $stmt->bind_param('i', $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
+        $data = getJsonInput();
 
-    if ($result->num_rows === 0) {
-        sendError('Resource not found', 404);
-    }
+        // Build update query dynamically
+        $fields = [];
+        $types = '';
+        $values = [];
 
-    $updates = [];
-    $params = [];
-    $types = '';
+        if (isset($data['title'])) {
+            $fields[] = 'Title = ?';
+            $types .= 's';
+            $values[] = $data['title'];
+        }
+        if (isset($data['description'])) {
+            $fields[] = 'Description = ?';
+            $types .= 's';
+            $values[] = $data['description'];
+        }
+        if (isset($data['resource_url'])) {
+            $fields[] = 'Resource_URL = ?';
+            $types .= 's';
+            $values[] = $data['resource_url'];
+        }
 
-    if (isset($input['title'])) {
-        $updates[] = "Title = ?";
-        $params[] = sanitizeString($input['title']);
-        $types .= 's';
-    }
-    if (isset($input['description'])) {
-        $updates[] = "Description = ?";
-        $params[] = sanitizeString($input['description']);
-        $types .= 's';
-    }
-    if (isset($input['resource_url'])) {
-        $updates[] = "Resource_URL = ?";
-        $params[] = sanitizeString($input['resource_url']);
-        $types .= 's';
-    }
-    if (isset($input['webpage_id'])) {
-        $updates[] = "Webpage_ID = ?";
-        $params[] = (int)$input['webpage_id'];
+        if (empty($fields)) {
+            sendError('No fields to update', 400);
+        }
+
         $types .= 'i';
-    }
+        $values[] = $resourceId;
 
-    if (empty($updates)) {
-        sendError('No fields to update', 400);
-    }
+        $sql = "UPDATE Resources SET " . implode(', ', $fields) . " WHERE Resource_ID = ?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param($types, ...$values);
+        $stmt->execute();
+        $stmt->close();
 
-    $params[] = $id;
-    $types .= 'i';
+        sendResponse(['success' => true, 'message' => 'Resource updated']);
+        break;
 
-    $sql = "UPDATE Resources SET " . implode(', ', $updates) . " WHERE Resource_ID = ?";
-    $stmt = $mysqli->prepare($sql);
-    $stmt->bind_param($types, ...$params);
-    $stmt->execute();
-    $stmt->close();
+    case 'DELETE':
+        // Delete resource - requires admin
+        $user = requireAuth($mysqli);
+        requireAdmin($mysqli);
 
-    sendResponse(['success' => true, 'message' => 'Resource updated']);
-}
+        if (!$resourceId) {
+            sendError('Resource ID required', 400);
+        }
 
-function handleDeleteResource($mysqli, $user, $id) {
-    $stmt = $mysqli->prepare("DELETE FROM Resources WHERE Resource_ID = ?");
-    $stmt->bind_param('i', $id);
-    $stmt->execute();
-    $stmt->close();
+        $stmt = $mysqli->prepare("DELETE FROM Resources WHERE Resource_ID = ?");
+        $stmt->bind_param('i', $resourceId);
+        $stmt->execute();
+        $stmt->close();
 
-    sendResponse(['success' => true, 'message' => 'Resource deleted']);
+        sendResponse(['success' => true, 'message' => 'Resource deleted']);
+        break;
+
+    default:
+        sendError('Method not allowed', 405);
 }

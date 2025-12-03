@@ -1,163 +1,140 @@
 <?php
+/**
+ * Exercises API Endpoint
+ * GET /exercises.php - Get all exercises
+ * GET /exercises.php/{id} - Get single exercise
+ * POST /exercises.php - Create exercise (admin)
+ * PUT /exercises.php/{id} - Update exercise (admin)
+ * DELETE /exercises.php/{id} - Delete exercise (admin)
+ */
+
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../jwt.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-$path = '';
-if (!empty($_SERVER['PATH_INFO'])) {
-    $path = $_SERVER['PATH_INFO'];
-} else {
-    $uri = $_SERVER['REQUEST_URI'];
-    if (preg_match('/\/exercises(\/.*)/', $uri, $matches)) {
-        $path = $matches[1];
-    }
+// Parse path info for ID
+$pathInfo = $_SERVER['PATH_INFO'] ?? '';
+$exerciseId = null;
+if (preg_match('/^\/(\d+)$/', $pathInfo, $matches)) {
+    $exerciseId = (int)$matches[1];
 }
 
-if ($method === 'GET' && preg_match('/^\/(\d+)$/', $path, $matches)) {
-    handleGetExercise($mysqli, (int)$matches[1]);
-} elseif ($method === 'GET') {
-    handleGetAllExercises($mysqli);
-} elseif ($method === 'POST') {
-    $user = requireAuth($mysqli);
-    handleCreateExercise($mysqli, $user);
-} elseif ($method === 'PUT' && preg_match('/^\/(\d+)$/', $path, $matches)) {
-    $user = requireAuth($mysqli);
-    handleUpdateExercise($mysqli, $user, (int)$matches[1]);
-} elseif ($method === 'DELETE' && preg_match('/^\/(\d+)$/', $path, $matches)) {
-    $user = requireAuth($mysqli);
-    handleDeleteExercise($mysqli, $user, (int)$matches[1]);
-} else {
-    sendError('Invalid endpoint', 404);
-}
+switch ($method) {
+    case 'GET':
+        if ($exerciseId) {
+            // Get single exercise
+            $stmt = $mysqli->prepare("SELECT Exercise_ID as id, Name as name, Description as description, Exercise_URL as exercise_url FROM Exercises WHERE Exercise_ID = ?");
+            $stmt->bind_param('i', $exerciseId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $exercise = $result->fetch_assoc();
+            $stmt->close();
 
-function handleGetAllExercises($mysqli) {
-    $result = $mysqli->query(
-        "SELECT Exercise_ID, Webpage_ID, Name, Description, Exercise_URL FROM Exercises ORDER BY Exercise_ID DESC"
-    );
-
-    $exercises = [];
-    if ($result) {
-        while ($row = $result->fetch_assoc()) {
-            $exercises[] = [
-                'id' => (int)$row['Exercise_ID'],
-                'webpage_id' => $row['Webpage_ID'] ? (int)$row['Webpage_ID'] : null,
-                'name' => $row['Name'],
-                'description' => $row['Description'],
-                'exercise_url' => $row['Exercise_URL']
-            ];
+            if (!$exercise) {
+                sendError('Exercise not found', 404);
+            }
+            sendResponse(['exercise' => $exercise]);
+        } else {
+            // Get all exercises
+            $result = $mysqli->query("SELECT Exercise_ID as id, Name as name, Description as description, Exercise_URL as exercise_url FROM Exercises ORDER BY Name");
+            $exercises = [];
+            while ($row = $result->fetch_assoc()) {
+                $exercises[] = $row;
+            }
+            sendResponse(['exercises' => $exercises]);
         }
-    }
+        break;
 
-    sendResponse(['success' => true, 'exercises' => $exercises]);
-}
+    case 'POST':
+        // Create exercise - requires admin
+        $user = requireAuth($mysqli);
+        requireAdmin($mysqli);
 
-function handleGetExercise($mysqli, $id) {
-    $stmt = $mysqli->prepare("SELECT Exercise_ID, Webpage_ID, Name, Description, Exercise_URL FROM Exercises WHERE Exercise_ID = ?");
-    $stmt->bind_param('i', $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
-    $stmt->close();
+        $data = getJsonInput();
 
-    if (!$row) {
-        sendError('Exercise not found', 404);
-    }
+        if (empty($data['name'])) {
+            sendError('Name is required', 400);
+        }
 
-    sendResponse([
-        'success' => true,
-        'exercise' => [
-            'id' => (int)$row['Exercise_ID'],
-            'webpage_id' => $row['Webpage_ID'] ? (int)$row['Webpage_ID'] : null,
-            'name' => $row['Name'],
-            'description' => $row['Description'],
-            'exercise_url' => $row['Exercise_URL']
-        ]
-    ]);
-}
+        $stmt = $mysqli->prepare("INSERT INTO Exercises (Name, Description, Exercise_URL) VALUES (?, ?, ?)");
+        $name = $data['name'];
+        $description = $data['description'] ?? null;
+        $url = $data['exercise_url'] ?? null;
+        $stmt->bind_param('sss', $name, $description, $url);
+        $stmt->execute();
 
-function handleCreateExercise($mysqli, $user) {
-    $input = getJsonInput();
-    validateRequired($input, ['name']);
-
-    $name = sanitizeString($input['name']);
-    $description = isset($input['description']) ? sanitizeString($input['description']) : null;
-    $exerciseUrl = isset($input['exercise_url']) ? sanitizeString($input['exercise_url']) : null;
-    $webpageId = isset($input['webpage_id']) ? (int)$input['webpage_id'] : null;
-
-    $stmt = $mysqli->prepare("INSERT INTO Exercises (Webpage_ID, Name, Description, Exercise_URL) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param('isss', $webpageId, $name, $description, $exerciseUrl);
-
-    if (!$stmt->execute()) {
+        $newId = $mysqli->insert_id;
         $stmt->close();
-        sendError('Failed to create exercise', 500);
-    }
 
-    $exerciseId = $stmt->insert_id;
-    $stmt->close();
+        sendResponse(['success' => true, 'id' => $newId, 'message' => 'Exercise created']);
+        break;
 
-    sendResponse(['success' => true, 'message' => 'Exercise created', 'exercise_id' => $exerciseId], 201);
-}
+    case 'PUT':
+        // Update exercise - requires admin
+        $user = requireAuth($mysqli);
+        requireAdmin($mysqli);
 
-function handleUpdateExercise($mysqli, $user, $id) {
-    $input = getJsonInput();
+        if (!$exerciseId) {
+            sendError('Exercise ID required', 400);
+        }
 
-    $stmt = $mysqli->prepare("SELECT Exercise_ID FROM Exercises WHERE Exercise_ID = ?");
-    $stmt->bind_param('i', $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
+        $data = getJsonInput();
 
-    if ($result->num_rows === 0) {
-        sendError('Exercise not found', 404);
-    }
+        // Build update query dynamically
+        $fields = [];
+        $types = '';
+        $values = [];
 
-    $updates = [];
-    $params = [];
-    $types = '';
+        if (isset($data['name'])) {
+            $fields[] = 'Name = ?';
+            $types .= 's';
+            $values[] = $data['name'];
+        }
+        if (isset($data['description'])) {
+            $fields[] = 'Description = ?';
+            $types .= 's';
+            $values[] = $data['description'];
+        }
+        if (isset($data['exercise_url'])) {
+            $fields[] = 'Exercise_URL = ?';
+            $types .= 's';
+            $values[] = $data['exercise_url'];
+        }
 
-    if (isset($input['name'])) {
-        $updates[] = "Name = ?";
-        $params[] = sanitizeString($input['name']);
-        $types .= 's';
-    }
-    if (isset($input['description'])) {
-        $updates[] = "Description = ?";
-        $params[] = sanitizeString($input['description']);
-        $types .= 's';
-    }
-    if (isset($input['exercise_url'])) {
-        $updates[] = "Exercise_URL = ?";
-        $params[] = sanitizeString($input['exercise_url']);
-        $types .= 's';
-    }
-    if (isset($input['webpage_id'])) {
-        $updates[] = "Webpage_ID = ?";
-        $params[] = (int)$input['webpage_id'];
+        if (empty($fields)) {
+            sendError('No fields to update', 400);
+        }
+
         $types .= 'i';
-    }
+        $values[] = $exerciseId;
 
-    if (empty($updates)) {
-        sendError('No fields to update', 400);
-    }
+        $sql = "UPDATE Exercises SET " . implode(', ', $fields) . " WHERE Exercise_ID = ?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param($types, ...$values);
+        $stmt->execute();
+        $stmt->close();
 
-    $params[] = $id;
-    $types .= 'i';
+        sendResponse(['success' => true, 'message' => 'Exercise updated']);
+        break;
 
-    $sql = "UPDATE Exercises SET " . implode(', ', $updates) . " WHERE Exercise_ID = ?";
-    $stmt = $mysqli->prepare($sql);
-    $stmt->bind_param($types, ...$params);
-    $stmt->execute();
-    $stmt->close();
+    case 'DELETE':
+        // Delete exercise - requires admin
+        $user = requireAuth($mysqli);
+        requireAdmin($mysqli);
 
-    sendResponse(['success' => true, 'message' => 'Exercise updated']);
-}
+        if (!$exerciseId) {
+            sendError('Exercise ID required', 400);
+        }
 
-function handleDeleteExercise($mysqli, $user, $id) {
-    $stmt = $mysqli->prepare("DELETE FROM Exercises WHERE Exercise_ID = ?");
-    $stmt->bind_param('i', $id);
-    $stmt->execute();
-    $stmt->close();
+        $stmt = $mysqli->prepare("DELETE FROM Exercises WHERE Exercise_ID = ?");
+        $stmt->bind_param('i', $exerciseId);
+        $stmt->execute();
+        $stmt->close();
 
-    sendResponse(['success' => true, 'message' => 'Exercise deleted']);
+        sendResponse(['success' => true, 'message' => 'Exercise deleted']);
+        break;
+
+    default:
+        sendError('Method not allowed', 405);
 }
