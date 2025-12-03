@@ -208,7 +208,7 @@ function handleGetProfile($mysqli) {
 
     // Get full user details
     $stmt = $mysqli->prepare(
-        "SELECT User_ID, First_Name, Last_Name, Email, Account_Type, Profile_Picture_URL, Bio, Date_Created, Last_Login
+        "SELECT User_ID, First_Name, Last_Name, Email, Account_Type, Country, State, Address, Date_Created, Last_Login
          FROM Users
          WHERE User_ID = ?"
     );
@@ -230,8 +230,9 @@ function handleGetProfile($mysqli) {
             'last_name' => $profile['Last_Name'],
             'email' => $profile['Email'],
             'role' => $profile['Account_Type'],
-            'profile_picture_url' => $profile['Profile_Picture_URL'],
-            'bio' => $profile['Bio'],
+            'country' => $profile['Country'],
+            'state' => $profile['State'],
+            'address' => $profile['Address'],
             'created_at' => $profile['Date_Created'],
             'last_login' => $profile['Last_Login']
         ]
@@ -245,17 +246,23 @@ function handleUpdateProfile($mysqli) {
     $user = requireAuth($mysqli);
     $input = getJsonInput();
 
-    $allowedFields = ['first_name', 'last_name', 'bio', 'profile_picture_url'];
+    // Fields allowed for update
+    $fieldMapping = [
+        'first_name' => 'First_Name',
+        'last_name' => 'Last_Name',
+        'country' => 'Country',
+        'state' => 'State',
+        'address' => 'Address'
+    ];
+
     $updates = [];
     $params = [];
     $types = '';
 
-    foreach ($allowedFields as $field) {
-        if (isset($input[$field])) {
-            $dbField = ucwords(str_replace('_', ' ', $field));
-            $dbField = str_replace(' ', '_', $dbField);
+    foreach ($fieldMapping as $inputField => $dbField) {
+        if (isset($input[$inputField])) {
             $updates[] = "$dbField = ?";
-            $params[] = sanitizeString($input[$field]);
+            $params[] = sanitizeString($input[$inputField]);
             $types .= 's';
         }
     }

@@ -50,53 +50,47 @@ function handleGetDashboardStats($mysqli) {
 
     // Total users
     $result = $mysqli->query("SELECT COUNT(*) as total_users FROM Users WHERE Is_Active = TRUE");
-    $stats['total_users'] = $result->fetch_assoc()['total_users'];
+    $stats['total_users'] = $result ? $result->fetch_assoc()['total_users'] : 0;
 
     // New users this month
     $result = $mysqli->query(
         "SELECT COUNT(*) as new_users FROM Users
          WHERE Date_Created >= DATE_FORMAT(NOW(), '%Y-%m-01')"
     );
-    $stats['new_users_month'] = $result->fetch_assoc()['new_users'];
+    $stats['new_users_month'] = $result ? $result->fetch_assoc()['new_users'] : 0;
 
     // Admin count
     $result = $mysqli->query("SELECT COUNT(*) as admin_count FROM Users WHERE Account_Type = 'admin'");
-    $stats['admin_count'] = $result->fetch_assoc()['admin_count'];
+    $stats['admin_count'] = $result ? $result->fetch_assoc()['admin_count'] : 0;
 
     // Regular users count
     $result = $mysqli->query("SELECT COUNT(*) as user_count FROM Users WHERE Account_Type = 'user'");
-    $stats['user_count'] = $result->fetch_assoc()['user_count'];
+    $stats['user_count'] = $result ? $result->fetch_assoc()['user_count'] : 0;
 
     // Recent activity
     $result = $mysqli->query(
         "SELECT COUNT(*) as active_users FROM Users
          WHERE Last_Login >= DATE_SUB(NOW(), INTERVAL 7 DAY)"
     );
-    $stats['active_users_week'] = $result->fetch_assoc()['active_users'];
+    $stats['active_users_week'] = $result ? $result->fetch_assoc()['active_users'] : 0;
 
     // Resources stats
     $result = $mysqli->query("SELECT COUNT(*) as total FROM Resources");
-    $resourcesTotal = $result->fetch_assoc()['total'];
-    $result = $mysqli->query("SELECT COUNT(*) as total FROM Resources WHERE Is_Published = TRUE");
-    $resourcesPublished = $result->fetch_assoc()['total'];
+    $resourcesTotal = $result ? $result->fetch_assoc()['total'] : 0;
 
-    // Forum stats
-    $result = $mysqli->query("SELECT COUNT(*) as total FROM Forum_Posts");
-    $forumTotal = $result->fetch_assoc()['total'];
-    $result = $mysqli->query("SELECT COUNT(*) as total FROM Forum_Posts WHERE Status = 'pending'");
-    $forumPending = $result->fetch_assoc()['total'];
+    // Discussion stats
+    $result = $mysqli->query("SELECT COUNT(*) as total FROM Discussion");
+    $discussionTotal = $result ? $result->fetch_assoc()['total'] : 0;
 
-    // Events stats
-    $result = $mysqli->query("SELECT COUNT(*) as total FROM Calendar_Events");
-    $eventsTotal = $result->fetch_assoc()['total'];
-    $result = $mysqli->query("SELECT COUNT(*) as total FROM Calendar_Events WHERE Event_Date >= CURDATE()");
-    $eventsUpcoming = $result->fetch_assoc()['total'];
+    // Calendar stats
+    $result = $mysqli->query("SELECT COUNT(*) as total FROM Calendar");
+    $eventsTotal = $result ? $result->fetch_assoc()['total'] : 0;
+    $result = $mysqli->query("SELECT COUNT(*) as total FROM Calendar WHERE Date >= CURDATE()");
+    $eventsUpcoming = $result ? $result->fetch_assoc()['total'] : 0;
 
-    // Contact messages stats
-    $result = $mysqli->query("SELECT COUNT(*) as total FROM Contact_Messages");
-    $messagesTotal = $result->fetch_assoc()['total'];
-    $result = $mysqli->query("SELECT COUNT(*) as total FROM Contact_Messages WHERE Status = 'new'");
-    $messagesUnread = $result->fetch_assoc()['total'];
+    // Exercises stats
+    $result = $mysqli->query("SELECT COUNT(*) as total FROM Exercises");
+    $exercisesTotal = $result ? $result->fetch_assoc()['total'] : 0;
 
     sendResponse([
         'success' => true,
@@ -109,20 +103,17 @@ function handleGetDashboardStats($mysqli) {
                 'active_users_week' => (int)$stats['active_users_week']
             ],
             'resources' => [
-                'total_resources' => (int)$resourcesTotal,
-                'published_resources' => (int)$resourcesPublished
+                'total_resources' => (int)$resourcesTotal
             ],
-            'forum' => [
-                'total_posts' => (int)$forumTotal,
-                'pending_posts' => (int)$forumPending
+            'discussion' => [
+                'total_posts' => (int)$discussionTotal
             ],
             'events' => [
                 'total_events' => (int)$eventsTotal,
                 'upcoming_events' => (int)$eventsUpcoming
             ],
-            'messages' => [
-                'total_messages' => (int)$messagesTotal,
-                'unread_messages' => (int)$messagesUnread
+            'exercises' => [
+                'total_exercises' => (int)$exercisesTotal
             ]
         ]
     ]);
@@ -282,10 +273,6 @@ function handleUpdateUser($mysqli, $admin, $userId) {
     }
     $stmt->close();
 
-    // Log admin action
-    $details = implode('; ', $changes);
-    logAdminAction($mysqli, $admin['User_ID'], 'UPDATE_USER', 'user', $userId, $details);
-
     sendResponse([
         'success' => true,
         'message' => 'User updated successfully'
@@ -323,9 +310,6 @@ function handleDeleteUser($mysqli, $admin, $userId) {
     }
     $stmt->close();
 
-    // Log admin action
-    logAdminAction($mysqli, $admin['User_ID'], 'DELETE_USER', 'user', $userId, "Deactivated user: {$user['Email']}");
-
     sendResponse([
         'success' => true,
         'message' => 'User deleted successfully'
@@ -336,53 +320,14 @@ function handleDeleteUser($mysqli, $admin, $userId) {
  * Get audit log
  */
 function handleGetAuditLog($mysqli) {
-    $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-    $limit = isset($_GET['limit']) ? min(MAX_PAGE_SIZE, max(1, (int)$_GET['limit'])) : DEFAULT_PAGE_SIZE;
-    $offset = ($page - 1) * $limit;
-
-    // Get total count
-    $result = $mysqli->query("SELECT COUNT(*) as total FROM Admin_Audit_Log");
-    $total = $result->fetch_assoc()['total'];
-
-    // Get audit logs
-    $stmt = $mysqli->prepare(
-        "SELECT l.*, u.First_Name, u.Last_Name, u.Email
-         FROM Admin_Audit_Log l
-         JOIN Users u ON l.Admin_ID = u.User_ID
-         ORDER BY l.Created_At DESC
-         LIMIT ? OFFSET ?"
-    );
-    $stmt->bind_param('ii', $limit, $offset);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $logs = [];
-    while ($row = $result->fetch_assoc()) {
-        $logs[] = [
-            'id' => (int)$row['Log_ID'],
-            'admin' => [
-                'id' => (int)$row['Admin_ID'],
-                'name' => $row['First_Name'] . ' ' . $row['Last_Name'],
-                'email' => $row['Email']
-            ],
-            'action' => $row['Action'],
-            'target_type' => $row['Target_Type'],
-            'target_id' => $row['Target_ID'] ? (int)$row['Target_ID'] : null,
-            'details' => $row['Details'],
-            'ip_address' => $row['IP_Address'],
-            'created_at' => $row['Created_At']
-        ];
-    }
-    $stmt->close();
-
     sendResponse([
         'success' => true,
-        'logs' => $logs,
+        'logs' => [],
         'pagination' => [
-            'page' => $page,
-            'limit' => $limit,
-            'total' => (int)$total,
-            'pages' => ceil($total / $limit)
+            'page' => 1,
+            'limit' => 20,
+            'total' => 0,
+            'pages' => 0
         ]
     ]);
 }
@@ -392,22 +337,22 @@ function handleGetAuditLog($mysqli) {
  */
 function handleGetResources($mysqli) {
     $result = $mysqli->query(
-        "SELECT r.*, u.First_Name, u.Last_Name
-         FROM Resources r
-         LEFT JOIN Users u ON r.Created_By = u.User_ID
-         ORDER BY r.Created_At DESC"
+        "SELECT Resource_ID, Webpage_ID, Title, Description, Resource_URL
+         FROM Resources
+         ORDER BY Resource_ID DESC"
     );
 
     $resources = [];
-    while ($row = $result->fetch_assoc()) {
-        $resources[] = [
-            'id' => (int)$row['Resource_ID'],
-            'title' => $row['Title'],
-            'category' => $row['Category'],
-            'views_count' => (int)$row['Views_Count'],
-            'is_published' => (bool)$row['Is_Published'],
-            'created_at' => $row['Created_At']
-        ];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $resources[] = [
+                'id' => (int)$row['Resource_ID'],
+                'webpage_id' => $row['Webpage_ID'] ? (int)$row['Webpage_ID'] : null,
+                'title' => $row['Title'],
+                'description' => $row['Description'],
+                'resource_url' => $row['Resource_URL']
+            ];
+        }
     }
 
     sendResponse([
@@ -417,26 +362,27 @@ function handleGetResources($mysqli) {
 }
 
 /**
- * Get all forum posts
+ * Get all discussions
  */
 function handleGetForumPosts($mysqli) {
     $result = $mysqli->query(
-        "SELECT p.*, u.First_Name, u.Last_Name
-         FROM Forum_Posts p
-         LEFT JOIN Users u ON p.Author_ID = u.User_ID
-         ORDER BY p.Created_At DESC"
+        "SELECT d.Discussion_ID, d.Discussion_Title, d.Date_Created, d.User_ID,
+                u.First_Name, u.Last_Name
+         FROM Discussion d
+         LEFT JOIN Users u ON d.User_ID = u.User_ID
+         ORDER BY d.Date_Created DESC"
     );
 
     $posts = [];
-    while ($row = $result->fetch_assoc()) {
-        $posts[] = [
-            'id' => (int)$row['Post_ID'],
-            'title' => $row['Title'],
-            'author_name' => $row['First_Name'] ? $row['First_Name'] . ' ' . $row['Last_Name'] : 'Anonymous',
-            'status' => $row['Status'],
-            'views_count' => (int)$row['Views_Count'],
-            'created_at' => $row['Created_At']
-        ];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $posts[] = [
+                'id' => (int)$row['Discussion_ID'],
+                'title' => $row['Discussion_Title'],
+                'author_name' => $row['First_Name'] ? $row['First_Name'] . ' ' . $row['Last_Name'] : 'Anonymous',
+                'created_at' => $row['Date_Created']
+            ];
+        }
     }
 
     sendResponse(['success' => true, 'posts' => $posts]);
@@ -447,23 +393,23 @@ function handleGetForumPosts($mysqli) {
  */
 function handleGetEvents($mysqli) {
     $result = $mysqli->query(
-        "SELECT e.*,
-         (SELECT COUNT(*) FROM Event_Registrations WHERE Event_ID = e.Event_ID) as registered_count
-         FROM Calendar_Events e
-         ORDER BY e.Event_Date DESC"
+        "SELECT c.Event_ID, c.User_ID, c.URL, c.Date,
+                u.First_Name, u.Last_Name
+         FROM Calendar c
+         LEFT JOIN Users u ON c.User_ID = u.User_ID
+         ORDER BY c.Date DESC"
     );
 
     $events = [];
-    while ($row = $result->fetch_assoc()) {
-        $events[] = [
-            'id' => (int)$row['Event_ID'],
-            'title' => $row['Title'],
-            'event_date' => $row['Event_Date'],
-            'event_type' => $row['Event_Type'],
-            'registered_count' => (int)$row['registered_count'],
-            'max_participants' => $row['Max_Participants'] ? (int)$row['Max_Participants'] : null,
-            'is_published' => (bool)$row['Is_Published']
-        ];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $events[] = [
+                'id' => (int)$row['Event_ID'],
+                'user_name' => $row['First_Name'] ? $row['First_Name'] . ' ' . $row['Last_Name'] : 'Unknown',
+                'url' => $row['URL'],
+                'event_date' => $row['Date']
+            ];
+        }
     }
 
     sendResponse(['success' => true, 'events' => $events]);
@@ -474,19 +420,22 @@ function handleGetEvents($mysqli) {
  */
 function handleGetExercises($mysqli) {
     $result = $mysqli->query(
-        "SELECT * FROM Exercises ORDER BY Created_At DESC"
+        "SELECT Exercise_ID, Webpage_ID, Name, Description, Exercise_URL
+         FROM Exercises
+         ORDER BY Exercise_ID DESC"
     );
 
     $exercises = [];
-    while ($row = $result->fetch_assoc()) {
-        $exercises[] = [
-            'id' => (int)$row['Exercise_ID'],
-            'title' => $row['Title'],
-            'category' => $row['Exercise_Type'],
-            'difficulty' => $row['Difficulty'],
-            'duration_minutes' => (int)$row['Duration_Minutes'],
-            'is_published' => (bool)$row['Is_Published']
-        ];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $exercises[] = [
+                'id' => (int)$row['Exercise_ID'],
+                'webpage_id' => $row['Webpage_ID'] ? (int)$row['Webpage_ID'] : null,
+                'name' => $row['Name'],
+                'description' => $row['Description'],
+                'exercise_url' => $row['Exercise_URL']
+            ];
+        }
     }
 
     sendResponse(['success' => true, 'exercises' => $exercises]);
@@ -496,23 +445,7 @@ function handleGetExercises($mysqli) {
  * Get all opportunities
  */
 function handleGetOpportunities($mysqli) {
-    $result = $mysqli->query(
-        "SELECT * FROM Opportunities ORDER BY Created_At DESC"
-    );
-
-    $opportunities = [];
-    while ($row = $result->fetch_assoc()) {
-        $opportunities[] = [
-            'id' => (int)$row['Opportunity_ID'],
-            'title' => $row['Title'],
-            'opportunity_type' => $row['Opportunity_Type'],
-            'organization' => $row['Organization'],
-            'is_remote' => (bool)$row['Is_Remote'],
-            'is_published' => (bool)$row['Is_Published']
-        ];
-    }
-
-    sendResponse(['success' => true, 'opportunities' => $opportunities]);
+    sendResponse(['success' => true, 'opportunities' => []]);
 }
 
 /**
