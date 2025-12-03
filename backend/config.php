@@ -95,36 +95,20 @@ function getJsonInput() {
 
 // Get authorization token from headers
 function getAuthToken() {
-    $authHeader = null;
+    // Method 1: X-Auth-Token header (custom header - works without .htaccess)
+    if (isset($_SERVER['HTTP_X_AUTH_TOKEN'])) {
+        return $_SERVER['HTTP_X_AUTH_TOKEN'];
+    }
 
-    // Method 1: getallheaders()
+    // Method 2: getallheaders()
     if (function_exists('getallheaders')) {
         $headers = getallheaders();
-        if (isset($headers['Authorization'])) {
-            $authHeader = $headers['Authorization'];
-        } elseif (isset($headers['authorization'])) {
-            $authHeader = $headers['authorization'];
+        if (isset($headers['X-Auth-Token'])) {
+            return $headers['X-Auth-Token'];
         }
-    }
-
-    // Method 2: $_SERVER['HTTP_AUTHORIZATION']
-    if (!$authHeader && isset($_SERVER['HTTP_AUTHORIZATION'])) {
-        $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
-    }
-
-    // Method 3: $_SERVER['REDIRECT_HTTP_AUTHORIZATION']
-    if (!$authHeader && isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
-        $authHeader = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
-    }
-
-    // Method 4: Apache workaround
-    if (!$authHeader && isset($_SERVER['PHP_AUTH_DIGEST'])) {
-        $authHeader = $_SERVER['PHP_AUTH_DIGEST'];
-    }
-
-    // Extract Bearer token
-    if ($authHeader && preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) {
-        return $matches[1];
+        if (isset($headers['x-auth-token'])) {
+            return $headers['x-auth-token'];
+        }
     }
 
     return null;

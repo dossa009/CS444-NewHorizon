@@ -8,7 +8,7 @@ async function apiCall(endpoint, options = {}) {
 
   const headers = {
     'Content-Type': 'application/json',
-    ...(token && { 'Authorization': `Bearer ${token}` }),
+    ...(token && { 'X-Auth-Token': token }),
     ...options.headers
   };
 
