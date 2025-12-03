@@ -27,11 +27,10 @@ async function apiCall(endpoint, options = {}) {
   }
 }
 
-// API object with all endpoints
 const API = {
   auth: {
     login: async (email, password) => {
-      const data = await apiCall('/auth/login', {
+      const data = await apiCall('/auth.php/login', {
         method: 'POST',
         body: JSON.stringify({ email, password })
       });
@@ -43,7 +42,7 @@ const API = {
     },
 
     register: async (userData) => {
-      return await apiCall('/auth/register', {
+      return await apiCall('/auth.php/register', {
         method: 'POST',
         body: JSON.stringify(userData)
       });
@@ -51,7 +50,7 @@ const API = {
 
     logout: async () => {
       try {
-        await apiCall('/auth/logout', { method: 'POST' });
+        await apiCall('/auth.php/logout', { method: 'POST' });
       } finally {
         localStorage.removeItem('auth_token');
         localStorage.removeItem('current_user');
@@ -59,18 +58,18 @@ const API = {
     },
 
     getProfile: async () => {
-      return await apiCall('/auth/me');
+      return await apiCall('/auth.php/me');
     },
 
     updateProfile: async (updates) => {
-      return await apiCall('/auth/me', {
+      return await apiCall('/auth.php/me', {
         method: 'PUT',
         body: JSON.stringify(updates)
       });
     },
 
     changePassword: async (currentPassword, newPassword) => {
-      return await apiCall('/auth/change-password', {
+      return await apiCall('/auth.php/change-password', {
         method: 'POST',
         body: JSON.stringify({ current_password: currentPassword, new_password: newPassword })
       });
@@ -87,44 +86,43 @@ const API = {
   },
 
   resources: {
-    getAll: () => apiCall('/resources'),
-    getById: (id) => apiCall(`/resources/${id}`),
-    create: (data) => apiCall('/resources', { method: 'POST', body: JSON.stringify(data) }),
-    update: (id, data) => apiCall(`/resources/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
-    delete: (id) => apiCall(`/resources/${id}`, { method: 'DELETE' })
+    getAll: () => apiCall('/resources.php'),
+    getById: (id) => apiCall(`/resources.php/${id}`),
+    create: (data) => apiCall('/resources.php', { method: 'POST', body: JSON.stringify(data) }),
+    update: (id, data) => apiCall(`/resources.php/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    delete: (id) => apiCall(`/resources.php/${id}`, { method: 'DELETE' })
   },
 
   exercises: {
-    getAll: () => apiCall('/exercises'),
-    getById: (id) => apiCall(`/exercises/${id}`),
-    create: (data) => apiCall('/exercises', { method: 'POST', body: JSON.stringify(data) }),
-    update: (id, data) => apiCall(`/exercises/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
-    delete: (id) => apiCall(`/exercises/${id}`, { method: 'DELETE' })
+    getAll: () => apiCall('/exercises.php'),
+    getById: (id) => apiCall(`/exercises.php/${id}`),
+    create: (data) => apiCall('/exercises.php', { method: 'POST', body: JSON.stringify(data) }),
+    update: (id, data) => apiCall(`/exercises.php/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    delete: (id) => apiCall(`/exercises.php/${id}`, { method: 'DELETE' })
   },
 
   calendar: {
-    getEvents: () => apiCall('/calendar'),
-    getEvent: (id) => apiCall(`/calendar/${id}`),
-    createEvent: (data) => apiCall('/calendar', { method: 'POST', body: JSON.stringify(data) }),
-    updateEvent: (id, data) => apiCall(`/calendar/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
-    deleteEvent: (id) => apiCall(`/calendar/${id}`, { method: 'DELETE' })
+    getEvents: () => apiCall('/calendar.php'),
+    getEvent: (id) => apiCall(`/calendar.php/${id}`),
+    createEvent: (data) => apiCall('/calendar.php', { method: 'POST', body: JSON.stringify(data) }),
+    updateEvent: (id, data) => apiCall(`/calendar.php/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    deleteEvent: (id) => apiCall(`/calendar.php/${id}`, { method: 'DELETE' })
   },
 
   forum: {
-    getPosts: () => apiCall('/forum'),
-    getPost: (id) => apiCall(`/forum/${id}`),
-    createPost: (data) => apiCall('/forum', { method: 'POST', body: JSON.stringify(data) }),
-    updatePost: (id, data) => apiCall(`/forum/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
-    deletePost: (id) => apiCall(`/forum/${id}`, { method: 'DELETE' })
+    getPosts: () => apiCall('/forum.php'),
+    getPost: (id) => apiCall(`/forum.php/${id}`),
+    createPost: (data) => apiCall('/forum.php', { method: 'POST', body: JSON.stringify(data) }),
+    updatePost: (id, data) => apiCall(`/forum.php/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    deletePost: (id) => apiCall(`/forum.php/${id}`, { method: 'DELETE' })
   },
 
   admin: {
-    getDashboardStats: () => apiCall('/admin/dashboard/stats'),
-    getUsers: () => apiCall('/admin/users'),
-    updateUser: (id, data) => apiCall(`/admin/users/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
-    deleteUser: (id) => apiCall(`/admin/users/${id}`, { method: 'DELETE' })
+    getDashboardStats: () => apiCall('/admin.php/dashboard/stats'),
+    getUsers: () => apiCall('/admin.php/users'),
+    updateUser: (id, data) => apiCall(`/admin.php/users/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+    deleteUser: (id) => apiCall(`/admin.php/users/${id}`, { method: 'DELETE' })
   }
 };
 
-// Make API globally available
 window.API = API;

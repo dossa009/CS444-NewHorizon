@@ -13,7 +13,7 @@ const CONFIG = (function() {
   let apiBase = '';
 
   if (hostname.includes('cis444.cs.csusm.edu')) {
-    // School server
+    // School server - direct PHP calls (no mod_rewrite)
     env = 'school';
     basePath = '/group8/frontend';
     apiBase = '/group8/backend/api';
