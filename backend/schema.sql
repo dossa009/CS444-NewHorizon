@@ -1,8 +1,8 @@
 -- New Horizon Database Schema
 -- CIS 444 - Group 8
--- Based on ERD diagram with authentication support
 
--- Drop tables in correct order (dependencies first)
+SET FOREIGN_KEY_CHECKS = 0;
+
 DROP TABLE IF EXISTS Discussion;
 DROP TABLE IF EXISTS Calendar;
 DROP TABLE IF EXISTS About;
@@ -10,6 +10,8 @@ DROP TABLE IF EXISTS Exercises;
 DROP TABLE IF EXISTS Resources;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Webpages;
+
+SET FOREIGN_KEY_CHECKS = 1;
 
 -- ============================================
 -- WEBPAGES TABLE
