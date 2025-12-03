@@ -99,6 +99,79 @@
   background-color: var(--cream);
 }
 
+.calendar-empty {
+  background-color: #f9f9f9;
+  cursor: default;
+}
+
+.calendar-today {
+  background-color: var(--beige) !important;
+  font-weight: bold;
+}
+
+.calendar-has-event {
+  background-color: var(--terracotta) !important;
+  color: white !important;
+  cursor: pointer;
+}
+
+.calendar-has-event:hover {
+  background-color: #a04d2f !important;
+}
+
+.calendar-day {
+  transition: all 0.2s;
+}
+
+/* Events List */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.event-card {
+  background: var(--white);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--terracotta);
+}
+
+.event-date {
+  font-weight: bold;
+  color: var(--dark-brown);
+  margin-bottom: 0.5rem;
+}
+
+.event-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.event-link {
+  color: var(--terracotta);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.event-link:hover {
+  text-decoration: underline;
+}
+
+.event-author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.no-events {
+  text-align: center;
+  color: var(--text-light);
+  padding: 2rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .calendar {

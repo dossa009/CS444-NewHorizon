@@ -13,26 +13,13 @@
   <main>
     <section class="resources-hero">
       <h1>Resources</h1>
-      <p>Explore helpful mental wellness links.</p>
+      <p>Explore helpful mental wellness links and materials.</p>
     </section>
 
     <section class="resources-section">
-      <h2>General Mental Health Information</h2>
-      <ul>
-        <li><a href="https://www.nimh.nih.gov" target="_blank">NIMH – Articles on Anxiety, Depression, Bipolar</a></li>
-        <li><a href="https://mhanational.org" target="_blank">Mental Health America – Screenings and Recovery Tools</a></li>
-      </ul>
-
-      <h2>Mindfulness & Wellness Exercises</h2>
-      <ul>
-        <li><a href="https://www.mindful.org/how-to-meditate/" target="_blank">How to Meditate – Mindful.org</a></li>
-        <li><a href="https://www.nimh.nih.gov/health/publications/so-stressed-out-fact-sheet" target="_blank">Coping With Stress — NIMH</a></li>
-      </ul>
-
-      <h2>Support for Caregivers & Loved Ones</h2>
-      <ul>
-        <li><a href="https://www.nami.org/Your-Journey/Family-Members-and-Caregivers/" target="_blank">How to Support a Loved One – NAMI</a></li>
-      </ul>
+      <div id="resources-container">
+        <p style="text-align: center; padding: 2rem;">Loading resources...</p>
+      </div>
     </section>
 
     <div class="resources-back">
@@ -44,5 +31,44 @@
   <script src="../js/config.js"></script>
   <script src="../js/app.js"></script>
   <script src="../js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', loadResources);
+
+    async function loadResources() {
+      const container = document.getElementById('resources-container');
+
+      try {
+        const data = await API.resources.getAll();
+        const resources = data.resources || [];
+
+        if (resources.length === 0) {
+          container.innerHTML = '<p style="text-align: center; padding: 2rem;">No resources available yet.</p>';
+          return;
+        }
+
+        container.innerHTML = `
+          <ul class="resources-list">
+            ${resources.map(r => `
+              <li class="resource-item">
+                <h3>${escapeHtml(r.title)}</h3>
+                ${r.description ? `<p>${escapeHtml(r.description)}</p>` : ''}
+                ${r.resource_url ? `<a href="${r.resource_url}" target="_blank" class="resource-link">View Resource</a>` : ''}
+              </li>
+            `).join('')}
+          </ul>
+        `;
+      } catch (error) {
+        console.error('Error loading resources:', error);
+        container.innerHTML = '<p style="text-align: center; padding: 2rem; color: #c0392b;">Failed to load resources.</p>';
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
 </body>
 </html>
