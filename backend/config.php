@@ -95,13 +95,36 @@ function getJsonInput() {
 
 // Get authorization token from headers
 function getAuthToken() {
-    $headers = getallheaders();
+    $authHeader = null;
 
-    if (isset($headers['Authorization'])) {
-        $authHeader = $headers['Authorization'];
-        if (preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) {
-            return $matches[1];
+    // Method 1: getallheaders()
+    if (function_exists('getallheaders')) {
+        $headers = getallheaders();
+        if (isset($headers['Authorization'])) {
+            $authHeader = $headers['Authorization'];
+        } elseif (isset($headers['authorization'])) {
+            $authHeader = $headers['authorization'];
         }
+    }
+
+    // Method 2: $_SERVER['HTTP_AUTHORIZATION']
+    if (!$authHeader && isset($_SERVER['HTTP_AUTHORIZATION'])) {
+        $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
+    }
+
+    // Method 3: $_SERVER['REDIRECT_HTTP_AUTHORIZATION']
+    if (!$authHeader && isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+        $authHeader = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+    }
+
+    // Method 4: Apache workaround
+    if (!$authHeader && isset($_SERVER['PHP_AUTH_DIGEST'])) {
+        $authHeader = $_SERVER['PHP_AUTH_DIGEST'];
+    }
+
+    // Extract Bearer token
+    if ($authHeader && preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) {
+        return $matches[1];
     }
 
     return null;
