@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>New Discussion — New Horizon</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/forum.css">
+</head>
+<body class="forum-body">
+  <header data-partial="header"></header>
+
+  <main class="section">
+    <div class="container">
+      <h1>Create a New Discussion</h1>
+      <p>Share your thoughts, questions, or support with the community.</p>
+
+      <div id="error-message" class="form-errors" style="display:none;"></div>
+
+      <form id="new-discussion-form" class="form">
+        <p>
+          <label>Category<br>
+            <select id="discussion-category" name="category" required>
+              <option value="general">General Discussion</option>
+              <option value="techniques">Techniques &amp; Strategies</option>
+              <option value="mental">Mental Health</option>
+              <option value="physical">Physical Wellness</option>
+            </select>
+          </label>
+        </p>
+
+        <p>
+          <label>Title<br>
+            <input type="text" id="discussion-title" name="title" required maxlength="255">
+          </label>
+        </p>
+
+        <p>
+          <label>Content<br>
+            <textarea id="discussion-content" name="content" rows="6" required></textarea>
+          </label>
+        </p>
+
+        <p>
+          <button type="submit" class="btn">Post Discussion</button>
+          <a href="forum.html" class="btn btn--secondary">Cancel</a>
+        </p>
+      </form>
+    </div>
+  </main>
+
+  <footer data-partial="footer"></footer>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/new-discussion.js"></script>
+</body>
+</html>

@@ -1,143 +1,83 @@
-/* ============================================
-   FORUM PAGE STYLES
-   All classes prefixed with "forum-"
-   ============================================ */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Join our community forum to connect, share experiences, and support each other on the mental wellness journey.">
+  <title>Forum — New Horizon</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/forum.css">
+</head>
 
-.forum-body {
-  background-color: var(--cream);
-}
+<body class="forum-body">
+  <header data-partial="header"></header>
 
-/* Hero Section */
-.forum-hero {
-  text-align: center;
-  background-color: var(--white);
-}
+  <main>
 
-.forum-hero__title {
-  font-size: 2.5rem;
-  color: var(--dark-brown);
-  margin-bottom: var(--gap-sm);
-  font-family: var(--font-heading);
-}
+    <section class="section forum-hero">
+      <div class="container">
+        <h1 class="forum-hero__title">Discussion Forum</h1>
+        <p class="forum-hero__description">
+          Connect, share, support — together on your mental wellness journey.
+        </p>
+      </div>
+    </section>
 
-.forum-hero__description {
-  font-size: 1.125rem;
-  color: var(--text-light);
-  max-width: 700px;
-  margin: 0 auto;
-}
+    
+    <section class="section section--tight">
+      <div class="container">
+        <h2 class="forum-section-title">Categories</h2>
 
-/* Placeholder Section */
-.forum-placeholder {
-  text-align: center;
-}
+        <nav class="forum-categories" aria-label="Forum categories">
+          <a href="#" class="forum-category forum-category--active" data-category="general">General Discussion</a>
+          <a href="#" class="forum-category" data-category="techniques">Techniques &amp; Strategies</a>
+          <a href="#" class="forum-category" data-category="mental">Mental Health</a>
+          <a href="#" class="forum-category" data-category="physical">Physical Wellness</a>
+        </nav>
+      </div>
+    </section>
 
-/* Mockup Section */
-.forum-mockup {
-  text-align: center;
-}
+    
+    <section class="section">
+      <div class="container">
 
-.forum-mockup__title {
-  margin-bottom: var(--gap-md);
-  color: var(--dark-brown);
-  font-family: var(--font-heading);
-}
+        <div class="forum-headingbar">
+          <h2 class="forum-section-title">Recent Threads</h2>
 
-.forum-mockup__image {
-  max-width: 100%;
-  display: block;
-  margin: 0 auto;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+          <div class="forum-controls">
+            <input id="forumSearch" type="text" class="forum-search" placeholder="Search discussions…">
+            <select id="forumSort" class="forum-sort">
+              <option value="new">Newest</option>
+              <option value="old">Oldest</option>
+              <option value="az">A–Z</option>
+            </select>
+            <button id="newDiscussionBtn" class="btn btn--small">New Discussion</button>
+          </div>
+        </div>
 
-.forum-header {
-  padding: 60px 0 40px;
-  background-color: var(--terracotta);
-  color: var(--white);
-}
+        <div id="forumThreads" class="forum-threads">
+          <p>Loading discussions...</p>
+        </div>
 
-.forum-header__title {
-  font-size: 2.5rem;
-  color: var(--white);
-  text-align: center;
-  margin-bottom: 16px;
-}
+      </div>
+    </section>
 
-.forum-header__description {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.9);
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto;
-}
+    
+    <section class="section section--tight">
+      <div class="container center">
+        <a href="../index.html" class="btn">Back to Home</a>
+      </div>
+    </section>
 
-.forum-content {
-  padding: 80px 0;
-}
+  </main>
 
-.forum-categories {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  margin-bottom: 48px;
-}
+  <footer data-partial="footer"></footer>
 
-.forum-category {
-  background-color: var(--white);
-  border-radius: 4px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
-}
+  
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/forum.js"></script>
 
-.forum-category:hover {
-  transform: translateY(-4px);
-}
-
-.forum-category__title {
-  font-size: 1.3rem;
-  color: var(--dark-brown);
-  margin-bottom: 12px;
-}
-
-.forum-category__description {
-  color: var(--text-light);
-  line-height: 1.6;
-}
-
-.forum-threads {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.forum-thread {
-  background-color: var(--white);
-  border-radius: 4px;
-  padding: 20px;
-  border-left: 4px solid var(--terracotta);
-}
-
-.forum-thread__title {
-  font-size: 1.1rem;
-  color: var(--dark-brown);
-  margin-bottom: 8px;
-}
-
-.forum-thread__meta {
-  font-size: 0.85rem;
-  color: var(--text-light);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .forum-categories {
-    grid-template-columns: 1fr;
-  }
-
-  .forum-header {
-    padding: 40px 0 32px;
-  }
-}
+</body>
+</html>
